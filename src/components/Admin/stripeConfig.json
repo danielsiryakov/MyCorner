@@ -1,0 +1,22 @@
+{
+  "stripeKey": "pk_test_rBGwrg9VlRPt2xhwqvSWMy76",
+  "stripeOptions": {
+    "style": {
+      "base": {
+        "color": "#303238",
+        "fontSize": "16px",
+        "lineHeight": "48px",
+        "fontSmoothing": "antialiased",
+        ":placeholder": {
+          "color": "#ccc"
+        }
+      },
+      "invalid": {
+        "color": "#e5424d",
+        ":focus": {
+          "color": "#303238"
+        }
+      }
+    }
+  }
+}

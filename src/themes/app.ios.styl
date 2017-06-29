@@ -1,0 +1,54 @@
+// This file is included in the build if src/main.js imports it.
+// Otherwise the default iOS CSS file is bundled.
+// Check "DEFAULT / CUSTOM STYLE" in src/main.js
+
+// App Shared Variables
+// --------------------------------------------------
+// Shared Stylus variables go in the app.variables.styl file
+@import 'app.variables'
+
+// App iOS Design Variables
+// --------------------------------------------------
+// iOS Design only Stylus variables can go here
+// http://quasar-framework.org/api/css-stylus-variables.html
+$primary = #2ab982
+$tertiary  = #0f1f38
+$typography-font-family     ?= '-apple-system', 'Helvetica Neue', Helvetica, Arial, sans-serif
+//$typography-font-family        ?= 'Roboto'
+
+$toolbar-color              ?= $primary
+$toolbar-background         ?= $light
+$toolbar-active-color       ?= $light
+$toolbar-faded-color        ?= co v mposite-color($toolbar-color)
+
+if $typography-font-family == 'Roboto' && $quasar-dont-import-fonts != true && $quasar-dont-import-roboto != true
+  @font-face
+    font-family 'Roboto'
+    font-weight 200
+    src url('~roboto-fontface/fonts/Roboto/Roboto-Thin.woff') format('woff')
+
+  @font-face
+    font-family 'Roboto'
+    font-weight 300
+    src url('~roboto-fontface/fonts/Roboto/Roboto-Light.woff') format('woff')
+
+  @font-face
+    font-family 'Roboto'
+    font-weight 400
+    src url('~roboto-fontface/fonts/Roboto/Roboto-Regular.woff') format('woff')
+
+  @font-face
+    font-family 'Roboto'
+    font-weight 500
+    src url('~roboto-fontface/fonts/Roboto/Roboto-Medium.woff') format('woff')
+
+  @font-face
+    font-family 'Roboto'
+    font-weight 700
+    src url('~roboto-fontface/fonts/Roboto/Roboto-Bold.woff') format('woff')
+
+// Quasar iOS Design Stylus
+// --------------------------------------------------
+// Custom App variables must be declared before importing Quasar.
+// Quasar will use its default values when a custom variable isn't provided.
+@import '~quasar-framework/dist/quasar.ios.styl'
