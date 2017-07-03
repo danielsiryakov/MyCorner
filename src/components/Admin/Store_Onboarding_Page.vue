@@ -18,6 +18,8 @@
             <!--<step-four></step-four>-->
           <!--</q-step>-->
         <!--</q-stepper>-->
+        <div class="row justify-center">
+          <div class="col-lg-8">
         <q-stepper vertical color="secondary" ref="stepper" alternative-labels>
           <q-step default name="first" title="Enter Store Info">
             <step-two></step-two>
@@ -27,8 +29,8 @@
               <q-btn color="secondary" @click="$refs.stepper.next()">Continue</q-btn>
             </q-stepper-navigation>
           </q-step>
-          <q-step error name="second" title="Custom channels" subtitle="Alert message">
-            <div v-for="n in 10">Step 2</div>
+          <q-step name="second" title="Create Categories and Add Products" subtitle="">
+            <step-three></step-three>
             <q-stepper-navigation>
               <q-btn color="secondary" @click="$refs.stepper.next()">Next</q-btn>
               <q-btn color="secondary" flat @click="$refs.stepper.previous()">Back</q-btn>
@@ -56,6 +58,8 @@
             </q-stepper-navigation>
           </q-step>
         </q-stepper>
+          </div>
+        </div>
       </div>
     </div>
   </q-layout>

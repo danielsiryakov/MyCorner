@@ -4,9 +4,9 @@
     :view="layoutStore.view"
     :left-breakpoint="layoutStore.leftBreakpoint"
     :right-breakpoint="layoutStore.rightBreakpoint"
-    :reveal="layoutStore.reveal"
+    :reveal="true"
   >
-    <q-toolbar color="tertiary" slot="header" >
+    <q-toolbar color="tertiary" slot="header">
       <q-btn flat @click="$refs.layout.toggleLeft()">
         <q-icon name="menu" />
       </q-btn>
@@ -58,7 +58,9 @@
       <!--</q-toolbar>-->
       <cartpage class="layout-padding"></cartpage>
     </q-scroll-area>
-
+    <p class="caption" v-for="n in 50">
+      words words words
+    </p>
     <router-view class="layout-view"></router-view>
 
   </q-layout>

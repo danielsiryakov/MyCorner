@@ -65,7 +65,7 @@ const state = {
         open: true
       }
     },
-    name: 'test test test76',
+    name: '',
     image: '',
     delivery: {
       delivery_distance: 2,
@@ -75,7 +75,7 @@ const state = {
       maximum_time_to_delivery: 100,
       service_offered: true
     },
-    phone: 6666666666,
+    phone: '',
     pickup: {
       offered: true,
       maximum_time_to_pickup: 90,

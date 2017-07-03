@@ -3,30 +3,19 @@
     <div class="">
       <div class="panel panel-default">
         <div class="panel-heading categories_header">
-          <span class="text-primary">Add Categories</span>
-          <div class="input-group">
-            <input type="text"
-               v-model="new_category_name"
-               placeholder="Category Name"
-               @keyup.enter="addCategory()"
-               id="addCategory"
-               class="form-control">
-            <button type="button"
-              class="tertiary"
-              @click="addCategory()"
-              @keyup.enter="addCategory()">
-              <i>add</i>
-            </button>
-          </div>
+          <h5 class="text-tertiary text-bold">Add Item Categories</h5>
+            <q-field icon="business">
+              <q-input type="text"
+                       v-model="new_category_name"
+                       placeholder="Category Name"
+                       @keyup.enter="addCategory()"
+                       id="addCategory"
+                       class="form-control"
+                       :after="[{icon: 'add', handler () {addCategory()}}]" />
+            </q-field>
         </div>
       </div>
       <br>
-      <!--<q-tree-->
-        <!--:model="treeModel"-->
-        <!--contract-html="<i>remove_circle</i>"-->
-        <!--expand-html="<i>add_circle</i>"-->
-        <!--class=""-->
-      <!--&gt;</q-tree>-->
       <div v-if="categories.length > 0" class="panel-body">
         <div class="list item-delimiter">
           <draggable v-model="categories">
