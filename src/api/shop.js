@@ -1,18 +1,6 @@
-// const _products = [
-//   {'id': 1, 'title': 'Cucumbers', 'display_price': 3.99, 'description': 'bla bla bla bla bla bla'},
-//   {'id': 2, 'title': 'Spinach', 'display_price': 2.99, 'description': 'bla bla bla bla bla bla'},
-//   {'id': 3, 'title': 'Carrots', 'display_price': 4.99, 'description': 'bla bla bla bla bla bla'},
-//   {'id': 4, 'title': 'Potatoes', 'display_price': 2.99, 'description': 'bla bla bla bla bla bla'},
-//   {'id': 5, 'title': 'Broccoli', 'display_price': 5.99, 'description': 'bla bla bla bla bla bla'},
-//   {'id': 6, 'title': 'Tomatoes', 'display_price': 2.99, 'description': 'bla bla bla bla bla bla'},
-//   {'id': 7, 'title': 'Cabbage', 'display_price': 3.95, 'description': 'bla bla bla bla bla bla'},
-//   {'id': 8, 'title': 'Lettuce', 'display_price': 1.95, 'description': 'bla bla bla bla bla bla'},
-//   {'id': 8, 'title': 'Asparagus', 'display_price': 5.99, 'description': 'bla bla bla bla bla bla'},
-//   {'id': 8, 'title': 'Kale', 'display_price': 3.95, 'description': 'bla bla bla bla bla bla'},
-//   {'id': 8, 'title': 'Brussels Sprouts', 'display_price': 4.95, 'description': 'bla bla bla bla bla bla'}]
-
 const API_URL = 'http://mycorner.store:8001/api/'
 const SEARCH = API_URL + 'store/search'
+const RESEND = API_URL + '/user/confirmation/resend'
 const API2_URL = 'http://pod.opendatasoft.com/api/records/1.0/search/?dataset=pod_gtin&q=hot%20cheetos'
 import axios from 'axios'
 
@@ -34,6 +22,15 @@ export default {
       }
     }).then(response => {
       cb(response.data)
+    }).catch(function (error) {
+      console.log(error)
+    })
+  },
+  resendPassword (cb, email) {
+    axios.get(RESEND, {
+      email: email
+    }).then(response => {
+      cb(response.data.records)
     }).catch(function (error) {
       console.log(error)
     })

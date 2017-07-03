@@ -6,25 +6,29 @@
         New Product
       </q-btn>
       <br><br>
-      <q-search v-model="terms">
+      <q-search inverted placeholder="Search for Products to Add!" v-model="terms" v-if="create_product_modal_view">
         <q-autocomplete
           separator
           @search="search"
           @selected="selected"
         />
       </q-search>
+      <br>
       <q-field v-if="create_product_modal_view">
-        <q-input v-model="new_product.title" type="text" float-label="Enter Product Name"
+        <q-input v-model="new_product.title" type="text" float-label="Product Name"
                  :value = "new_product.title" clearable/>
       </q-field>
       <q-field v-if="create_product_modal_view">
-        <q-input v-model="new_product.dislplay_price" type="number" prefix="$" float-label="Enter Product Price"
+        <q-input v-model="new_product.dislplay_price" type="number" prefix="$" float-label="Product Price"
                  :value = "new_product.dislplay_price" clearable/>
       </q-field>
       <q-field v-if="create_product_modal_view">
-        <q-input v-model="new_product.short_description" type="text" float-label="Enter Business Name"
+        <q-input v-model="new_product.short_description" type="text" float-label="Product Description"
                  :value = "new_product.short_description" clearable/>
       </q-field>
+      <div v-if="new_product.images.length>0">
+        <img :src="new_product.images[0]" alt="" height="200px" width="200px">
+      </div>
       <!--&lt;!&ndash;<div class="list full-width" >&ndash;&gt;-->
         <!--&lt;!&ndash;<div class="item two-lines">&ndash;&gt;-->
           <!--&lt;!&ndash;<div class="item-content">&ndash;&gt;-->
@@ -69,23 +73,15 @@
       <div v-if="current_category.products.length==0">No products added :/ Please add some products!</div>
       <div v-if="!current_category.products.length==0">Edit, remove, and finalize category products.</div>
       <div v-for="(product, p_index) in current_category.products" class="list highlight">
-        <div class="item multiple-lines">
-          <div class="item-primary">
+          <q-item>
             <q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>
-          </div>
-          <div class="item-content has-secondary">
+            <img :src="product.images[0]" alt="" width="100px" height="100px">
             {{product.title}}<br>
             $ {{product.dislplay_price}}<br>
             {{product.short_description}}
-          </div>
-          <div class="item-secondary">
-            <input type="checkbox" :id="p_index" class="cbx hidden" v-on:click="product.add_to_category=true"/>
-            <i class ="text-negative" @click="removeProduct(p_index)">delete</i>
-            <label :for="p_index" class="lbl"></label>
-          </div>
-        </div>
+            <q-icon class="text-negative" @click="removeProduct(p_index)" name="delete"/>
+          </q-item>
       </div>
-    </div>
   </div>
 </template>
 <script>
@@ -105,9 +101,8 @@
       },
       selected (item) {
         this.new_product.title = item.label
-        this.new_product.short_description = item.label
+//        this.new_product.short_description = item.label
         this.new_product.images.push(item.image)
-        this.add_product()
 //        Toast.create(`Selected suggestion "${item.label}"`)
       },
       productAddedToast () {
