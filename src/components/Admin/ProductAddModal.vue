@@ -2,43 +2,64 @@
   <div>
     <div>
       <h4 class="text-dark text-bold">Enter Products for {{current_category.name}}</h4>
-      <button class="outline tertiary" @click="create_product_modal_view=true">
+      <q-btn outline color="tertiary" @click="create_product_modal_view=true">
         New Product
-      </button>
+      </q-btn>
       <br><br>
-      <div class="list full-width" v-if="create_product_modal_view">
-        <div class="item two-lines">
-          <div class="item-content">
-            <label class="text-primary">Product Name</label>
-            <i v-show="!new_product.title" class="text-red">*</i>
-            <i v-show="new_product.title" class="text-green">check</i>
-            <input placeholder="Product Name" v-model="new_product.title" class="full-width">
-          </div>
-        </div>
-        <div class="item two-lines">
-          <div class="item-content">
-            <label class="text-primary">Product Name</label>
-            <span v-show="!new_product.dislplay_price" class="text-red">$</span>
-            <span v-show="new_product.dislplay_price" class="text-green">$</span>
-            <input placeholder="$xx.xx"
-               type="number" min="0.01" step="0.01"
-               v-model="new_product.dislplay_price"
-               class="full-width">
-          </div>
-        </div>
-        <div class="item two-lines">
-          <div class="item-content">
-            <label class="text-primary">Item Description</label>
-            <i v-show="!new_product.short_description" class="text-red">*</i>
-            <i v-show="new_product.short_description" class="text-green">check</i>
-            <textarea class="full-width" v-model="new_product.short_description" placeholder="Short Description"></textarea>
-          </div>
-        </div>
+      <q-search v-model="terms">
+        <q-autocomplete
+          separator
+          @search="search"
+          @selected="selected"
+        />
+      </q-search>
+      <q-field v-if="create_product_modal_view">
+        <q-input v-model="new_product.title" type="text" float-label="Enter Product Name"
+                 :value = "new_product.title" clearable/>
+      </q-field>
+      <q-field v-if="create_product_modal_view">
+        <q-input v-model="new_product.dislplay_price" type="number" prefix="$" float-label="Enter Product Price"
+                 :value = "new_product.dislplay_price" clearable/>
+      </q-field>
+      <q-field v-if="create_product_modal_view">
+        <q-input v-model="new_product.short_description" type="text" float-label="Enter Business Name"
+                 :value = "new_product.short_description" clearable/>
+      </q-field>
+      <!--&lt;!&ndash;<div class="list full-width" >&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="item two-lines">&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="item-content">&ndash;&gt;-->
+            <!--&lt;!&ndash;<label class="text-primary">Product Name</label>&ndash;&gt;-->
+            <!--&lt;!&ndash;<i v-show="!new_product.title" class="text-red">*</i>&ndash;&gt;-->
+            <!--&lt;!&ndash;<i v-show="new_product.title" class="text-green">check</i>&ndash;&gt;-->
+            <!--&lt;!&ndash;<q-input v-model="new_product.title" type="text" float-label="Enter Business Name"&ndash;&gt;-->
+                     <!--&lt;!&ndash;:value = "name" clearable/>&ndash;&gt;-->
+            <!--&lt;!&ndash;<input placeholder="Product Name" v-model="new_product.title" class="full-width">&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="item two-lines">&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="item-content">&ndash;&gt;-->
+            <!--&lt;!&ndash;<label class="text-primary">Product Name</label>&ndash;&gt;-->
+            <!--&lt;!&ndash;<span v-show="!new_product.dislplay_price" class="text-red">$</span>&ndash;&gt;-->
+            <!--&lt;!&ndash;<span v-show="new_product.dislplay_price" class="text-green">$</span>&ndash;&gt;-->
+            <!--&lt;!&ndash;<input placeholder="$xx.xx"&ndash;&gt;-->
+               <!--&lt;!&ndash;type="number" min="0.01" step="0.01"&ndash;&gt;-->
+               <!--&lt;!&ndash;v-model="new_product.dislplay_price"&ndash;&gt;-->
+               <!--&lt;!&ndash;class="full-width">&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</div>-->
+        <!--<div class="item two-lines">-->
+          <!--<div class="item-content">-->
+            <!--<label class="text-primary">Item Description</label>-->
+            <!--<i v-show="!new_product.short_description" class="text-red">*</i>-->
+            <!--<i v-show="new_product.short_description" class="text-green">check</i>-->
+            <!--<textarea class="full-width" v-model="new_product.short_description" placeholder="Short Description"></textarea>-->
+          <!--</div>-->
+        <!--</div>-->
         <br>
         <div class="item">
           <div class="item-content">
-          <button class="primary" @click="add_product()">Add Product</button>
-          <button class="outline negative float-right" @click="reset_temp_product()">Cancel</button>
+          <q-btn color="primary" @click="add_product()">Add Product</q-btn>
+          <q-btn outline class="negative float-right" @click="reset_temp_product()">Cancel</q-btn>
           </div>
         </div>
         <br>
@@ -53,7 +74,7 @@
             <q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>
           </div>
           <div class="item-content has-secondary">
-            <big class="">{{product.title}}</big><br>
+            {{product.title}}<br>
             $ {{product.dislplay_price}}<br>
             {{product.short_description}}
           </div>
@@ -69,9 +90,26 @@
 </template>
 <script>
   import {Toast} from 'quasar'
+  import axios from 'axios'
   export default {
     props: ['current_category'],
     methods: {
+      search: function (terms, done) {
+        axios.get('http://mycorner.store:8080/api/assets/image/search/' + terms, {
+        }).then(function (response) {
+          console.log(response.data)
+          done(response.data)
+        }).catch(function (error) {
+          done([error])
+        })
+      },
+      selected (item) {
+        this.new_product.title = item.label
+        this.new_product.short_description = item.label
+        this.new_product.images.push(item.image)
+        this.add_product()
+//        Toast.create(`Selected suggestion "${item.label}"`)
+      },
       productAddedToast () {
         Toast.create('New Product Added')
       },

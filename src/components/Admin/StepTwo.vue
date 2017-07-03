@@ -2,6 +2,7 @@
 <template>
   <div>
     <div class="row sm-gutter">
+
       <!--<q-input v-model="password" float-label="Minimum 5 characters password" inverted color="amber" type="password"  />-->
       <div class="col-12">
         <q-field icon="business">
@@ -172,7 +173,6 @@
   import {required, minLength} from 'vuelidate/lib/validators'
   import Cleave from 'vue-cleave'
 //  import VueTimepicker from 'vue2-timepicker'
-  import axios from 'axios'
   import VueGoogleAutocomplete from 'vue-google-autocomplete'
   import {
     QBtn,
@@ -297,22 +297,7 @@
       ]),
       getAddressData: function (addressData, placeResultData) {
         this.address = addressData
-      },
-      search: function (terms, done) {
-        axios.get('https://maps.googleapis.com/maps/api/place/autocomplete/json', {
-          params: {
-            key: 'AIzaSyDdecODsc1iL1Xva9wSNlu-Sw-rWUpoioE',
-            input: '330%20west'
-          }
-        }).then(function (response) {
-          console.log(response.data.predictions)
-          done(response.data.predictions)
-        }).catch(function (error) {
-          done([error])
-        })
-//        ?key=AIzaSyDdecODsc1iL1Xva9wSNlu-Sw-rWUpoioE
       }
-//      https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyDdecODsc1iL1Xva9wSNlu-Sw-rWUpoioE
     },
     computed: {
       ...mapGetters({

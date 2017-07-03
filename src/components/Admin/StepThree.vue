@@ -17,7 +17,7 @@
       </div>
       <br>
       <div v-if="categories.length > 0" class="panel-body">
-        <div class="list item-delimiter">
+        <q-list>
           <draggable v-model="categories">
             <transition-group name="list-complete">
               <div class="item" v-for="(category, cindex) in categories" v-bind:key="category.name">
@@ -31,15 +31,16 @@
                   <div class="item-content has-secondary text-dark text-bold" v-if="!category.edit">
                     {{ category.name }}
                   </div>
+                
                   <div class="item-secondary row" v-if="!category.edit">
-                    <i class="text-tertiary" v-on:click="prepCategoryUpdateState(cindex)">mode_edit</i>
-                    <i class="text-primary" v-bind:key="category.showNewPostModal" @click="$refs.basicModal.open(); current_category = cindex">add</i>
-                    <i class="small text-negative" v-on:click="removeCategory(cindex)">delete</i>
+                    <q-icon class="text-tertiary" v-on:click="prepCategoryUpdateState(cindex)" name="mode_edit"/>
+                    <q-icon name="add" class="text-primary" v-bind:key="category.showNewPostModal" @click="$refs.basicModal.open(); current_category = cindex"/>
+                    <q-icon name="delete" class="small text-negative" v-on:click="removeCategory(cindex)"/>
                  </div>
               </div>
             </transition-group>
           </draggable>
-        </div>
+        </q-list>
       </div>
       <q-modal ref="basicModal" v-if="categories.length > 0" :content-css="{padding: '20px', minWidth: '50vw'}">
         <modal :current_category="categories[current_category]"></modal>
