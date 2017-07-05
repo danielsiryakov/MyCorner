@@ -58,6 +58,7 @@
       <!--</q-toolbar>-->
       <cartpage class="layout-padding"></cartpage>
     </q-scroll-area>
+    <q-btn @click="getLocation">asdasd</q-btn>
     <p class="caption" v-for="n in 50">
       words words words
     </p>
@@ -91,8 +92,9 @@
   import ProductCard from './ProductCard.vue'
   export default {
     mounted () {
-      this.getAllProducts()
+//      this.getAllProducts()
 //      if ($store.state.route ==)
+      this.getLocation()
       console.log(this.$store.state.route.path)
     },
     computed: {
@@ -109,7 +111,15 @@
         'getAllProducts',
         'logout',
         'searchForStores'
-      ])
+      ]),
+      getLocation () {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition((position) => {
+            this.longitude = position.coords.longitude
+            this.latitude = position.coords.latitude
+          })
+        }
+      }
     },
     components: {
       Login,
@@ -134,7 +144,9 @@
       return {
         formTab: 'login',
         isSearchPage: false,
-        layoutStore
+        layoutStore,
+        latitude: '',
+        longitude: ''
       }
     }
   }

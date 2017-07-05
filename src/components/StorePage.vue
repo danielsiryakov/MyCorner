@@ -1,14 +1,9 @@
 <template>
-	<q-layout>
-		<div slot="header" class="toolbar tertiary text-white">
-			<button v-go-back="'/store_search'" class="within-iframe-hide">
-				<i>arrow_back</i>
-			</button>
-
-			<q-toolbar-title :padding="1" class="" >
-				<span class="page_title">{{ store.name }}</span>
-			</q-toolbar-title>
-		</div>
+  <q-layout>
+    <q-toolbar color="tertiary" class="text-white">
+      <q-btn v-go-back="'/'" icon="arrow_back"/>
+      <q-toolbar-title>{{ store.name }}</q-toolbar-title>
+    </q-toolbar>
 
 		<div class="layout-view bg-light">
       <div class="layout-padding">

@@ -11,7 +11,7 @@
             <h4 class="text-bold">Your User Info!</h4>
             <q-list highlight>
               <q-list-header>{{ user.email }}</q-list-header>
-              <q-item v-for="(item,key) in user">
+              <q-item v-for="(item,key) in user" :key="key">
                 {{ key }} - {{ item }}
               </q-item>
             </q-list>
