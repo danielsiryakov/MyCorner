@@ -1,47 +1,19 @@
 <template>
   <div>
-    <h6>Accepted Forms Of Payment</h6><br>
-    <label>
-      <q-toggle v-model="ccAccepted"></q-toggle>
-        Credit Card
-    </label>
-    <label>
-      <q-toggle v-model="cashAccepted"></q-toggle>
-      Cash
-    </label>
+    <h5 class="text-tertiary text-bold">Accepted Forms Of Payment</h5><br>
+    <q-toggle v-model="ccAccepted" label="Credit Card"/>
+    <q-toggle v-model="cashAccepted" label="Cash"/>
     <br><br>
-    <div class="list bg-inverted-light" v-show="ccAccepted">
-      <div class="item two-lines">
-        <div class="item-content">
-          <label class="text-primary">Name on Card</label>
-          <i v-show="!ccCardName" class="text-red">*</i>
-          <i v-show="ccCardName" class="text-green">check</i>
-          <input name="cardholder-name" placeholder="Name on Card" class="full-width" v-model="ccCardName">
-        </div>
-      </div>
-      <div class="item two-lines">
-        <div class="item-content">
-          <card :class='{ complete }'
-                :stripe="stripeKey"
-                :options="stripeOptions"
-                :v-model="ccNumber"
-                @change='complete = $event.complete'
-          ></card>
-        </div>
-      </div>
-    </div>
-    <br>
-    <div class="list bg-inverted-light" v-show="cashAccepted">
-      <div class="item two-lines">
-        <div class="item-content">
-          <label class="text-primary">Cash orders must be at least:</label>
-          <i v-show="!cashMinOrderAmount" class="text-red">attach_money</i>
-          <i v-show="cashMinOrderAmount" class="text-green">attach_money</i>
-          <input name="cardholder-name" placeholder="Minimum cash order" class="full-width" v-model="cashMinOrderAmount">
-        </div>
-      </div>
-      <br>
-    </div>
+    <q-input v-show="ccAccepted" name="cardholder-name" placeholder="Name on Card" class="full-width" v-model="ccCardName"/>
+    <card :class='{ complete }'
+          :stripe="stripeKey"
+          :options="stripeOptions"
+          :v-model="ccNumber"
+          v-show="ccAccepted"
+          @change='complete = $event.complete'
+    ></card>
+
+    <q-input v-show="cashAccepted" name="cardholder-name" placeholder="Minimum cash order" class="full-width" v-model="cashMinOrderAmount" type="number" prefix="$"/>
   </div>
 </template>
 

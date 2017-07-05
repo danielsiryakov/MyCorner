@@ -20,24 +20,26 @@
         <q-list>
           <draggable v-model="categories">
             <transition-group name="list-complete">
-              <div class="item" v-for="(category, cindex) in categories" v-bind:key="category.name">
-                <input type="text"
-                   v-if="category.edit"
-                   v-model="category.new_c_name"
-                   placeholder="Category Name"
-                   @keyup.enter="updateCategory(cindex)"
-                   id="updateCategory"
-                   class="item-content">
-                  <div class="item-content has-secondary text-dark text-bold" v-if="!category.edit">
-                    {{ category.name }}
-                  </div>
-                
-                  <div class="item-secondary row" v-if="!category.edit">
-                    <q-icon class="text-tertiary" v-on:click="prepCategoryUpdateState(cindex)" name="mode_edit"/>
-                    <q-icon name="add" class="text-primary" v-bind:key="category.showNewPostModal" @click="$refs.basicModal.open(); current_category = cindex"/>
-                    <q-icon name="delete" class="small text-negative" v-on:click="removeCategory(cindex)"/>
-                 </div>
-              </div>
+
+              <q-item v-for="(category, cindex) in categories" v-bind:key="category.name">
+                <q-input type="text"
+                       v-if="category.edit"
+                       v-model="category.new_c_name"
+                       placeholder="Category Name"
+                       @keyup.enter="updateCategory(cindex)"
+                       id="updateCategory"
+                       class="item-content"/>
+
+                <q-item-main class="text-bold" v-if="!category.edit">
+                  {{ category.name }}
+                </q-item-main>
+                <q-item-side v-if="!category.edit" class="group">
+                  <q-icon name="mode_edit" class="text-tertiary" v-on:click="prepCategoryUpdateState(cindex)"/>
+                  <q-icon name="add" class="text-primary" v-bind:key="category.showNewPostModal" @click="$refs.basicModal.open(); current_category = cindex"/>
+                  <q-icon name="delete" class="text-negative" v-on:click="removeCategory(cindex)"/>
+                </q-item-side>
+
+              </q-item>
             </transition-group>
           </draggable>
         </q-list>
@@ -45,7 +47,7 @@
       <q-modal ref="basicModal" v-if="categories.length > 0" :content-css="{padding: '20px', minWidth: '50vw'}">
         <modal :current_category="categories[current_category]"></modal>
         <br><br>
-        <button class="primary" @click="$refs.basicModal.close()">Close</button>
+        <q-btn color="primary" @click="$refs.basicModal.close()">Close</q-btn>
       </q-modal>
     </div>
   </div>

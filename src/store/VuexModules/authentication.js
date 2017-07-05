@@ -16,7 +16,7 @@ const state = {
 }
 
 const actions = {
-  login ({ commit }, creds) {
+  login ({ commit }, creds, errorCb) {
     axios.get(LOGIN_URL, {
       params: {
         email: creds.email,
@@ -37,8 +37,11 @@ const actions = {
       commit('authenticationTrue')
       router.push('/')
       // Router.push('/')
-    }).catch(function (error) {
-      console.log(error)
+    }).catch(error => {
+      if (error) {
+        errorCb(error)
+        console.log(error)
+      }
     })
   },
   retrieve ({ commit }) {

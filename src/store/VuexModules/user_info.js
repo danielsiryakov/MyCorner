@@ -1,30 +1,27 @@
+import shop from '../../api/shop'
 const state = {
-  currentstep: 1,
-  indicatorclass: true,
-  current_category: null,
-  step: 1,
-  active: 1,
-  firststep: true,
-  nextStep: "",
-  lastStep: "",
-  laststep: false,
-  new_category_name: "",
-  new_category_i_name: "",
-  data_models: {
-    user: user,
-    store: store,
-    categories: categories,
-    payment: payment
-  }
+  info: ''
 }
--
+
 const actions = {
+  getUserInfo ({commit}) {
+    shop.userInfo(info => {
+      commit('setUserInfo', info)
+      console.log(info)
+    })
+  }
 }
 
 const mutations = {
+  setUserInfo (state, info) {
+    state.info = info
+  }
 }
 
 const getters = {
+  user (state) {
+    return state.info
+  }
 }
 
 export default {

@@ -5,6 +5,7 @@ import products from './VuexModules/products'
 import storeSearch from './VuexModules/store_search'
 import storeInfo from './VuexModules/store_info'
 import auth from './VuexModules/authentication'
+import userInfo from './VuexModules/user_info'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -13,6 +14,7 @@ export default new Vuex.Store({
     products,
     storeSearch,
     storeInfo,
-    auth
+    auth,
+    userInfo
   }
 })
