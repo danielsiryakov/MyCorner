@@ -6,8 +6,8 @@
 
         <q-modal ref="logInSignUp" transition="fade" >
           <h4><q-icon class="text-primary float-left" style="padding-left: 20px" @click="$refs.logInSignUp.close()" name="close"/></h4>
-          <div class="layout-padding">
-            <br>
+          <br><br>
+          <div class="">
             <q-tabs :refs="$refs" v-model="formTab" no-pane-border color="tertiary">
               <q-tab slot="title" name="login" label="log in"/>
               <q-tab slot="title" name="signup" label="Sign Up" />
@@ -24,10 +24,14 @@
             </div>
           </div>
         </q-modal>
-        <div class="flex group"  id="footer" style="padding: 20px;">
-          <q-btn color="primary" class="full-width" @click="formTab='login', $refs.logInSignUp.open()">Login</q-btn>
-          <q-btn color="primary" class="full-width" @click="formTab='signup', $refs.logInSignUp.open()">Sign Up</q-btn>
-        </div>
+          <div class="row justify-center group" id="footer" style="padding: 20px;">
+            <div class="col-lg-8">
+              <div class="row justify-center group">
+                <q-btn color="primary" class="col-5" @click="formTab='login', $refs.logInSignUp.open()">Login</q-btn>
+                <q-btn color="primary" class="col-5" @click="formTab='signup', $refs.logInSignUp.open()">Sign Up</q-btn>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
   </div>

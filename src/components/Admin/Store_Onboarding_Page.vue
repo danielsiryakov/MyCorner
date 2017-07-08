@@ -6,55 +6,27 @@
     </q-toolbar>
     <div class="layout-view">
       <div class ="layout-padding">
-
-        <!--<q-stepper @finish="createStore" ref="stepper" v-show="!finished">-->
-          <!--<q-step title="Enter Store Info">-->
-            <!--<step-two></step-two>-->
-          <!--</q-step>-->
-          <!--<q-step title="Create Categories and Add Products">-->
-            <!--<step-three></step-three>-->
-          <!--</q-step>-->
-          <!--<q-step title="Enter Payment Information">-->
-            <!--<step-four></step-four>-->
-          <!--</q-step>-->
-        <!--</q-stepper>-->
         <div class="row justify-center">
           <div class="col-lg-8">
-            <q-stepper vertical color="secondary" ref="stepper" alternative-labels>
-              <q-step default name="first" title="Enter Store Info">
+            <q-stepper vertical ref="stepper" color="primary" alternative-labels>
+              <q-step default  name="first" title="Enter Store Info">
                 <step-two></step-two>
-
-                <!-- Navigation for this step at the end of QStep-->
                 <q-stepper-navigation>
-                  <q-btn color="secondary" @click="$refs.stepper.next()">Continue</q-btn>
+                  <q-btn color="primary" @click="$refs.stepper.next()">Continue</q-btn>
                 </q-stepper-navigation>
               </q-step>
               <q-step name="second" title="Create Categories and Add Products" subtitle="">
                 <step-three></step-three>
                 <q-stepper-navigation>
-                  <q-btn color="secondary" @click="$refs.stepper.next()">Next</q-btn>
+                  <q-btn color="primary" @click="$refs.stepper.next()">Next</q-btn>
                   <q-btn color="secondary" flat @click="$refs.stepper.previous()">Back</q-btn>
                 </q-stepper-navigation>
               </q-step>
               <q-step name="third" title="Add Payment Info.">
                 <step-four></step-four>
                 <q-stepper-navigation>
-                  <q-btn color="secondary" @click="$refs.stepper.next()">Next</q-btn>
-                  <q-btn color="secondary" flat @click="$refs.stepper.previous()">Back</q-btn>
-                </q-stepper-navigation>
-              </q-step>
-              <q-step name="fifth" disable title="Disabled">
-                <div v-for="n in 3">Step 4</div>
-                <q-stepper-navigation>
-                  <q-btn color="secondary" @click="$refs.stepper.next()">Next</q-btn>
-                  <q-btn color="secondary" flat @click="$refs.stepper.previous()">Back</q-btn>
-                </q-stepper-navigation>
-              </q-step>
-              <q-step name="fourth" title="Review and Finalize">
-                <div v-for="n in 3">Step 5</div>
-                <q-stepper-navigation>
-                  <q-btn color="secondary" @click="$refs.stepper.goToStep('first')">Restart</q-btn>
-                  <q-btn color="secondary" flat @click="$refs.stepper.previous()">Back</q-btn>
+                  <q-btn color="primary" @click="createStore">Submit</q-btn>
+                  <q-btn color="tertiary" flat @click="$refs.stepper.previous()">Back</q-btn>
                 </q-stepper-navigation>
               </q-step>
             </q-stepper>

@@ -8,14 +8,14 @@
   >
     <q-toolbar color="tertiary" slot="header">
       <q-btn flat @click="$refs.layout.toggleLeft()">
-        <q-icon name="menu" />
+        <q-icon name="menu" color="white" />
       </q-btn>
       <q-toolbar-title>
         <router-link to="/"><img src="../assets/fulllogo.png" id="logo"></router-link>
         <span slot="subtitle">Empowering Your Neighborhood</span>
       </q-toolbar-title>
       <q-btn flat @click="$refs.layout.toggleRight()">
-        <q-icon name="shopping_cart" />
+        <q-icon name="shopping_cart" color="white" />
       </q-btn>
     </q-toolbar>
 
@@ -33,7 +33,6 @@
       <q-route-tab slot="title" icon="store" to="/store/:id"/>
       <q-route-tab slot="title" icon="person" to="/user/:id"/>
     </q-tabs>
-    <!--<product-card></product-card>-->
 
     <q-scroll-area slot="left" style="width: 100%; height: 100%">
       <q-list-header class="bg-tertiary text-primary">Other Info</q-list-header>
@@ -51,11 +50,6 @@
     </q-scroll-area>
 
     <q-scroll-area slot="right" class="bg-light" style="width: 100%; height: 100%">
-      <!--<q-toolbar color="tertiary">-->
-        <!--<q-toolbar-title :padding="1">-->
-          <!--<h5 class="text-primary">Cart</h5>-->
-        <!--</q-toolbar-title>-->
-      <!--</q-toolbar>-->
       <cartpage class="layout-padding"></cartpage>
     </q-scroll-area>
     <q-btn @click="getLocation">asdasd</q-btn>

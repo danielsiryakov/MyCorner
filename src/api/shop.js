@@ -1,6 +1,7 @@
-const API_URL = 'http://mycorner.store:8001/api/'
+const API_URL = 'http://mycorner.store:8080/api/'
+// const API_URL = 'http://24.198.140.214:8001/api/'
 const SEARCH = API_URL + 'store/search'
-const RESEND = API_URL + '/user/confirmation/resend'
+const RESEND = API_URL + 'user/confirmation/resend'
 const API2_URL = 'http://pod.opendatasoft.com/api/records/1.0/search/?dataset=pod_gtin&q=hot%20cheetos'
 import axios from 'axios'
 // const LOGIN_URL = API_URL + 'user/login'
@@ -35,11 +36,14 @@ export default {
       console.log(error)
     })
   },
-  resendPassword (cb, email) {
+  resendPassword (creds) {
     axios.get(RESEND, {
-      email: email
+      params: {
+        'email': creds.email,
+        'password': creds.password
+      }
     }).then(response => {
-      cb(response.data.records)
+      console.log(response)
     }).catch(function (error) {
       console.log(error)
     })
