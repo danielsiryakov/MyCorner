@@ -28,9 +28,9 @@
       </q-field>
       <div v-if="new_product.image">
         <img :src="new_product.image" alt="" height="200px" width="200px">
+        <br>
       </div>
-      <br>
-      <div class="item">
+      <div v-if="new_product.image" class="item">
         <div class="item-content">
           <q-btn color="primary" @click="add_product()">Add Product</q-btn>
           <q-btn outline class="negative float-right" @click="reset_temp_product()">Cancel</q-btn>
@@ -71,11 +71,8 @@
       },
       selected (item) {
         this.new_product.title = item.label
-//        this.new_product.short_description = item.label
         this.new_product.image = item.image
         this.new_product.asset_id = item.asset_id
-
-//        Toast.create(`Selected suggestion "${item.label}"`)
       },
       productAddedToast () {
         Toast.create('New Product Added')
@@ -100,11 +97,12 @@
           title: '',
           image: '', // leaving at top level for now (which means variants cant have imgs)
           category: '', // ? just one or list of cats it falls in (tempted to say list)
-          keywords: [],
           checked: false,
           asset_id: '',
           add_to_category: false,
           long_description: '',
+          short_description: '',
+          dislplay_price: '', // different for variants but top level for product list
           description: '',
           price_cents: '' // different for variants but top level for product list
         }
@@ -123,12 +121,13 @@
         // reset product template
         this.new_product = {
           title: '',
-          images: [], // leaving at top level for now (which means variants cant have imgs)
+          images: '', // leaving at top level for now (which means variants cant have imgs)
           category: '', // ? just one or list of cats it falls in (tempted to say list)
-          keywords: [],
           add_to_category: false,
           checked: false,
           long_description: '',
+          short_description: '',
+          dislplay_price: '', // different for variants but top level for product list
           asset_id: '',
           description: '',
           price_cents: '' // different for variants but top level for product list
@@ -145,6 +144,7 @@
         checked: false,
         create_product_modal_view: false,
         temp_category_prods: [],
+        asset_id: '',
         new_product: {
           title: '',
           image: '', // leaving at top level for now (which means variants cant have imgs)

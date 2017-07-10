@@ -26,7 +26,7 @@
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <q-field icon="phone" >
-          <q-input v-model="phoneNumber" type="number" float-label="Enter Business Phone #"
+          <q-input v-model="phoneNumber" type="tel" float-label="Enter Business Phone #"
                    clearable
                    :after="[{icon: 'done', condition: phoneNumber.length >= 10, handler () {}}]"/>
         </q-field>
@@ -62,7 +62,11 @@
         <q-field icon="access_time">
           <div v-for="(day_hours,day) in StepTwoForm.working_hours" >
             <span class="text-tertiary">{{ day }}:</span><br>
-            <q-datetime-range @change="update_working_hours(StepTwoForm.working_hours)" color="primary" v-model="day_hours.hours" type="time" class="full-width" />
+            <q-datetime-range @change="update_working_hours(StepTwoForm.working_hours)"
+                              color="primary"
+                              v-model="day_hours.hours"
+                              type="time"
+                              class="full-width" />
           </div>
         </q-field>
       </div>
@@ -274,7 +278,7 @@
         get () { return this.$store.state.storeInfo.store.phone },
         set (value) {
           this.$store.commit('update_store', {phone: value})
-          this.StepTwoForm.phone = value
+          this.StepTwoForm.phone = value.toString()
         }
       },
       pickUpItems: {
