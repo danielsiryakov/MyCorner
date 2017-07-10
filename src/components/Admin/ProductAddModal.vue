@@ -27,7 +27,7 @@
                  :value = "new_product.short_description" clearable/>
       </q-field>
       <div v-if="new_product.images.length>0">
-        <img :src="new_product.images[0]" alt="" height="200px" width="200px">
+        <img :src="new_product.images" alt="" height="200px" width="200px">
       </div>
       <!--&lt;!&ndash;<div class="list full-width" >&ndash;&gt;-->
         <!--&lt;!&ndash;<div class="item two-lines">&ndash;&gt;-->
@@ -75,7 +75,7 @@
       <div v-for="(product, p_index) in current_category.products" class="list highlight">
           <q-item>
             <q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>
-            <img :src="product.images[0]" alt="" width="100px" height="100px">
+            <img :src="product.image" alt="" width="100px" height="100px">
             {{product.title}}<br>
             $ {{product.dislplay_price}}<br>
             {{product.short_description}}
@@ -101,9 +101,8 @@
       },
       selected (item) {
         this.new_product.title = item.label
-//        this.new_product.short_description = item.label
-        this.new_product.images.push(item.image)
-//        Toast.create(`Selected suggestion "${item.label}"`)
+        this.new_product.image = item.image
+        this.new_product.asset_id = item.asset_id
       },
       productAddedToast () {
         Toast.create('New Product Added')
@@ -126,13 +125,13 @@
       reset_temp_product: function () {
         this.new_product = {
           title: '',
-          images: [], // leaving at top level for now (which means variants cant have imgs)
+          images: '', // leaving at top level for now (which means variants cant have imgs)
           category: '', // ? just one or list of cats it falls in (tempted to say list)
-          keywords: [],
           checked: false,
           add_to_category: false,
           long_description: '',
           short_description: '',
+          asset_id: '',
           dislplay_price: '' // different for variants but top level for product list
         }
         this.create_product_modal_view = false
@@ -145,13 +144,13 @@
         // reset product template
         this.new_product = {
           title: '',
-          images: [], // leaving at top level for now (which means variants cant have imgs)
+          images: '', // leaving at top level for now (which means variants cant have imgs)
           category: '', // ? just one or list of cats it falls in (tempted to say list)
-          keywords: [],
           add_to_category: false,
           checked: false,
           long_description: '',
           short_description: '',
+          asset_id: '',
           dislplay_price: '' // different for variants but top level for product list
         }
       },
@@ -165,6 +164,7 @@
         checked: false,
         create_product_modal_view: false,
         temp_category_prods: [],
+        asset_id: '',
         new_product: {
           title: '',
           images: [], // leaving at top level for now (which means variants cant have imgs)

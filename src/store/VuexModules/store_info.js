@@ -1,7 +1,7 @@
 import axios from 'axios'
 import router from '../../router'
 import { Cookies } from 'quasar'
-const API_URL = 'http://mycorner.store:8001/api/'
+const API_URL = 'http://mycorner.store:8080/api/'
 const CREATE_STORE = API_URL + 'store/create'
 
 const state = {
@@ -103,7 +103,9 @@ const state = {
       products: [{
         title: 'p1',
         description: 'asdadf',
-        display_price: '$2.00'
+        display_price: '$2.00',
+        asset_id: '59597b710f85f6d380e8987c',
+        image: 'https://s3-us-west-2.amazonaws.com/mcs-images/production/images/products/27cb235b06f04844a91f30b9c932c49d.jpg'
       }]
     }]
   },
@@ -113,6 +115,7 @@ const state = {
     category: '', // ? just one or list of cats it falls in (tempted to say list)
     keywords: [],
     description: '',
+    asset_id: '',
     dislplay_price: '', // different for variants but top level for product list view
     rating: {
       // not there yet, just throwing it in the code for not to not forget it in the models
@@ -231,7 +234,9 @@ const state = {
       products: [{
         title: 'p1',
         description: 'asdadf',
-        display_price: '$2.00'
+        display_price: '$2.00',
+        asset_id: '59597b710f85f6d380e8987c',
+        image: 'https://s3-us-west-2.amazonaws.com/mcs-images/production/images/products/27cb235b06f04844a91f30b9c932c49d.jpg'
       }]
     }]
   }
@@ -255,11 +260,19 @@ const actions = {
   createStore ({ commit }) {
     let userID = Cookies.get('userID')
     let authtoken = Cookies.get('authtoken')
-    // let authtoken = LocalStorage.get.item('authtoken')
     axios.defaults.headers.common['authtoken'] = authtoken
     axios.defaults.headers.common['userID'] = userID
+    var storePayload = state.store
+    Object.keys(storePayload.working_hours).forEach(function (key) {
+      var from = new Date(storePayload.working_hours[key].hours.from)
+      var to = new Date(storePayload.working_hours[key].hours.to)
+      storePayload.working_hours[key].hours = {
+        from: from.getHours() * 100 + from.getMinutes(),
+        to: to.getHours() * 100 + to.getMinutes()
+      }
+    })
     console.log(authtoken)
-    axios.post(CREATE_STORE, JSON.stringify(state.store)).then(function (response) {
+    axios.post(CREATE_STORE, JSON.stringify(storePayload)).then(function (response) {
       router.push('/')
       console.log(response)
     }).catch(function (error) {
@@ -324,29 +337,8 @@ const mutations = {
       }
     }
   },
-  update_working_hours (state, hours) {
-    state.store.working_hours = hours
-    //   state.store.working_hours.monday.hours.to = hours.monday.hours.to.HH + hours.monday.hours.to.mm
-    //   state.store.working_hours.monday.hours.from = hours.monday.hours.from.HH + hours.monday.hours.from.mm
-    //
-    //   state.store.working_hours.tuesday.hours.to = hours.tuesday.hours.to.HH + hours.tuesday.hours.to.mm
-    //   state.store.working_hours.tuesday.hours.from = hours.tuesday.hours.from.HH + hours.tuesday.hours.from.mm
-    //
-    //   state.store.working_hours.wednesday.hours.to = hours.wednesday.hours.to.HH + hours.wednesday.hours.to.mm
-    //   state.store.working_hours.wednesday.hours.from = hours.wednesday.hours.from.HH + hours.wednesday.hours.from.mm
-    //
-    //   state.store.working_hours.thursday.hours.to = hours.thursday.hours.to.HH + hours.thursday.hours.to.mm
-    //   state.store.working_hours.thursday.hours.from = hours.thursday.hours.from.HH + hours.thursday.hours.from.mm
-    //
-    //   state.store.working_hours.friday.hours.to = hours.friday.hours.to.HH + hours.friday.hours.to.mm
-    //   state.store.working_hours.friday.hours.from = hours.friday.hours.from.HH + hours.friday.hours.from.mm
-    //
-    //   state.store.working_hours.saturday.hours.to = hours.saturday.hours.to.HH + hours.saturday.hours.to.mm
-    //   state.store.working_hours.saturday.from = hours.saturday.hours.from.HH + hours.saturday.hours.from.mm
-    //
-    //   state.store.working_hours.saturday.hours.to = hours.saturday.hours.to.HH + hours.saturday.hours.to.mm
-    //   state.store.working_hours.saturday.hours.from = hours.saturday.hours.from.HH + hours.saturday.hours.from.mm
-    // }
+  update_working_hours (state, workingHours) {
+    state.hours = workingHours
   }
 }
 

@@ -63,7 +63,11 @@
         <q-field icon="access_time">
           <div v-for="(day_hours,day) in StepTwoForm.working_hours" >
             <span class="text-tertiary">{{ day }}:</span><br>
-            <q-datetime-range @change="update_working_hours(StepTwoForm.working_hours)" color="primary" v-model="day_hours.hours" type="time" class="full-width" />
+            <q-datetime-range @change="update_working_hours(StepTwoForm.working_hours)"
+                              color="primary"
+                              v-model="day_hours.hours"
+                              type="time"
+                              class="full-width" />
           </div>
         </q-field>
       </div>
