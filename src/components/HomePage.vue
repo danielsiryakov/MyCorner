@@ -27,7 +27,7 @@
       <q-search icon="location_on" :debounce="0" inverted color="primary" v-model="searchValue" @enter="searchForStores"></q-search>
     </q-toolbar>
 
-    <q-tabs class ="mobile-only" inverted color="tertiary" slot="navigation">
+    <q-tabs class ="" inverted color="tertiary" slot="navigation">
       <q-route-tab slot="title" icon="home" to="/"/>
       <q-route-tab slot="title" icon="search" to="/store_search"/>
       <q-route-tab slot="title" icon="store" to="/store/:id"/>
@@ -52,10 +52,7 @@
     <q-scroll-area slot="right" class="bg-light" style="width: 100%; height: 100%">
       <cartpage class="layout-padding"></cartpage>
     </q-scroll-area>
-    <q-btn @click="getLocation">asdasd</q-btn>
-    <p class="caption" v-for="n in 50">
-      words words words
-    </p>
+
     <router-view class="layout-view"></router-view>
 
   </q-layout>

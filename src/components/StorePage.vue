@@ -1,43 +1,45 @@
 <template>
   <q-layout>
     <q-toolbar color="tertiary" class="text-white">
-      <q-btn v-go-back="'/'" icon="arrow_back"/>
+      <q-btn v-go-back="'/store_search'" icon="arrow_back"/>
       <q-toolbar-title>{{ store.name }}</q-toolbar-title>
     </q-toolbar>
 
 		<div class="layout-view bg-light">
       <div class="layout-padding">
         <div class="row">
-          <div class="card layout-padding bg-white">
-            <div class="sm-width-1of1 md-width-1of1 bg-width-1of1 lg-width-1of1">
-              <h4 slot="storeName"><strong>{{ store.name }}</strong></h4>
-              <p class="float-left">
-                {{ store.address2 }} <br>
-                {{ store.address1 }} <br>
-              </p>
+          <div class="col-lg-8 offset-lg-2">
+            <div class="col-12">
+              <q-card class="layout-padding bg-white">
+                <h4 slot="storeName"><strong>{{ store.name }}</strong></h4>
+                <p class="float-left">
+                  {{ store.address2 }} <br>
+                  {{ store.address1 }} <br>
+                </p>
+              </q-card>
+            </div>
+            <br>
+            <div class="list card bg-light text-bold" v-for="category in allProducts">
+              <!--<q-collapsible :label="category.name" class="primary">-->
+              <div class ="row wrap">
+                <q-card inline flat class ="item-card" v-for="p in category.products">
+                  <div class="product text-tertiary" @click="open(p)">
+                    <img :src="p.image" style="width: 150px; height: 150px">
+                    {{p.title}}
+                  </div>
+                </q-card>
+              </div>
+              <!--</q-collapsible>-->
             </div>
           </div>
         </div>
-        <br>
-        <div class="list card bg-white text-bold" v-for="category in store.c_names">
-          <q-collapsible :label="category" class="primary">
-            <div class ="row wrap">
-              <div class ="card product" v-for="p in allProducts">
-                <div class="column layout-padding" @click="open(p)">
-                  {{p.fields.gtin_nm}} <br>
-                  <img :src="p.fields.gtin_img" style="width: 150px; height: 150px">
-                </div>
-              </div>
-            </div>
-          </q-collapsible>
-        </div>
       </div>
 
-      <q-modal ref="productModal" class="minimized" :content-css="{padding: '40px'}">
-        <h4><i class="text-negative absolute-top-right" @click="$refs.productModal.close()">close</i></h4>
-        <!--<i class="text-negative" @click="$refs.productModal.close()">close</i>-->
-        <product-page :product="ProductObject"></product-page>
-      </q-modal>
+      <!--<q-modal ref="productModal" class="minimized" :content-css="{padding: '40px'}">-->
+        <!--<h4><i class="text-negative absolute-top-right" @click="$refs.productModal.close()">close</i></h4>-->
+        <!--&lt;!&ndash;<i class="text-negative" @click="$refs.productModal.close()">close</i>&ndash;&gt;-->
+        <!--<product-page :product="ProductObject"></product-page>-->
+      <!--</q-modal>-->
       <!--<modal name="modal">-->
         <!--<h2 class =categoryTitle>{{ProductObject.ProductName}}</h2>-->
         <!--&lt;!&ndash;{{ProductObject.ProductName}}&ndash;&gt;-->
@@ -47,13 +49,16 @@
 </template>
 
 <script>
+//  const CATPRODS = 'http://mycorner.store:8080/api/store/categories/retrieve/'
   import ProductPage from './ProductPage.vue'
+//  import axios from 'axios'
   import { mapGetters, mapActions } from 'vuex'
   export default {
     props: ['id'],
     data () {
       return {
-        ProductObject: {}
+        ProductObject: {},
+        CatProducts: []
       }
     },
     components: {
@@ -67,6 +72,9 @@
       store () {
         return this.allStores.find((s) => s._id === this.id) || {}
       }
+    },
+    mounted () {
+      this.getAllProducts(this.id)
     },
     methods: {
       ...mapActions([
@@ -82,11 +90,15 @@
         this.ProductObject = Product
         this.$refs.productModal.open()
       }
+//      getProducts: function () {
+//        axios.get(CATPRODS + this.id).then(response => {
+//          this.CatProducts = response.data
+//          console.log(response.data)
+//        }).catch(function (error) {
+//          console.log(error)
+//        })
+//      }
     }
-//    mounted () {
-//      getAllStores
-//      getAllProducts
-//    }
   }
 </script>
 
@@ -162,15 +174,24 @@
        /*width: 100%*/
      /*}*/
    /*}*/
-  .categoryTitle{
-    font-weight: bold;
-    font-size: 25px;
-    color: #1b9872;
-    font-family: Helvetica;
-
+  .item-card{
+    display: inline-block;
+    position: relative;
+    width: 206px;
+    height: 336px;
+    vertical-align: top;
+    background: #fff;
+    border: 1px solid #e5edec;
+    text-align: left;
+    color: #5a5a5a;
+    font-weight: 400;
+    margin: 0 -1px -1px 0;
+    cursor: pointer;
+    white-space: initial;
   }
   .product {
     height: 250px;
     width: 250px;
+    padding: 20px;
   }
 </style>
