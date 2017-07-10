@@ -1,7 +1,7 @@
 import axios from 'axios'
 import router from '../../router'
 import { Cookies } from 'quasar'
-const API_URL = 'http://mycorner.store:8001/api/'
+const API_URL = 'http://mycorner.store:8080/api/'
 const CREATE_STORE = API_URL + 'store/create'
 
 const state = {
@@ -325,28 +325,21 @@ const mutations = {
     }
   },
   update_working_hours (state, hours) {
-    state.store.working_hours = hours
-    //   state.store.working_hours.monday.hours.to = hours.monday.hours.to.HH + hours.monday.hours.to.mm
-    //   state.store.working_hours.monday.hours.from = hours.monday.hours.from.HH + hours.monday.hours.from.mm
-    //
-    //   state.store.working_hours.tuesday.hours.to = hours.tuesday.hours.to.HH + hours.tuesday.hours.to.mm
-    //   state.store.working_hours.tuesday.hours.from = hours.tuesday.hours.from.HH + hours.tuesday.hours.from.mm
-    //
-    //   state.store.working_hours.wednesday.hours.to = hours.wednesday.hours.to.HH + hours.wednesday.hours.to.mm
-    //   state.store.working_hours.wednesday.hours.from = hours.wednesday.hours.from.HH + hours.wednesday.hours.from.mm
-    //
-    //   state.store.working_hours.thursday.hours.to = hours.thursday.hours.to.HH + hours.thursday.hours.to.mm
-    //   state.store.working_hours.thursday.hours.from = hours.thursday.hours.from.HH + hours.thursday.hours.from.mm
-    //
-    //   state.store.working_hours.friday.hours.to = hours.friday.hours.to.HH + hours.friday.hours.to.mm
-    //   state.store.working_hours.friday.hours.from = hours.friday.hours.from.HH + hours.friday.hours.from.mm
-    //
-    //   state.store.working_hours.saturday.hours.to = hours.saturday.hours.to.HH + hours.saturday.hours.to.mm
-    //   state.store.working_hours.saturday.from = hours.saturday.hours.from.HH + hours.saturday.hours.from.mm
-    //
-    //   state.store.working_hours.saturday.hours.to = hours.saturday.hours.to.HH + hours.saturday.hours.to.mm
-    //   state.store.working_hours.saturday.hours.from = hours.saturday.hours.from.HH + hours.saturday.hours.from.mm
-    // }
+    // state.store.working_hours = hours
+    state.store.working_hours.monday.hours.to = hours.monday.hours.to.HH + hours.monday.hours.to.mm
+    state.store.working_hours.monday.hours.from = hours.monday.hours.from.HH + hours.monday.hours.from.mm
+    state.store.working_hours.tuesday.hours.to = hours.tuesday.hours.to.HH + hours.tuesday.hours.to.mm
+    state.store.working_hours.tuesday.hours.from = hours.tuesday.hours.from.HH + hours.tuesday.hours.from.mm
+    state.store.working_hours.wednesday.hours.to = hours.wednesday.hours.to.HH + hours.wednesday.hours.to.mm
+    state.store.working_hours.wednesday.hours.from = hours.wednesday.hours.from.HH + hours.wednesday.hours.from.mm
+    state.store.working_hours.thursday.hours.to = hours.thursday.hours.to.HH + hours.thursday.hours.to.mm
+    state.store.working_hours.thursday.hours.from = hours.thursday.hours.from.HH + hours.thursday.hours.from.mm
+    state.store.working_hours.friday.hours.to = hours.friday.hours.to.HH + hours.friday.hours.to.mm
+    state.store.working_hours.friday.hours.from = hours.friday.hours.from.HH + hours.friday.hours.from.mm
+    state.store.working_hours.saturday.hours.to = hours.saturday.hours.to.HH + hours.saturday.hours.to.mm
+    state.store.working_hours.saturday.from = hours.saturday.hours.from.HH + hours.saturday.hours.from.mm
+    state.store.working_hours.saturday.hours.to = hours.saturday.hours.to.HH + hours.saturday.hours.to.mm
+    state.store.working_hours.saturday.hours.from = hours.saturday.hours.from.HH + hours.saturday.hours.from.mm
   }
 }
 
