@@ -2,9 +2,8 @@
 <template>
   <div>
     <div class="row sm-gutter">
-
-      <!--<q-input v-model="password" float-label="Minimum 5 characters password" inverted color="amber" type="password"  />-->
       <div class="col-12">
+        <h5 class="text-tertiary text-bold">Enter Store Information</h5>
         <q-field icon="business">
           <q-input v-model="name" type="text" float-label="Enter Business Name" @input="$v.StepTwoForm.businessname.$touch()"
                    :value = "name"
@@ -27,7 +26,7 @@
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <q-field icon="phone" >
-          <q-input v-model="phoneNumber" type="tel" float-label="Enter Business Phone #"
+          <q-input v-model="phoneNumber" type="number" float-label="Enter Business Phone #"
                    clearable
                    :after="[{icon: 'done', condition: phoneNumber.length >= 10, handler () {}}]"/>
         </q-field>
@@ -80,9 +79,8 @@
           <q-toggle v-model="StepTwoForm.delivery.service_offered"></q-toggle>
         </div>
         </q-field>
-
-    </div><br>
-
+    </div>
+    <br>
     <div class="row">
       <q-field
           helper="Touch to select # of pickup item"
@@ -101,7 +99,6 @@
         />
       </q-field>
     </div>
-
     <div class="row ">
       <q-field
 
@@ -123,60 +120,12 @@
         />
       </q-field>
     </div>
-
-    <!--<div class="list bg-inverted-light" >-->
-      <!--<div class="item multiple-lines" >-->
-        <!--<i class="item-primary text-secondary">business</i>-->
-        <!--<div class="item-content">-->
-          <!--<label class ="text-secondary text-bold">Delivery Details</label>-->
-          <!--<div class="item-content">-->
-            <!--<label class ="text-primary">Delivery May Contain Up To: </label>-->
-            <!--<span class="label bg-secondary text-white">{{StepTwoForm.delivery.items}} items</span>-->
-            <!--<q-range v-model="StepTwoForm.delivery.items" :min="1" :max="50"></q-range>-->
-          <!--</div>-->
-          <!--<div class="item-content">-->
-            <!--<label class ="text-primary">Minimum Time for Delivery: </label>-->
-            <!--<span class="label bg-secondary text-white">{{StepTwoForm.delivery.minimum_time_to_delivery}} minutes</span>-->
-          <!--</div>-->
-          <!--<div class="item-content">-->
-           <!--<label class ="text-primary">Delivery Fee</label>-->
-            <!--<input-->
-              <!--type="number"-->
-              <!--v-model ="StepTwoForm.delivery.delivery_fee"-->
-              <!--required class="full-width"-->
-              <!--placeholder="Enter Delivery Fee"-->
-            <!--&gt;-->
-          <!--</div>-->
-          <!--<div class="item-content">-->
-           <!--<label class ="text-primary">Delivery Minimum</label>-->
-            <!--<input-->
-              <!--type="number"-->
-              <!--prefix="$"-->
-              <!--v-model ="StepTwoForm.delivery.delivery_minimum"-->
-              <!--required class="full-width"-->
-              <!--placeholder="Enter Delivery Minimum"-->
-            <!--&gt;-->
-          <!--</div>-->
-          <!--<div class="item-content">-->
-           <!--<label class ="text-primary">Delivery Distance Within: (Miles)</label>-->
-            <!--<input-->
-              <!--type="number"-->
-              <!--v-model ="StepTwoForm.delivery.delivery_distance"-->
-              <!--required class="full-width"-->
-              <!--placeholder="Enter Delivery Distance"-->
-            <!--&gt;-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
   </div>
 </template>
-
 
 <script>
   import {required, minLength} from 'vuelidate/lib/validators'
   import Cleave from 'vue-cleave'
-//  import VueTimepicker from 'vue2-timepicker'
   import VueGoogleAutocomplete from 'vue-google-autocomplete'
   import {
     QBtn,
@@ -328,7 +277,7 @@
       phoneNumber: {
         get () { return this.$store.state.storeInfo.store.phone },
         set (value) {
-          this.$store.commit('update_store', {phone: value.trim()})
+          this.$store.commit('update_store', {phone: value})
           this.StepTwoForm.phone = value
         }
       },
@@ -358,8 +307,8 @@
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-border-bottom: 0.5px solid;
-border-color: #CBCBCB;
+    border-bottom: 0.5px solid;
+    border-color: #CBCBCB;
   }
   .time-picker {
     font-family: Roboto !important;
@@ -369,12 +318,12 @@ border-color: #CBCBCB;
     height: 100px !important;
     position: relative;
     border: 2px dashed #CBCBCB;
-  &.hovered {
-     border: 2px dashed #2E94C4;
-  .dropzone-title {
-    color: #1975A0;
-  }
-  }
+    &.hovered {
+       border: 2px dashed #2E94C4;
+      .dropzone-title {
+        color: #1975A0;
+      }
+    }
   }
 
   .dropzone-area input {
@@ -395,11 +344,11 @@ border-color: #CBCBCB;
     text-align: center;
     transform: translate(0, -50%);
     width: 100%;
-  span {
-    display: block;
-    font-family: Arial, Helvetica;
-    line-height: 1.9;
-  }
+    span {
+      display: block;
+      font-family: Arial, Helvetica;
+      line-height: 1.9;
+    }
   }
 
   .dropzone-title {
@@ -424,19 +373,17 @@ border-color: #CBCBCB;
   .dropzone-preview {
     width: 80% !important;
     position: relative;
-  &:hover .dropzone-button {
-     display: block;
-   }
-  img {
-    display: block;
-    height: auto;
-    max-width: 100%;
-  }
+    &:hover .dropzone-button {
+       display: block;
+     }
+    img {
+      display: block;
+      height: auto;
+      max-width: 100%;
+    }
   }
 
   div.timeline-content{
     margin-left: 0px;
   }
-
-
 </style>

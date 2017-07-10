@@ -7,8 +7,8 @@ const actions = {
   addToCart ({commit}, product) {
     commit('add_to_cart', product.id)
   },
-  getAllProducts ({commit}) {
-    shop.getProducts(products => {
+  getAllProducts ({commit}, id) {
+    shop.getProducts(id, products => {
       commit('recieve_products', products)
     })
   }

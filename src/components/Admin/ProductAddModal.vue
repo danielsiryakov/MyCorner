@@ -19,52 +19,21 @@
                  :value = "new_product.title" clearable/>
       </q-field>
       <q-field v-if="create_product_modal_view">
-        <q-input v-model="new_product.dislplay_price" type="number" prefix="$" float-label="Product Price"
-                 :value = "new_product.dislplay_price" clearable/>
+        <q-input v-model="new_product.price_cents" type="number" prefix="$" float-label="Product Price"
+                 :value = "new_product.price_cents" clearable/>
       </q-field>
       <q-field v-if="create_product_modal_view">
-        <q-input v-model="new_product.short_description" type="text" float-label="Product Description"
-                 :value = "new_product.short_description" clearable/>
+        <q-input v-model="new_product.description" type="text" float-label="Product Description"
+                 :value = "new_product.description" clearable/>
       </q-field>
-      <div v-if="new_product.images.length>0">
-        <img :src="new_product.images" alt="" height="200px" width="200px">
+      <div v-if="new_product.image">
+        <img :src="new_product.image" alt="" height="200px" width="200px">
       </div>
-      <!--&lt;!&ndash;<div class="list full-width" >&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="item two-lines">&ndash;&gt;-->
-          <!--&lt;!&ndash;<div class="item-content">&ndash;&gt;-->
-            <!--&lt;!&ndash;<label class="text-primary">Product Name</label>&ndash;&gt;-->
-            <!--&lt;!&ndash;<i v-show="!new_product.title" class="text-red">*</i>&ndash;&gt;-->
-            <!--&lt;!&ndash;<i v-show="new_product.title" class="text-green">check</i>&ndash;&gt;-->
-            <!--&lt;!&ndash;<q-input v-model="new_product.title" type="text" float-label="Enter Business Name"&ndash;&gt;-->
-                     <!--&lt;!&ndash;:value = "name" clearable/>&ndash;&gt;-->
-            <!--&lt;!&ndash;<input placeholder="Product Name" v-model="new_product.title" class="full-width">&ndash;&gt;-->
-          <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="item two-lines">&ndash;&gt;-->
-          <!--&lt;!&ndash;<div class="item-content">&ndash;&gt;-->
-            <!--&lt;!&ndash;<label class="text-primary">Product Name</label>&ndash;&gt;-->
-            <!--&lt;!&ndash;<span v-show="!new_product.dislplay_price" class="text-red">$</span>&ndash;&gt;-->
-            <!--&lt;!&ndash;<span v-show="new_product.dislplay_price" class="text-green">$</span>&ndash;&gt;-->
-            <!--&lt;!&ndash;<input placeholder="$xx.xx"&ndash;&gt;-->
-               <!--&lt;!&ndash;type="number" min="0.01" step="0.01"&ndash;&gt;-->
-               <!--&lt;!&ndash;v-model="new_product.dislplay_price"&ndash;&gt;-->
-               <!--&lt;!&ndash;class="full-width">&ndash;&gt;-->
-          <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--</div>-->
-        <!--<div class="item two-lines">-->
-          <!--<div class="item-content">-->
-            <!--<label class="text-primary">Item Description</label>-->
-            <!--<i v-show="!new_product.short_description" class="text-red">*</i>-->
-            <!--<i v-show="new_product.short_description" class="text-green">check</i>-->
-            <!--<textarea class="full-width" v-model="new_product.short_description" placeholder="Short Description"></textarea>-->
-          <!--</div>-->
-        <!--</div>-->
-        <br>
-        <div class="item">
-          <div class="item-content">
+      <br>
+      <div class="item">
+        <div class="item-content">
           <q-btn color="primary" @click="add_product()">Add Product</q-btn>
           <q-btn outline class="negative float-right" @click="reset_temp_product()">Cancel</q-btn>
-          </div>
         </div>
         <br>
       </div>
@@ -77,11 +46,13 @@
             <q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>
             <img :src="product.image" alt="" width="100px" height="100px">
             {{product.title}}<br>
-            $ {{product.dislplay_price}}<br>
-            {{product.short_description}}
+            $ {{product.price_cents}}<br>
+            {{product.description}}
             <q-icon class="text-negative" @click="removeProduct(p_index)" name="delete"/>
           </q-item>
       </div>
+      <br>
+    </div>
   </div>
 </template>
 <script>
@@ -125,14 +96,17 @@
       reset_temp_product: function () {
         this.new_product = {
           title: '',
-          images: '', // leaving at top level for now (which means variants cant have imgs)
+          image: '', // leaving at top level for now (which means variants cant have imgs)
           category: '', // ? just one or list of cats it falls in (tempted to say list)
           checked: false,
+          asset_id: '',
           add_to_category: false,
           long_description: '',
           short_description: '',
           asset_id: '',
           dislplay_price: '' // different for variants but top level for product list
+          description: '',
+          price_cents: '' // different for variants but top level for product list
         }
         this.create_product_modal_view = false
       },
@@ -140,7 +114,12 @@
         this.productAddedToast()
         this.create_product_modal_view = false
         // ajax call to verify and queue storing
-        this.current_category.products.push(this.new_product)
+        this.current_category.products.push({
+          image: this.new_product.image,
+          title: this.new_product.title,
+          asset_id: this.new_product.asset_id,
+          price_cents: this.new_product.price_cents * 100
+        })
         // reset product template
         this.new_product = {
           title: '',
@@ -150,8 +129,10 @@
           checked: false,
           long_description: '',
           short_description: '',
-          asset_id: '',
           dislplay_price: '' // different for variants but top level for product list
+          asset_id: '',
+          description: '',
+          price_cents: '' // different for variants but top level for product list
         }
       },
       removeProduct: function (pindex) {
@@ -160,6 +141,7 @@
     },
     data () {
       return {
+        terms: '',
         newProduct: false,
         checked: false,
         create_product_modal_view: false,
@@ -167,14 +149,15 @@
         asset_id: '',
         new_product: {
           title: '',
-          images: [], // leaving at top level for now (which means variants cant have imgs)
+          image: '', // leaving at top level for now (which means variants cant have imgs)
           category: '', // ? just one or list of cats it falls in (tempted to say list)
           keywords: [],
+          asset_id: '',
           checked: false,
           add_to_category: false,
           long_description: '',
-          short_description: '',
-          dislplay_price: '' // different for variants but top level for product list
+          description: '',
+          price_cents: '' // different for variants but top level for product list
         }
       }
     }

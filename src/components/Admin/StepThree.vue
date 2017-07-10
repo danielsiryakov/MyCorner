@@ -47,7 +47,7 @@
       <q-modal ref="basicModal" v-if="categories.length > 0" :content-css="{padding: '20px', minWidth: '50vw'}">
         <modal :current_category="categories[current_category]"></modal>
         <br><br>
-        <q-btn color="primary" @click="$refs.basicModal.close()">Close</q-btn>
+        <q-btn color="primary" @click="$refs.basicModal.close(); updateCategory()">Close</q-btn>
       </q-modal>
     </div>
   </div>
@@ -60,7 +60,7 @@ import modal from './ProductAddModal.vue'
 export default {
   data () {
     return {
-      categories: [],
+//      categories: [],
       current_category: 0,
       step: 1,
       active: 1,
@@ -87,21 +87,27 @@ export default {
       // will be true for input rendering until done editing
       this.categories.push({
         name: this.new_category_name,
-        edit: false,
-        new_c_name: this.new_category_name,
-        showNewPostModal: false,
         products: []
       })
-      this.$store.commit('update_store', {category_tree: this.categories})
+      this.$store.commit('update_store', {categories: this.categories})
       this.new_category_name = ''
     },
     prepCategoryUpdateState: function (cindex) {
       this.categories[cindex].edit = true
     },
     updateCategory: function (cindex) {
-      this.categories[cindex].name = this.categories[cindex].new_c_name
-      this.categories[cindex].edit = false
-      this.$store.commit('update_store', {category_tree: this.categories})
+//      this.categories[cindex].name = this.categories[cindex].new_category_name
+      this.$store.commit('update_store', {categories: this.categories})
+    }
+  },
+  computed: {
+    categories: {
+      get () {
+        return this.$store.state.storeInfo.store.categories
+      },
+      set (value) {
+        this.$store.commit('update_store', {categories: value})
+      }
     }
   }
 }

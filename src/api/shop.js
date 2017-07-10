@@ -2,7 +2,8 @@ const API_URL = 'http://mycorner.store:8080/api/'
 // const API_URL = 'http://24.198.140.214:8001/api/'
 const SEARCH = API_URL + 'store/search'
 const RESEND = API_URL + 'user/confirmation/resend'
-const API2_URL = 'http://pod.opendatasoft.com/api/records/1.0/search/?dataset=pod_gtin&q=hot%20cheetos'
+const PRODUCTS = API_URL + 'store/categories/retrieve/'
+// const API2_URL = 'http://pod.opendatasoft.com/api/records/1.0/search/?dataset=pod_gtin&q=hot%20cheetos'
 import axios from 'axios'
 // const LOGIN_URL = API_URL + 'user/login'
 const USER_RETRIEVE = API_URL + 'user/retrieve'
@@ -15,19 +16,19 @@ axios.defaults.headers.common['userID'] = Cookies.get('userID')
 // const USER_RETRIEVE = API_URL + 'user/retrieve'
 
 export default {
-  getProducts (cb) {
-    axios.get(API2_URL).then(response => {
-      cb(response.data.records)
-      console.log(response.data.records)
-    }).catch(function (error) {
+  getProducts (id, cb) {
+    axios.get(PRODUCTS + id).then(response => {
+      cb(response.data)
+      console.log(response.data)
+    }).catch(error => {
       console.log(error)
     })
   },
   getStores (cb) {
     axios.get(SEARCH, {
       params: {
-        lon: -73.950524,
-        lat: 40.58639,
+        lon: -71.0597700,
+        lat: 42.3584300,
         time: 900
       }
     }).then(response => {
