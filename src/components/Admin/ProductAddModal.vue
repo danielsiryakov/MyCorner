@@ -28,30 +28,29 @@
       </q-field>
       <div v-if="new_product.image">
         <img :src="new_product.image" alt="" height="200px" width="200px">
+        <br>
       </div>
-      <br>
-      <div class="item">
+      <div v-if="new_product.image" class="item">
         <div class="item-content">
           <q-btn color="primary" @click="add_product()">Add Product</q-btn>
           <q-btn outline class="negative float-right" @click="reset_temp_product()">Cancel</q-btn>
         </div>
-        <br>
-      </div>
-        <!--Category products-->
-      <h5 class="text-dark text-bold">{{current_category.name}} Products</h5>
-      <div v-if="current_category.products.length==0">No products added :/ Please add some products!</div>
-      <div v-if="!current_category.products.length==0">Edit, remove, and finalize category products.</div>
-      <div v-for="(product, p_index) in current_category.products" class="list highlight">
-          <q-item>
-            <q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>
-            <img :src="product.image" alt="" width="100px" height="100px">
-            {{product.title}}<br>
-            $ {{product.price_cents}}<br>
-            {{product.description}}
-            <q-icon class="text-negative" @click="removeProduct(p_index)" name="delete"/>
-          </q-item>
       </div>
       <br>
+    </div>
+      <!--Category products-->
+    <h5 class="text-dark text-bold">{{current_category.name}} Products</h5>
+    <div v-if="current_category.products.length==0">No products added :/ Please add some products!</div>
+    <div v-if="!current_category.products.length==0">Edit, remove, and finalize category products.</div>
+    <div v-for="(product, p_index) in current_category.products" class="list highlight">
+      <q-item class="group">
+        <!--<q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>-->
+        <img :src="product.image" alt="" width="100px" height="100px">
+        {{product.title}}<br>
+        $ {{product.price_cents}}<br>
+        {{product.description}}
+        <q-icon class="text-negative" @click="removeProduct(p_index)" name="delete"/>
+      </q-item>
     </div>
   </div>
 </template>
@@ -103,8 +102,7 @@
           add_to_category: false,
           long_description: '',
           short_description: '',
-          asset_id: '',
-          dislplay_price: '' // different for variants but top level for product list
+          dislplay_price: '', // different for variants but top level for product list
           description: '',
           price_cents: '' // different for variants but top level for product list
         }
@@ -129,7 +127,7 @@
           checked: false,
           long_description: '',
           short_description: '',
-          dislplay_price: '' // different for variants but top level for product list
+          dislplay_price: '', // different for variants but top level for product list
           asset_id: '',
           description: '',
           price_cents: '' // different for variants but top level for product list
