@@ -5,33 +5,32 @@
     :left-breakpoint="layoutStore.leftBreakpoint"
     :right-breakpoint="layoutStore.rightBreakpoint"
     :reveal="true"
+    class="bg-light"
   >
-    <q-toolbar color="tertiary" slot="header">
+    <q-toolbar color="tertiary" class="text-white" slot="header">
       <q-btn flat @click="$refs.layout.toggleLeft()">
-        <q-icon name="menu" color="white" />
+        <q-icon name="menu"/>
       </q-btn>
       <q-toolbar-title>
         <router-link to="/"><img src="../assets/fulllogo.png" id="logo"></router-link>
         <span slot="subtitle">Empowering Your Neighborhood</span>
       </q-toolbar-title>
       <q-btn flat @click="$refs.layout.toggleRight()">
-        <q-icon name="shopping_cart" color="white" />
+        <q-icon name="shopping_cart"/>
+        <q-chip v-if="cartCount!=0" small floating color="amber-9">{{cartCount}}</q-chip>
       </q-btn>
     </q-toolbar>
 
-    <q-toolbar v-if="$store.state.route.path=='/store_search'" slot="header">
-        <q-btn flat color="tertiary" class="text-bold" icon="location_on">location</q-btn>
-        <q-search :debounce="0" inverted color="primary" class="" v-model="searchValue" @enter="searchForStores"></q-search>
-    </q-toolbar>
     <q-toolbar v-if="$store.state.route.path!='/store_search'" slot="header">
-      <q-search icon="location_on" :debounce="0" inverted color="primary" v-model="searchValue" @enter="searchForStores"></q-search>
+      <q-search icon="location_on" :debounce="0" inverted color="primary light" v-model="searchValue" @enter="searchForStores"></q-search>
     </q-toolbar>
 
-    <q-tabs class ="" inverted color="tertiary" slot="navigation">
-      <q-route-tab slot="title" icon="home" to="/"/>
-      <q-route-tab slot="title" icon="search" to="/store_search"/>
-      <q-route-tab slot="title" icon="store" to="/store/:id"/>
-      <q-route-tab slot="title" icon="person" to="/user/:id"/>
+    <q-tabs inverted color="tertiary" slot="navigation">
+      <q-route-tab hide="label" label="Home" slot="title" name="home" icon="home" to="/"/>
+      <q-route-tab hide="label" label="Search Stores" slot="title" name="store_search" icon="search" to="/store_search"/>
+      <!--<q-route-tab slot="title" name="store" icon="store" :to="{name: 'store', params: {id: ''}}"/>-->
+      <q-route-tab hide="label" label="Profile" slot="title" name="user" icon="person" to="/user/:id"/>
+      <q-route-tab hide="label" label="Cart" slot="title" name="cart" icon="shopping_cart" to="/cart" :count="cartCount"/>
     </q-tabs>
 
     <q-scroll-area slot="left" style="width: 100%; height: 100%">
@@ -50,10 +49,11 @@
     </q-scroll-area>
 
     <q-scroll-area slot="right" class="bg-light" style="width: 100%; height: 100%">
-      <cartpage class="layout-padding"></cartpage>
+      <cartpage class=""></cartpage>
     </q-scroll-area>
 
-    <router-view class="layout-view"></router-view>
+    <router-view class="layout-view" :key="1"></router-view>
+    <!--</q-transition>-->
 
   </q-layout>
 </template>
@@ -90,16 +90,24 @@
     },
     computed: {
       ...mapGetters([
-        'allProducts'
+        'cartCount'
       ]),
       searchValue: {
-        get () { return this.$store.state.storeSearch.searchValue },
-        set (value) { this.$store.commit('newSearch', value) }
+        get () {
+          return this.$store.state.storeSearch.searchValue
+        },
+        set (value) {
+          this.$store.commit('newSearch', value)
+        }
+      },
+      currentStore: {
+        get () {
+          return this.$store.state.storeSearch.currentStore
+        }
       }
     },
     methods: {
       ...mapActions([
-        'getAllProducts',
         'logout',
         'searchForStores'
       ]),
@@ -133,7 +141,8 @@
     },
     data () {
       return {
-        formTab: 'login',
+        detailsPath: '/store/' + this.$route.params.id,
+        selectedTab: 'login',
         isSearchPage: false,
         layoutStore,
         latitude: '',

@@ -1,15 +1,10 @@
 import axios from 'axios'
 import router from '../../router'
-// import Router from '../router'
+import shop from '../../api/shop'
 import { Cookies, LocalStorage } from 'quasar'
-
-const API_URL = 'http://mycorner.store:8080/api/'
-const LOGIN_URL = API_URL + 'user/login'
-const SIGNUP_URL = API_URL + 'user/create'
-const USER_RETRIEVE = API_URL + 'user/retrieve'
-
-// var authtokenValue = Cookies.get('authtoken')
-// var uidValue = Cookies.get('userID')
+const LOGIN_URL = shop.API_URL + 'user/login'
+const SIGNUP_URL = shop.API_URL + 'user/create'
+const USER_RETRIEVE = shop.API_URL + 'user/retrieve'
 
 const state = {
   authenticated: false
@@ -36,7 +31,6 @@ const actions = {
       LocalStorage.set('authtoken', response.data.login.authtoken)
       commit('authenticationTrue')
       router.push('/')
-      // Router.push('/')
     }).catch(error => {
       if (error) {
         errorCb(error)

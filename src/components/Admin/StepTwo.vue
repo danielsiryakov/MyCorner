@@ -45,16 +45,16 @@
                  @dragleave="this.hovering=false"
                  :class="{'hovered': this.hovering}">
               <div class="dropzone-text">
-                  <span class="dropzone-title">
-                      Drop an image of your store here or click to select
-                  </span>
+                <span class="dropzone-title">
+                  Drop an image of your store here or click to select
+                </span>
               </div>
               <input type="file" @change="onFileChange">
             </div>
           </div>
           <div class="dropzone-preview" v-if="storeImage">
             <img :src="storeImage">
-            <q-btn @click="removeImage" flar color="tertiary">Remove</q-btn>
+            <q-btn @click="removeImage" flat color="tertiary">Remove</q-btn>
           </div>
         </q-field>
       </div>
@@ -78,7 +78,7 @@
           Delivery Offered?
           <q-toggle v-model="StepTwoForm.delivery.service_offered"></q-toggle>
         </div>
-        </q-field>
+      </q-field>
     </div>
     <br>
     <div class="row">

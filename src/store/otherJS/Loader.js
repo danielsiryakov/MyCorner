@@ -5,10 +5,10 @@ const Loader = {
       {
         delay: 300,
         message: 'Loading...',
-        messageColor: '#C86F51',
+        messageColor: '#169c68',
         spinner: 'tail',
         spinnerSize: 60, // in pixels
-        spinnerColor: '#C86F51'
+        spinnerColor: '#169c68'
       }
     )
   },

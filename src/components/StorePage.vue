@@ -1,45 +1,59 @@
 <template>
-  <q-layout>
+  <q-layout
+    ref="layoutTwo"
+    :view="layoutStore.view"
+    :right-breakpoint="layoutStore.rightBreakpoint"
+    :reveal="true">
     <q-toolbar color="tertiary" class="text-white">
       <q-btn v-go-back="'/store_search'" icon="arrow_back"/>
       <q-toolbar-title>{{ store.name }}</q-toolbar-title>
+      <q-btn flat @click="$refs.layoutTwo.toggleRight()">
+        <q-icon name="shopping_cart"/>
+        <q-chip v-if="cartCount!=0" small floating color="amber-9">{{cartCount}}</q-chip>
+      </q-btn>
     </q-toolbar>
+    <q-scroll-area slot="right" class="bg-light" style="width: 100%; height: 100%">
+      <cart-page class=""></cart-page>
+    </q-scroll-area>
 
 		<div class="layout-view bg-light">
       <div class="layout-padding">
         <div class="row">
-          <div class="col-lg-8 offset-lg-2">
-            <div class="col-12">
-              <q-card class="layout-padding bg-white">
-                <h4 slot="storeName"><strong>{{ store.name }}</strong></h4>
-                <p class="float-left">
-                  {{ store.address2 }} <br>
-                  {{ store.address1 }} <br>
-                </p>
+          <div class="">
+            <q-card class="bigger">
+              <q-card-media overlay-position="bottom">
+                <img :src="store.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">
+                <q-card-title slot="overlay">
+                  <h4 class="text-bold">{{ store.name }}</h4>
+                  <q-rating slot="subtitle" v-model="stars" :max="5" />
+                </q-card-title>
+              </q-card-media>
+            </q-card>
+          </div>
+          <br>
+          <div class="row">
+            <div v-for="(cat, index) in allProducts" :key="index">
+              <q-card inline flat style="width: 35vh; height: 35vh" class="col-lg-3 col-md-3 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
+                <q-card-media class="center">
+                  <img :src="p.image" style="width: 20vh; height: 20vh;">
+                </q-card-media>
+                <q-card-title>
+                  {{p.title}}
+                </q-card-title>
               </q-card>
             </div>
-            <br>
-            <div class="list card bg-light text-bold" v-for="category in allProducts">
-              <!--<q-collapsible :label="category.name" class="primary">-->
-              <div class ="row wrap">
-                <q-card inline flat class ="item-card" v-for="p in category.products">
-                  <div class="product text-tertiary" @click="open(p)">
-                    <img :src="p.image" style="width: 150px; height: 150px">
-                    {{p.title}}
-                  </div>
-                </q-card>
-              </div>
-              <!--</q-collapsible>-->
-            </div>
+                <!--</q-collapsible>-->
           </div>
         </div>
       </div>
 
-      <!--<q-modal ref="productModal" class="minimized" :content-css="{padding: '40px'}">-->
-        <!--<h4><i class="text-negative absolute-top-right" @click="$refs.productModal.close()">close</i></h4>-->
-        <!--&lt;!&ndash;<i class="text-negative" @click="$refs.productModal.close()">close</i>&ndash;&gt;-->
-        <!--<product-page :product="ProductObject"></product-page>-->
-      <!--</q-modal>-->
+      <q-modal ref="productModal" class="minimized" :content-css="{padding: '20px', maxWidth: '40vw'}">
+        <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.productModal.close()"/></h4>
+        <!--<i class="text-negative" @click="$refs.productModal.close()">close</i>-->
+        <product-page :product="ProductObject" v-on:added="close"></product-page>
+      </q-modal>
+
+
       <!--<modal name="modal">-->
         <!--<h2 class =categoryTitle>{{ProductObject.ProductName}}</h2>-->
         <!--&lt;!&ndash;{{ProductObject.ProductName}}&ndash;&gt;-->
@@ -51,34 +65,46 @@
 <script>
 //  const CATPRODS = 'http://mycorner.store:8080/api/store/categories/retrieve/'
   import ProductPage from './ProductPage.vue'
-//  import axios from 'axios'
+  import layoutStore from '../store/otherJS/layout-store'
+  import CartPage from './CartPage.vue'
+  import {
+    Loading
+  } from 'quasar'
   import { mapGetters, mapActions } from 'vuex'
   export default {
     props: ['id'],
     data () {
       return {
         ProductObject: {},
-        CatProducts: []
+        CatProducts: [],
+        stars: 4,
+        layoutStore
       }
     },
     components: {
-      ProductPage
+      ProductPage,
+      CartPage
     },
     computed: {
       ...mapGetters([
         'allStores',
-        'allProducts'
+        'allProducts',
+        'cartCount'
       ]),
       store () {
-        return this.allStores.find((s) => s._id === this.id) || {}
+        return this.$store.state.storeSearch.currentStore
+//        return this.allStores.find((s) => s._id === this.id) || {}
       }
     },
-    mounted () {
+    created () {
+      Loading.show()
+      this.getStore(this.id)
       this.getAllProducts(this.id)
+      Loading.hide()
     },
     methods: {
       ...mapActions([
-        'getAllStores',
+        'getStore',
         'getAllProducts'
       ]),
 
@@ -89,6 +115,9 @@
       open: function (Product) {
         this.ProductObject = Product
         this.$refs.productModal.open()
+      },
+      close: function () {
+        this.$refs.productModal.close()
       }
 //      getProducts: function () {
 //        axios.get(CATPRODS + this.id).then(response => {
@@ -175,19 +204,19 @@
      /*}*/
    /*}*/
   .item-card{
-    display: inline-block;
-    position: relative;
-    width: 206px;
-    height: 336px;
-    vertical-align: top;
-    background: #fff;
-    border: 1px solid #e5edec;
-    text-align: left;
-    color: #5a5a5a;
-    font-weight: 400;
-    margin: 0 -1px -1px 0;
-    cursor: pointer;
-    white-space: initial;
+    /*display: inline-block;*/
+    /*position: relative;*/
+    /*width: 206px;*/
+    /*height: 336px;*/
+    /*vertical-align: top;*/
+    /*background: #fff;*/
+    /*border: 1px solid #e5edec;*/
+    /*text-align: left;*/
+    /*color: #5a5a5a;*/
+    /*font-weight: 400;*/
+    /*margin: 0 -1px -1px 0;*/
+    /*cursor: pointer;*/
+    /*white-space: initial;*/
   }
   .product {
     height: 250px;

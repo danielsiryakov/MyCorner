@@ -1,9 +1,10 @@
+import shop from '../../api/shop'
 import axios from 'axios'
 import router from '../../router'
-import { Cookies } from 'quasar'
-const API_URL = 'http://mycorner.store:8080/api/'
-const CREATE_STORE = API_URL + 'store/create'
-
+import { Cookies, Loading } from 'quasar'
+// const API_URL = 'http://mycorner.store:8080/api/'
+const CREATE_STORE = shop.API_URL + 'store/create'
+const IMAGEUPLOAD = shop.API_URL + 'assets/image/upload'
 const state = {
   user: {
     user_id: '',
@@ -99,7 +100,7 @@ const state = {
     long_description: 'some long description with lots of words describing the store. more words',
     category_names: ['Grocery', 'Corner Store'],
     categories: [{
-      name: 'c_123',
+      name: '',
       products: [{
         title: 'p1',
         description: 'asdadf',
@@ -141,112 +142,28 @@ const state = {
       ccv: null
     }
   },
-  category_tree: [],
-
-  test: {
-    platform_categories: ['Grocery', 'Corner Store'],
-    working_hours: {
-      thursday: {
-        hours: {
-          to: 1200,
-          from: 900
-        },
-        open: true
-      },
-      monday: {
-        hours: {
-          to: 1200,
-          from: 900
-        },
-        open: true
-      },
-      tuesday: {
-        hours: {
-          to: 1200,
-          from: 900
-        },
-        open: true
-      },
-      friday: {
-        hours: {
-          to: 1200,
-          from: 900
-        },
-        open: true
-      },
-      wednesday: {
-        hours: {
-          to: 1200,
-          from: 900
-        },
-        open: true
-      },
-      sunday: {
-        hours: {
-          to: 1200,
-          from: 900
-        },
-        open: true
-      },
-      saturday: {
-        hours: {
-          to: 1200,
-          from: 900
-        },
-        open: true
-      }
-    },
-    name: 'test test test98',
-    image: '',
-    delivery: {
-      delivery_distance: 2,
-      delivery_fee: 500,
-      delivery_minimum: 500,
-      minimum_time_to_delivery: 45,
-      maximum_time_to_delivery: 100,
-      service_offered: true
-    },
-    phone: '(212) - 123 - 4567',
-    pickup: {
-      offered: true,
-      maximum_time_to_pickup: 90,
-      minimum_time_to_pickup: 30,
-      pickup_items: {
-        max: 100,
-        min: 1
-      }
-    },
-    tax_rate: 4.5,
-    address: {
-      street_number: '',
-      country: 'USA',
-      route: '',
-      postal_code: '11235',
-      longitude: -73.9505241,
-      latitude: 40.6805029,
-      administrative_area_level_1: 'NY'
-    },
-    short_description: 'some short description with words',
-    long_description: 'some long description with lots of words describing the store. more words',
-    category_names: ['Breakfast', 'Lunch', 'Dinner'],
-    category_tree: [{
-      name: 'c_123',
-      products: [{
-        title: 'p1',
-        description: 'asdadf',
-        display_price: '$2.00',
-        asset_id: '59597b710f85f6d380e8987c',
-        image: 'https://s3-us-west-2.amazonaws.com/mcs-images/production/images/products/27cb235b06f04844a91f30b9c932c49d.jpg'
-      }]
-    }]
-  }
+  category_tree: []
 }
 
 const actions = {
   onFileChange ({commit}, e) {
     var files = e.target.files || e.dataTransfer.files
     if (!files.length) return
-    commit('createImage', files[0])
+    var reader = new FileReader()
+    reader.onload = (e) => {
+      Loading.show()
+      axios.post(IMAGEUPLOAD, JSON.stringify({
+        image: e.target.result,
+        display_title: 'image'
+      })
+      ).then(response => {
+        commit('createImage', response.data.link)
+        Loading.hide()
+      }).catch(error => {
+        console.log(error)
+      })
+    }
+    reader.readAsDataURL(files[0])
   },
   removeImage ({commit}) {
     commit('removeimage')
@@ -283,12 +200,13 @@ const actions = {
 
 const mutations = {
   createImage (state, file) {
+    state.store.image = file
     // var image = new Image()
-    var reader = new FileReader()
-    reader.onload = (e) => {
-      state.store.image = e.target.result
-    }
-    reader.readAsDataURL(file)
+    // var reader = new FileReader()
+    // reader.onload = (e) => {
+    //   state.store.image = e.target.result
+    // }
+    // reader.readAsDataURL(file)
   },
   removeimage (state) {
     state.store.image = ''

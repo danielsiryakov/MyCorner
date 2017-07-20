@@ -27,6 +27,12 @@ const Router = new VueRouter({
         }]
     },
     {
+      path: '/store/:id',
+      name: 'store',
+      component: StorePage,
+      props: true
+    },
+    {
       path: '/cart',
       name: 'cart',
       component: CartPage
@@ -35,12 +41,6 @@ const Router = new VueRouter({
       path: '/product/:id',
       name: 'product',
       component: ProductPage
-    },
-    {
-      path: '/store/:id',
-      name: 'store',
-      component: StorePage,
-      props: true
     },
     {
       path: '/store-sign-up',

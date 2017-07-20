@@ -17,8 +17,8 @@ import Cleave from 'vue-cleave'
 import VueGmaps from 'vue-gmaps'
 import 'quasar-extras/material-icons'
 import 'quasar-extras/animate/flipinX.css'
-import 'quasar-extras/animate/fadeIn.css'
-import 'quasar-extras/animate/fadeOut.css'
+import 'quasar-extras/animate/slideInRight.css'
+import 'quasar-extras/animate/slideOutRight.css'
 Vue.use(Quasar, {
   components: All,
   directives: All

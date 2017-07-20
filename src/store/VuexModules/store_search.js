@@ -2,7 +2,8 @@ import shop from '../../api/shop'
 import router from '../../router'
 const state = {
   all: [],
-  searchValue: ''
+  searchValue: '',
+  currentStore: {}
 }
 
 const actions = {
@@ -11,8 +12,13 @@ const actions = {
       commit('recieve_stores', stores)
     })
   },
-  searchForStores ({ commit }) {
+  searchForStores ({commit}) {
     router.push('/store_search')
+  },
+  getStore ({commit}, id) {
+    shop.storeInfo(id, store => {
+      commit('updateCurrentStore', store)
+    })
   }
 }
 
@@ -20,8 +26,11 @@ const mutations = {
   recieve_stores (state, stores) {
     state.all = stores
   },
-  newSearch (state, value) {
-    state.searchValue = value
+  updateCurrentStore (state, store) {
+    state.currentStore = store
+  },
+  activeStore (state, id) {
+    state.currentStore = id
   }
 }
 

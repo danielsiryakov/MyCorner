@@ -1,14 +1,19 @@
+import axios from 'axios'
 const API_URL = 'http://mycorner.store:8080/api/'
-// const API_URL = 'http://24.198.140.214:8001/api/'
 const SEARCH = API_URL + 'store/search'
 const RESEND = API_URL + 'user/confirmation/resend'
 const PRODUCTS = API_URL + 'store/categories/retrieve/'
-// const API2_URL = 'http://pod.opendatasoft.com/api/records/1.0/search/?dataset=pod_gtin&q=hot%20cheetos'
-import axios from 'axios'
-// const LOGIN_URL = API_URL + 'user/login'
+const UPDATECART = API_URL + 'cart/update/product/quantity'
 const USER_RETRIEVE = API_URL + 'user/retrieve'
-import { Cookies } from 'quasar'
-
+const STOREINFO = API_URL + 'store/info/'
+const ACTIVE_CARTS = API_URL + 'carts/retrieve/active'
+// const IMAGEUPLOAD = API_URL + 'assets/image/upload'
+const RETRIEVECARTS = API_URL + 'carts/retrieve/active'
+// import { Cookies } from 'quasar'
+import {
+  Loading,
+  Cookies
+} from 'quasar'
 axios.defaults.headers.common['authtoken'] = Cookies.get('authtoken')
 axios.defaults.headers.common['userID'] = Cookies.get('userID')
 
@@ -16,8 +21,11 @@ axios.defaults.headers.common['userID'] = Cookies.get('userID')
 // const USER_RETRIEVE = API_URL + 'user/retrieve'
 
 export default {
+  API_URL,
   getProducts (id, cb) {
+    Loading.show()
     axios.get(PRODUCTS + id).then(response => {
+      Loading.hide()
       cb(response.data)
       console.log(response.data)
     }).catch(error => {
@@ -25,25 +33,36 @@ export default {
     })
   },
   getStores (cb) {
+    Loading.show()
     axios.get(SEARCH, {
       params: {
-        lon: -71.0597700,
-        lat: 42.3584300,
+        lon: -71.0589,
+        lat: 42.3601,
         time: 900
       }
     }).then(response => {
+      Loading.hide()
       cb(response.data)
     }).catch(function (error) {
       console.log(error)
     })
   },
+  getActiveCarts (cb) {
+    axios.get(ACTIVE_CARTS).then(response => {
+      cb(response.data)
+    }).catch(error => {
+      console.log(error)
+    })
+  },
   resendPassword (creds) {
+    Loading.show()
     axios.get(RESEND, {
       params: {
         'email': creds.email,
         'password': creds.password
       }
     }).then(response => {
+      Loading.hide()
       console.log(response)
     }).catch(function (error) {
       console.log(error)
@@ -54,6 +73,37 @@ export default {
       cb(response.data)
       console.log(response)
     }).catch(function (error) {
+      console.log(error)
+    })
+  },
+  storeInfo (id, cb) {
+    axios.get(STOREINFO + id).then(response => {
+      cb(response.data)
+      // console.log(response)
+    }).catch(error => {
+      console.log(error)
+    })
+  },
+  updateCart (product, cb, errorCb) {
+    axios.post(UPDATECART, JSON.stringify({
+      store_id: product.store_id,
+      product_id: product.product_id,
+      cart_id: product.cart_id,
+      quantity: product.quantity,
+      is_new_cart: product.is_new_cart,
+      instructions: ''
+    })).then(response => {
+      cb(response)
+    }).catch(function (error) {
+      errorCb(error)
+      console.log(error)
+    })
+  },
+  retrieveCarts (cb) {
+    axios.get(RETRIEVECARTS).then(response => {
+      console.log(response.data)
+      cb(response.data)
+    }).catch(error => {
       console.log(error)
     })
   }

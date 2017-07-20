@@ -1,44 +1,31 @@
 <template>
   <div class="">
     <!--<h4 class="text-bold text-tertiary">{{ product.title }}</h4>-->
-    <h4 class="text-bold text-tertiary">{{ product.fields.gtin_nm }}</h4>
-    <img :src="product.fields.gtin_img" style="width: 150px; height: 150px">
-    <br><br>
-    <div class="row">
-      <h6>{{number}}x &nbsp</h6>
-      <h6 class="text-primary">${{ product.display_price }} &nbsp</h6><h6>= ${{ total }}</h6>
+    <h5 class="text-bold text-tertiary">{{ product.title }}</h5>
+    <br>
+    <div class="row justify-center">
+      <img :src="product.image" style="width: 150px; height: 150px">
+    </div>
+    <div class="row justify-center">
+      <h5 class="text-grey"><small>{{quantity}}x &nbsp</small></h5>
+      <h5 class="text-primary">${{ product.price_cents / 100 }} &nbsp</h5><h5>= ${{ total }}</h5>
     </div>
     <div class="product-details group">
-      <q-numeric
-        v-model="number"
-        :min="0"
-        :max="20"
-        class="full-width text-primary bg-tertiary"
-      ></q-numeric>
-      <br>
-      <div class="row group">
-        <button class="primary full-width" @click="addToCart(product)">Add</button>
+      <div class="row no-wrap group justify-center">
+        <q-btn icon="remove" big outline @click="offset(-1)"></q-btn>
+        <q-input align="center" :min="1" v-model="quantity" type="number"/>
+        <q-btn icon="add" outline @click="offset(1)"/>
       </div>
+      <q-btn color="primary full-width" class="block" @click="addItem">Add</q-btn>
     </div>
   </div>
 </template>
 
-<!--this.new_product = {-->
-<!--title: '',-->
-<!--images: [], // leaving at top level for now (which means variants cant have imgs)-->
-<!--category: '', // ? just one or list of cats it falls in (tempted to say list)-->
-<!--keywords: [],-->
-<!--add_to_category: false,-->
-<!--checked: false,-->
-<!--long_description: '',-->
-<!--short_description: '',-->
-<!--dislplay_price: '' // different for variants but top level for product list-->
-<!--}-->
 <script>
-  import { mapActions, mapGetters } from 'vuex'
+  import { mapActions, mapGetters, mapMutations } from 'vuex'
   export default {
     mounted () {
-      this.getAllProducts()
+//      this.getAllProducts()
     },
     props: ['product'],
     computed: {
@@ -50,24 +37,43 @@
 //        return this.allProducts.find((p) => p.id === id) || {}
 //      },
       total: function () {
-        return (this.number * this.product.display_price)
+        return (this.quantity * this.product.price_cents / 100)
       }
     },
     methods: {
       ...mapActions([
         'getAllProducts',
         'addToCart'
-      ])
+      ]),
+      ...mapMutations([
+        'add_to_cart'
+      ]),
+      offset (num) {
+        this.quantity = this.quantity + num
+      },
+      addItem () {
+        this.addToCart({
+          asset_id: this.product.asset_id,
+          title: this.product.title,
+          image: this.product.image,
+          price_cents: this.product.price_cents,
+          quantity: this.quantity,
+          store_id: this.product.store_id,
+          product_id: this.product.product_id
+        })
+        this.$emit('added')
+        this.quantity = 1
+      }
     },
     data () {
       return {
-        number: 0
+        quantity: 1
       }
     }
   }
 </script>
 
-<style>
+<style scoped>
 .product-item {
   margin: 10px 10px;
   width: 500px;
@@ -84,7 +90,7 @@
   font-size: 26px;
 }
 .product-details {
-  margin-top: 60px;
+  margin-top: 20px;
 }
 .inventory {
   float: left;
@@ -96,7 +102,8 @@
   width: 140px;
   height: 50px;
 }
-.q-numeric input {
-  color: #2ab982;
+.q-if {
+   margin-top: 0px;
+   margin-bottom: 0px;
 }
 </style>

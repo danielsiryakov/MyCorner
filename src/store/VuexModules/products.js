@@ -4,12 +4,11 @@ const state = {
 }
 
 const actions = {
-  addToCart ({commit}, product) {
-    commit('add_to_cart', product.id)
-  },
   getAllProducts ({commit}, id) {
     shop.getProducts(id, products => {
       commit('recieve_products', products)
+      console.log(id)
+      // console.log(products)
     })
   }
 }
@@ -18,8 +17,8 @@ const mutations = {
   recieve_products (state, products) {
     state.all = products
   },
-  add_to_cart (state, productId) {
-    state.all.find(p => p.id === productId).inventory--
+  add_to_cart (state, product, quantity) {
+    // state.all.find(p => p.id === productId).inventory--
   }
 }
 

@@ -1,19 +1,20 @@
 
 <template>
-  <div class="layout-view">
+  <div class="layout-view bg-light">
     <div class="layout-padding">
        <div class="row wrap group lg-gutter">
          <!--<div class="lg-width-1of3"></div>-->
-          <div v-for="s in allStores" class="col-12 md-col-12 bg-col-12 lg-col-4 bg-light">
-            <router-link :to="{name: 'store', params: {id: s._id}}" tag="div" v-bind:style="{ background: 'url(' + s.image + ') !important', backgroundSize: 'cover'}">
-              <div class="card layout-padding" >
-                <h4 class="text-bold text-tertiary">{{ s.name }}</h4>
-                  <p class="float-left">
-                    {{ s.address2 }} <br>
-                    {{ s.address1 }} <br>
-                  </p>
-                  <q-rating v-model="stars" :max="5" class="vertical-middle"></q-rating>
-              </div>
+          <div v-for="s in allStores" class="col-md-12 col-bg-12 col-lg-12 bg-light">
+            <router-link :to="{name: 'store', params: {id: s._id}}" tag="div" @click.native="activeStore(s._id)">
+              <q-card class="bigger">
+                <q-card-media overlay-position="bottom">
+                  <img :src="s.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">
+                  <q-card-title slot="overlay">
+                    <h4 class="text-bold">{{ s.name }}</h4>
+                    <!--<q-rating slot="subtitle" v-model="stars" :max="5" />-->
+                  </q-card-title>
+                </q-card-media>
+              </q-card>
             </router-link>
           </div>
         </div>
@@ -22,20 +23,39 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapGetters, mapActions, mapMutations } from 'vuex'
+  import {
+    Loading,
+    QSpinnerGears
+  } from 'quasar'
+
   export default {
     computed: {
       ...mapGetters([
         'allStores'
       ])
     },
+    components: {
+      QSpinnerGears
+    },
     methods: {
       ...mapActions([
         'getAllStores'
+      ]),
+      ...mapMutations([
+        'activeStore'
       ])
     },
-    mounted () {
+    created () {
+      // fetch the data when the view is created and the data is
+      // already being observed
+      Loading.show()
       this.getAllStores()
+      Loading.hide()
+    },
+    watch: {
+      // call again the method if the route changes
+      '$route': 'getAllStores'
     },
     data () {
       return {

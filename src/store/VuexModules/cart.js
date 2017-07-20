@@ -1,38 +1,64 @@
+import Vue from 'vue'
 import shop from '../../api/shop'
-
 const state = {
-  added: [],
+  carts: {
+  },
   lastCheckout: null
 }
 
 const actions = {
-  // The first argument is the vuex store, but we're using only the
-  // dispatch function, which applies a mutation to the store,
-  // and the current state of the store
-  checkout ({commit, state}, products) {
-    const savedCartItems = [...state.added]
-    commit('checkout_request')
-    shop.buyProducts(
-      products,
-      () => commit('checkout_successful'),
-      () => commit('checkout_failure', savedCartItems)
-    )
+  addToCart ({commit}, product) {
+    if (!(product.store_id in state.carts)) {
+      Vue.set(product, 'is_new_cart', true)
+      Vue.set(product, 'cart_id', '')
+    }
+    else {
+      Vue.set(product, 'is_new_cart', false)
+      Vue.set(product, 'cart_id', state.carts[product.store_id].cart_id)
+    }
+    shop.updateCart(product, response => {
+      Vue.set(product, 'cart_id', response.data.id)
+      commit('add_to_cart', product)
+      console.log(response)
+    }, error => {
+      console.log(error)
+    })
+  },
+  retriesActiveCarts ({commit}) {
+    shop.retrieveCarts(carts => {
+      console.log('active carts are:')
+      console.log(carts)
+      commit('syncCarts', carts)
+    })
   }
 }
 
 const mutations = {
-  add_to_cart (state, productId) {
-    state.lastCheckout = null
-    const record = state.added.find(p => p.id === productId)
-    if (!record) {
-      state.added.push({
-        id: productId,
-        quantity: 1
+  add_to_cart (state, product) {
+    // const cart = state.carts.find(p => p.cart_id === product.cart_id)
+    if (product.is_new_cart) {
+      Vue.set(state.carts, product.store_id, {
+        products: [product],
+        cart_id: product.cart_id
       })
     }
     else {
-      record.quantity++
+      const record = state.carts[product.store_id].products.find(p => p.asset_id === product.asset_id)
+      if (!record) {
+        state.carts[product.store_id].products.push(product)
+      }
+      else {
+        record.quantity = record.quantity + product.quantity
+      }
     }
+  },
+  syncCarts (state, carts) {
+    Object.keys(carts).forEach(key => {
+      Vue.set(state.carts, carts[key].store_id, {
+        products: carts[key].products,
+        cart_id: carts[key].id
+      })
+    })
   },
   checkout_request (state) {
     // clear cart
@@ -51,20 +77,23 @@ const mutations = {
 
 const getters = {
   cartProducts (state, getters, rootState) {
-    return state.added.map(({ id, quantity }) => {
-      const product = rootState.products.all.find(p => p.id === id)
-      return {
-        title: product.title,
-        price: product.price,
-        id,
-        quantity
-      }
-    })
+    // return state.added.map(({ id, quantityjs  }) => {
+    //   const product = rootState.products.all.find(p => p.id === id)
+    //   return {
+    //     title: product.title,
+    //     price_cents: product.price_cents,
+    //     id,
+    //     quantity
+    //   }
+    // })
+    return state.carts
   },
   cartCount (state) {
     var totalCount = 0
-    state.added.forEach(({ quantity }) => {
-      totalCount += quantity
+    Object.keys(state.carts).forEach(key => {
+      for (var i = 0; i < state.carts[key].products.length; i++) {
+        totalCount += state.carts[key].products[i].quantity
+      }
     })
     return totalCount
   }
