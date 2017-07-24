@@ -1,69 +1,51 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import CartPage from './components/CartPage'
-import IntroPage from './components/IntroPage.vue'
-import HomePage from './components/HomePage'
-import ProductPage from './components/ProductPage'
-import StoresListPage from './components/List_Of_Stores'
-import StorePage from './components/StorePage'
-import ProfilePage from './components/UserProfile/Profile.vue'
-import StoreOnboard from './components/Admin/Store_Onboarding_Page.vue'
+
+function load (component) {
+  return () => System.import(`components/${component}.vue`)
+}
+
+// import CartPage from './components/CartPage'
+// import IntroPage from './components/IntroPage.vue'
+// import HomePage from './components/HomePage'
+// import ProductPage from './components/ProductPage'
+// import StoresListPage from './components/List_Of_Stores'
+// import StorePage from './components/StorePage'
+// import ProfilePage from './components/UserProfile/Profile.vue'
+// import StoreOnboard from './components/Admin/Onboard/Store_Onboarding_Page.vue'
+// import Dashboard from './components/Admin/Dashboard.vue'
 // import { Cookies } from 'quasar'
 import store from './store/index'
 Vue.use(VueRouter)
 
 const Router = new VueRouter({
   routes: [
-    {
-      path: '/',
-      name: 'home',
-      meta: { Auth: true },
-      component: HomePage,
+    {path: '/',
+      component: load('HomePage'),
+      meta: {Auth: true, name: 'home'},
       children: [
-        {
-          path: '/store_search',
-          name: 'store_search',
-          component: StoresListPage
-        }]
+        {path: '/store_search', component: load('List_Of_Stores')},
+        {path: '/cart', component: load('CartPage')},
+        {path: '/user/:id', meta: { Auth: true }, component: load('UserProfile/Profile')}
+      ]
     },
-    {
-      path: '/store/:id',
-      name: 'store',
-      component: StorePage,
-      props: true
-    },
-    {
-      path: '/cart',
-      name: 'cart',
-      component: CartPage
-    },
-    {
-      path: '/product/:id',
-      name: 'product',
-      component: ProductPage
-    },
-    {
-      path: '/store-sign-up',
-      name: 'StoreOnboard',
-      component: StoreOnboard
-    },
-    {
-      path: '/api',
-      name: 'test',
-      component: HomePage
+    {path: '/store/:id', name: 'store', component: load('StorePage'), props: true},
+    {path: '/product/:id', component: load('ProductPage')},
+    {path: '/store-sign-up', component: load('Admin/Onboard/Store_Onboarding_Page')},
+    {path: '/admin',
+      component: load('Admin/Dashboard'),
+      children: [
+        {path: '/admin/store', component: load('Admin/StoreInfo')},
+        {path: '/admin/products', component: load('Admin/ProductView')}
+      ]
     },
     {
       path: '/login',
       name: 'intro',
       meta: { Auth: false },
-      component: IntroPage
+      component: load('IntroPage')
     },
-    {
-      path: '/user/:id',
-      name: 'profile',
-      meta: { Auth: true },
-      component: ProfilePage
-    }]
+    {path: '*', component: load('Error404')}]
 })
 // var jwt = Cookies.get('authtoken')
 //
