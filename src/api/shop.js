@@ -9,6 +9,7 @@ const STOREINFO = API_URL + 'store/info/'
 const ACTIVE_CARTS = API_URL + 'carts/retrieve/active'
 // const IMAGEUPLOAD = API_URL + 'assets/image/upload'
 const RETRIEVECARTS = API_URL + 'carts/retrieve/active'
+const STORE_RETRIEVE_FULL = API_URL + 'store/retrieve/full/'
 // import { Cookies } from 'quasar'
 import {
   Loading,
@@ -106,8 +107,16 @@ export default {
     }).catch(error => {
       console.log(error)
     })
+  },
+  storeInfoFull (id, cb) {
+    axios.get(STORE_RETRIEVE_FULL + id).then(response => {
+      cb(response.data)
+      // console.log(response)
+    }).catch(error => {
+      console.log(error)
+    })
   }
-//  buyProducts (products, cb, errorCb) {
+  //  buyProducts (products, cb, errorCb) {
 //    setTimeout(() => {
 //      // simulate random checkout failure.
 //      (Math.random() > 0.5 || navigator.userAgent.indexOf('PhantomJS') > -1)
