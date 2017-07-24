@@ -93,17 +93,14 @@
         'cartCount'
       ]),
       searchValue: {
-        get () {
-          return this.$store.state.storeSearch.searchValue
-        },
-        set (value) {
-          this.$store.commit('newSearch', value)
-        }
+        get () { return this.$store.state.storeSearch.searchValue },
+        set (value) { this.$store.commit('newSearch', value) }
       },
       currentStore: {
-        get () {
-          return this.$store.state.storeSearch.currentStore
-        }
+        get () { return this.$store.state.storeSearch.currentStore }
+      },
+      userID: {
+        get () { return this.$store.state.storeSearch.currentStore }
       }
     },
     methods: {

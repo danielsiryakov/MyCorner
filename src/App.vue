@@ -1,10 +1,9 @@
 <template>
   <div id="q-app" @load="hideLoader()">
+    <q-ajax-bar />
     <router-view></router-view>
-      <q-ajax-bar />
   </div>
 </template>
-
 
 <script>
   import Loader from './store/otherJS/Loader'
@@ -13,12 +12,20 @@
     name: 'q-app',
     methods: {
       ...mapActions([
-        'retriesActiveCarts'
-      ])
+        'retriesActiveCarts',
+        'getUserInfo'
+      ]),
+      atStartUp () {
+//        isAuthenticated =
+        if (this.$store.state.auth.authenticated === true) {
+          this.getUserInfo()
+          this.retriesActiveCarts()
+        }
+      }
     },
     created () {
       Loader.show()
-      this.retriesActiveCarts()
+      this.atStartUp()
     },
     beforeMount () {
       Loader.hide()
