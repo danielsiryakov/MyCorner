@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <!--<h3><q-icon name="shopping_cart"/></h3>-->
-    <p v-show="Object.keys(carts).length = 0">
+    <p v-show="Object.keys(carts).length == 0">
       Please add some products to cart.
     </p>
 

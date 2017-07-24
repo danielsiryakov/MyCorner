@@ -1,9 +1,4 @@
 <template>
-  <q-layout>
-    <q-toolbar color="tertiary" class="text-white">
-      <q-btn v-go-back="'/'" icon="arrow_back"/>
-      <q-toolbar-title>User Profile</q-toolbar-title>
-    </q-toolbar>
     <div class="layout-view">
       <div class ="layout-padding">
         <div class="row justify-center">
@@ -19,7 +14,6 @@
         </div>
       </div>
     </div>
-  </q-layout>
 </template>
 
 <script>

@@ -73,6 +73,8 @@
             password: creds.password
           }
         }).then(response => {
+          console.log('user info: ')
+          console.log(response)
           Cookies.set('userID', response.data.login.userID, {
             path: '/',
             expires: 10
