@@ -1,6 +1,14 @@
 import shop from '../../api/shop'
 const state = {
-  info: ''
+  info: {
+    address_book: [],
+    confirmed: false,
+    email: '',
+    user_id: '',
+    user_roles: {
+      Access: {}
+    }
+  }
 }
 
 const actions = {

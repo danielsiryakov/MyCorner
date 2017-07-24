@@ -6,6 +6,8 @@ import { Cookies, Loading } from 'quasar'
 const CREATE_STORE = shop.API_URL + 'store/create'
 const IMAGEUPLOAD = shop.API_URL + 'assets/image/upload'
 const state = {
+  selectedStore: '',
+  dashboardStore: {},
   user: {
     user_id: '',
     email: '',
@@ -195,6 +197,11 @@ const actions = {
     }).catch(function (error) {
       console.log(error)
     })
+  },
+  getFullStoreInfo ({commit}, id) {
+    shop.storeInfoFull(id, store => {
+      commit('update_full_store', store)
+    })
   }
 }
 
@@ -257,6 +264,23 @@ const mutations = {
   },
   update_working_hours (state, workingHours) {
     state.hours = workingHours
+  },
+  update_full_store (state, store) {
+    state.dashboardStore = store
+  },
+  update_store_selection (state, value) {
+    state.selectedStore = value
+  },
+  update_full_store_field (state, field) {
+    let keys = Object.keys(field),
+      key
+
+    for (let index = keys.length - 1; index > -1; index--) {
+      key = keys[index]
+      if (state.dashboardStore.hasOwnProperty(key)) {
+        state.dashboardStore[key] = field[key]
+      }
+    }
   }
 }
 
