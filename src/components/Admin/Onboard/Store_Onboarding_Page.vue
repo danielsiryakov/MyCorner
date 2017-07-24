@@ -40,10 +40,10 @@
 
 <script>
   import {required, email, minLength, sameAs} from 'vuelidate/lib/validators'
-  import StepOne from '../Admin/StepOne.vue'
-  import StepTwo from '../Admin/StepTwo.vue'
-  import StepThree from '../Admin/StepThree.vue'
-  import StepFour from '../Admin/StepFour.vue'
+  import StepOne from './StepOne.vue'
+  import StepTwo from './StepTwo.vue'
+  import StepThree from './StepThree.vue'
+  import StepFour from './StepFour.vue'
   import {
     QLayout,
     QToolbar,
