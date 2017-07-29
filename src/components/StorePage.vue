@@ -33,13 +33,15 @@
           <br>
           <div class="row">
             <div v-for="(cat, index) in allProducts" :key="index">
-              <q-card inline flat style="width: 35vh; height: 35vh" class="col-lg-3 col-md-3 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
-                <q-card-media class="center">
-                  <img :src="p.image" style="width: 20vh; height: 20vh;">
+              <q-card inline flat style="width: 30vh; height: 30vh" class="col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
+                <q-card-media overlay-position="bottom" style="padding: 20px">
+                  <img :src="p.image" >
+                  <q-card-title class="text-condensed" slot="overlay">
+                    {{p.title}}<br>
+                    <span class="text-bold">${{p.price_cents / 100}}</span>
+                  </q-card-title>
                 </q-card-media>
-                <q-card-title>
-                  {{p.title}}
-                </q-card-title>
+
               </q-card>
             </div>
                 <!--</q-collapsible>-->
@@ -47,10 +49,9 @@
         </div>
       </div>
 
-      <q-modal ref="productModal" class="minimized" :content-css="{padding: '20px', maxWidth: '40vw'}">
-        <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.productModal.close()"/></h4>
+      <q-modal ref="productModal" :content-css="{padding: '20px', maxWidth: '500px'}">
         <!--<i class="text-negative" @click="$refs.productModal.close()">close</i>-->
-        <product-page :product="ProductObject" v-on:added="close"></product-page>
+        <product-page :product="ProductObject" quantityProp="1" v-on:added="close"></product-page>
       </q-modal>
 
 
@@ -136,7 +137,12 @@
   .item:not(.two-lines):not(.three-lines):not(.multiple-lines) > .item-content > div:not(.stacked-label):not(.floating-label):not([class^='q-']) {
     font-size: 35px !important;
   }
-
+  .q-card-title {
+    /*font-size: 18px;*/
+    font-weight: 400;
+    /*letter-spacing: normal;*/
+     line-height: 1.5rem;
+  }
   container{
     padding-top: 10px;
   }

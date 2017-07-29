@@ -1,5 +1,6 @@
 <template>
   <div class="">
+    <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.productModal.close()"/></h4>
     <!--<h4 class="text-bold text-tertiary">{{ product.title }}</h4>-->
     <h5 class="text-bold text-tertiary">{{ product.title }}</h5>
     <br>
@@ -27,7 +28,7 @@
     mounted () {
 //      this.getAllProducts()
     },
-    props: ['product'],
+    props: ['product', 'quantityProp'],
     computed: {
       ...mapGetters([
         'allProducts'
