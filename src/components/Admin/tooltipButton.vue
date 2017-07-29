@@ -1,6 +1,5 @@
 <template>
-  <q-btn small color="tertiary">
-    <i>image</i>
+  <q-btn icon="image" small color="tertiary">
     <q-tooltip>
       <img :src="url" alt="" >
     </q-tooltip>
