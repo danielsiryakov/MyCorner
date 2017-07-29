@@ -2,7 +2,7 @@
   <div class="group">
     <h3>Log In</h3><br>
     <p>Log in to your account and access your corner!</p><br>
-    <q-input :error="loginError" color="tertiary" v-model="email" type="email" stack-label="Enter Your Email" clearable />
+    <q-input autofocus :error="loginError" color="tertiary" v-model="email" type="email" stack-label="Enter Your Email" clearable />
     <q-input :error="loginError" color="tertiary" v-model="password" type="password" stack-label="Enter Your Password" v-on:keyup.enter="submitLogIn" clearable />
     <small @click="$refs.forgotPassword.open()">forgot your password?</small>
     <br><br>
@@ -60,7 +60,9 @@
     methods: {
       ...mapActions([
 //        'login',
-        'retrieve'
+        'retrieve',
+        'getUserInfo',
+        'retriesActiveCarts'
       ]),
       ...mapMutations([
 //        'login',
@@ -88,6 +90,8 @@
           LocalStorage.set('authtoken', response.data.login.authtoken)
           this.$store.commit('authenticationTrue')
           this.authenticationTrue()
+          this.getUserInfo()
+          this.retriesActiveCarts()
           this.$router.push('/')
           // Router.push('/')
         }).catch(error => {
@@ -101,7 +105,6 @@
             'password': this.password,
             'email': this.email
           })
-//        this.retrieve()
       },
       resetPassword () {
         this.resetClicked = true

@@ -33,12 +33,12 @@ export default {
       console.log(error)
     })
   },
-  getStores (cb) {
+  getStores (address, cb) {
     Loading.show()
     axios.get(SEARCH, {
       params: {
-        lon: -71.0589,
-        lat: 42.3601,
+        lon: address.longitude,
+        lat: address.latitude,
         time: 900
       }
     }).then(response => {
@@ -46,6 +46,7 @@ export default {
       cb(response.data)
     }).catch(function (error) {
       console.log(error)
+      Loading.hide()
     })
   },
   getActiveCarts (cb) {

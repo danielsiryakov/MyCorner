@@ -21,8 +21,19 @@
       </q-btn>
     </q-toolbar>
 
-    <q-toolbar v-if="$store.state.route.path!='/store_search'" slot="header">
-      <q-search icon="location_on" :debounce="0" inverted color="primary light" v-model="searchValue" @enter="searchForStores"></q-search>
+    <q-toolbar slot="header">
+      <vue-google-autocomplete
+        id="map"
+        ref="addressSearch"
+        :placeholder="savedAddress"
+        v-on:placechanged="getLocation"
+        country="usa"
+        :enableGeolocation="true"
+        class="locationSearch full-width"
+      >
+        <q-input></q-input>
+      </vue-google-autocomplete>
+      <!--<q-search icon="location_on" :debounce="0" inverted color="primary light" v-model="searchValue" @enter="searchForStores"></q-search>-->
     </q-toolbar>
 
     <q-tabs inverted color="tertiary" slot="navigation">
@@ -52,13 +63,13 @@
       <cartpage class=""></cartpage>
     </q-scroll-area>
 
-    <router-view class="layout-view" :key="1"></router-view>
-    <!--</q-transition>-->
+    <router-view class="layout-view"></router-view>
 
   </q-layout>
 </template>
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import VueGoogleAutocomplete from 'vue-google-autocomplete'
+  import { mapGetters, mapActions, mapMutations } from 'vuex'
   import {
     QLayout,
     QToolbar,
@@ -82,15 +93,16 @@
   import cartpage from './CartPage.vue'
   import ProductCard from './ProductCard.vue'
   export default {
-    mounted () {
+    created () {
 //      this.getAllProducts()
 //      if ($store.state.route ==)
-      this.getLocation()
+//      this.getLocation()
       console.log(this.$store.state.route.path)
     },
     computed: {
       ...mapGetters([
-        'cartCount'
+        'cartCount',
+        'savedAddress'
       ]),
       searchValue: {
         get () { return this.$store.state.storeSearch.searchValue },
@@ -106,15 +118,27 @@
     methods: {
       ...mapActions([
         'logout',
-        'searchForStores'
+        'searchForStores',
+        'getAllStores'
       ]),
-      getLocation () {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition((position) => {
-            this.longitude = position.coords.longitude
-            this.latitude = position.coords.latitude
-          })
-        }
+      ...mapMutations([
+        'userAddress',
+        'formattedAddress'
+      ]),
+      getLocation (addressData, placeResultData) {
+        this.address = addressData
+        this.address2 = placeResultData
+        this.userAddress(addressData)
+        this.getAllStores()
+        this.formattedAddress(placeResultData)
+        this.$refs.addressSearch.clear()
+
+//        if (navigator.geolocation) {
+//          navigator.geolocation.getCurrentPosition((position) => {
+//            this.longitude = position.coords.longitude
+//            this.latitude = position.coords.latitude
+//          })
+//        }
       }
     },
     components: {
@@ -134,7 +158,8 @@
       QItemMain,
       QSideLink,
       QListHeader,
-      QScrollArea
+      QScrollArea,
+      VueGoogleAutocomplete
     },
     data () {
       return {
@@ -143,7 +168,14 @@
         isSearchPage: false,
         layoutStore,
         latitude: '',
-        longitude: ''
+        longitude: '',
+        address: '',
+        address2: {
+          formatted_address: 'Type Your Address'
+        },
+        address3: {
+          formatted_address: 'Type Your Address'
+        }
       }
     }
   }
@@ -167,8 +199,34 @@
     -o-transform: scale(0.8);
     transform: scale(0.8);
   }
-
-
+  .locationSearch {
+    -webkit-appearance: none;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border: none;
+    border-radius: 3px;
+    box-shadow: none;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    font-size: 1rem;
+    height: 2.285em;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    line-height: 1.5;
+    padding-left: .75em;
+    padding-right: .75em;
+    position: relative;
+    vertical-align: top;
+    background-color: #fff;
+    border: 1px solid #40dba1;
+    color: #363636;
+    box-shadow: inset 0 1px 2px rgba(10,10,10,.1);
+    max-width: 100%;
+    width: 100%;
+  }
   .siginup {
     /*padding-left: 50px;*/
     /*padding-right: 50px;*/

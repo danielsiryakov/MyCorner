@@ -4,6 +4,18 @@
     <div class="layout-padding">
        <div class="row wrap group lg-gutter">
          <!--<div class="lg-width-1of3"></div>-->
+         <div v-if="currentAddress == ''">
+           <h4 class="text-bold text-tertiary">Where are you? Please type in your address or enable geolocation!</h4>
+           <p>Everything is around your corner...we just need to know which one that is</p>
+         </div>
+         <div v-if="currentAddress != ''">
+           <div v-if="currentAddress == '' || allStores.length ==0">
+             <h4>Oh no! looks like there are no stores near you :/</h4>
+             <p>Tell your favorite store to sign up! MyCorner empowers your neighborhood,
+               allows you to shop local, and have your favorite items from your favorite store
+             delivered within an hour!</p>
+           </div>
+         </div>
           <div v-for="s in allStores" class="col-md-12 col-bg-12 col-lg-12 bg-light">
             <router-link :to="{name: 'store', params: {id: s._id}}" tag="div" @click.native="activeStore(s._id)">
               <q-card class="bigger">
@@ -24,19 +36,16 @@
 
 <script>
   import { mapGetters, mapActions, mapMutations } from 'vuex'
-  import {
-    Loading,
-    QSpinnerGears
-  } from 'quasar'
-
   export default {
     computed: {
       ...mapGetters([
         'allStores'
-      ])
+      ]),
+      currentAddress: {
+        get () { return this.$store.state.storeSearch.address }
+      }
     },
     components: {
-      QSpinnerGears
     },
     methods: {
       ...mapActions([
@@ -49,9 +58,7 @@
     created () {
       // fetch the data when the view is created and the data is
       // already being observed
-      Loading.show()
       this.getAllStores()
-      Loading.hide()
     },
     watch: {
       // call again the method if the route changes
