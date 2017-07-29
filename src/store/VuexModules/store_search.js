@@ -1,14 +1,18 @@
 import shop from '../../api/shop'
 import router from '../../router'
+
 const state = {
   all: [],
-  searchValue: '',
+  address: '',
+  address2: {
+    formatted_address: 'Type Your Address'
+  },
   currentStore: {}
 }
 
 const actions = {
   getAllStores ({commit}) {
-    shop.getStores(stores => {
+    shop.getStores(state.address, stores => {
       commit('recieve_stores', stores)
     })
   },
@@ -31,6 +35,12 @@ const mutations = {
   },
   activeStore (state, id) {
     state.currentStore = id
+  },
+  userAddress (state, address) {
+    state.address = address
+  },
+  formattedAddress (state, address) {
+    state.address2 = address
   }
 }
 

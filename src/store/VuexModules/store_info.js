@@ -101,16 +101,7 @@ const state = {
     short_description: 'some short description with words',
     long_description: 'some long description with lots of words describing the store. more words',
     category_names: ['Grocery', 'Corner Store'],
-    categories: [{
-      name: '',
-      products: [{
-        title: 'p1',
-        description: 'asdadf',
-        display_price: '$2.00',
-        asset_id: '59597b710f85f6d380e8987c',
-        image: 'https://s3-us-west-2.amazonaws.com/mcs-images/production/images/products/27cb235b06f04844a91f30b9c932c49d.jpg'
-      }]
-    }]
+    categories: []
   },
   product: {
     title: '',
