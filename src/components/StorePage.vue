@@ -24,8 +24,10 @@
               <q-card-media overlay-position="bottom">
                 <img :src="store.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">
                 <q-card-title slot="overlay">
-                  <h4 class="text-bold">{{ store.name }}</h4>
-                  <q-rating slot="subtitle" v-model="stars" :max="5" />
+                  <h4 class="text-bold">{{ store.name }}
+                    <q-chip v-if="store.delivery.service_offered" color="amber-9">Offers Delivery</q-chip>
+                  </h4>
+                  <q-rating color="amber-4" slot="subtitle" v-model="stars" :max="5" />
                 </q-card-title>
               </q-card-media>
             </q-card>
@@ -50,6 +52,7 @@
       </div>
 
       <q-modal ref="productModal" :content-css="{padding: '20px', maxWidth: '500px'}">
+        <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.productModal.close()"/></h4>
         <!--<i class="text-negative" @click="$refs.productModal.close()">close</i>-->
         <product-page :product="ProductObject" quantityProp="1" v-on:added="close"></product-page>
       </q-modal>

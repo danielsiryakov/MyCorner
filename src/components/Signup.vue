@@ -1,6 +1,7 @@
 <template>
   <div class="group" style="padding: 0px">
     <h3>Sign Up</h3><br>
+    Are you a shopper or shop owner?
     <p>Signup and join YOUR corner!
       Groceries, wine, and more!</p>
     <br>

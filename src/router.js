@@ -9,7 +9,7 @@ function load (component) {
 // import IntroPage from './components/IntroPage.vue'
 // import HomePage from './components/HomePage'
 // import ProductPage from './components/ProductPage'
-// import StoresListPage from './components/List_Of_Stores'
+import StoresListPage from './components/List_Of_Stores'
 // import StorePage from './components/StorePage'
 // import ProfilePage from './components/UserProfile/Profile.vue'
 // import StoreOnboard from './components/Admin/Onboard/Store_Onboarding_Page.vue'
@@ -24,7 +24,7 @@ const Router = new VueRouter({
       component: load('HomePage'),
       meta: {Auth: true, name: 'home'},
       children: [
-        {path: '/store_search', component: load('List_Of_Stores')},
+        {path: '/store_search', meta: { Auth: true }, component: StoresListPage},
         {path: '/cart', component: load('CartPage')},
         {path: '/user/:id', meta: { Auth: true }, component: load('UserProfile/Profile')}
       ]

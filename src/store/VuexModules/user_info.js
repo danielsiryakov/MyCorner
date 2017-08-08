@@ -12,14 +12,16 @@ const state = {
 }
 
 const actions = {
-  getUserInfo ({commit}) {
-    shop.userInfo(info => {
+  async getUserInfo ({commit}) {
+    console.log('get user info started')
+    await shop.userInfo(info => {
       commit('setUserInfo', info)
       commit('userAddress', {
         longitude: info.address_book[0].location.coordinates[1],
         latitude: info.address_book[0].location.coordinates[0]
       })
     })
+    console.log('getuserfinished')
   }
 }
 
@@ -34,8 +36,8 @@ const getters = {
     return state.info
   },
   savedAddress (state, getters, rootState) {
-    console.log(rootState.storeSearch.address)
-    if (rootState.storeSearch.address2.formatted_address === 'Type Your Address' && state.info.address_book.length !== 0) {
+    // rootState.storeSearch.address2.formatted_address === 'Type Your Address' &&
+    if ((rootState.storeSearch.address2.formatted_address === 'Type Your Address' && state.info.address_book.length !== 0) || (rootState.storeSearch.address2.formatted_address === state.info.address_book[0].address_name)) {
       return state.info.address_book[0].address_name
     }
     else {

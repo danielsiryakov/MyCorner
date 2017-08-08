@@ -19,15 +19,12 @@ const actions = {
     shop.updateCart(product, response => {
       Vue.set(product, 'cart_id', response.data.id)
       commit('add_to_cart', product)
-      console.log(response)
     }, error => {
       console.log(error)
     })
   },
-  retriesActiveCarts ({commit}) {
-    shop.retrieveCarts(carts => {
-      console.log('active carts are:')
-      console.log(carts)
+  async retriesActiveCarts ({commit}) {
+    await shop.retrieveCarts(carts => {
       commit('syncCarts', carts)
     })
   }

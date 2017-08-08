@@ -28,17 +28,19 @@ export default {
     axios.get(PRODUCTS + id).then(response => {
       Loading.hide()
       cb(response.data)
-      console.log(response.data)
     }).catch(error => {
       console.log(error)
     })
   },
   getStores (address, cb) {
     Loading.show()
+    console.log(address)
+    console.log(address)
+    console.log(address.longitude)
     axios.get(SEARCH, {
       params: {
-        lon: address.longitude,
-        lat: address.latitude,
+        lon: address.lon,
+        lat: address.lat,
         time: 900
       }
     }).then(response => {
@@ -65,15 +67,14 @@ export default {
       }
     }).then(response => {
       Loading.hide()
-      console.log(response)
     }).catch(function (error) {
+      Loading.hide()
       console.log(error)
     })
   },
   userInfo (cb) {
     axios.get(USER_RETRIEVE).then(function (response) {
       cb(response.data)
-      console.log(response)
     }).catch(function (error) {
       console.log(error)
     })
@@ -103,7 +104,6 @@ export default {
   },
   retrieveCarts (cb) {
     axios.get(RETRIEVECARTS).then(response => {
-      console.log(response.data)
       cb(response.data)
     }).catch(error => {
       console.log(error)

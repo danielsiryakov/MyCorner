@@ -93,12 +93,6 @@
   import cartpage from './CartPage.vue'
   import ProductCard from './ProductCard.vue'
   export default {
-    created () {
-//      this.getAllProducts()
-//      if ($store.state.route ==)
-//      this.getLocation()
-      console.log(this.$store.state.route.path)
-    },
     computed: {
       ...mapGetters([
         'cartCount',
@@ -129,9 +123,10 @@
         this.address = addressData
         this.address2 = placeResultData
         this.userAddress(addressData)
-        this.getAllStores()
+//        this.getAllStores()
         this.formattedAddress(placeResultData)
         this.$refs.addressSearch.clear()
+        this.searchForStores()
 
 //        if (navigator.geolocation) {
 //          navigator.geolocation.getCurrentPosition((position) => {

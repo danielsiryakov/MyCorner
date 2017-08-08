@@ -1,6 +1,5 @@
 <template>
   <div class="">
-    <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.productModal.close()"/></h4>
     <!--<h4 class="text-bold text-tertiary">{{ product.title }}</h4>-->
     <h5 class="text-bold text-tertiary">{{ product.title }}</h5>
     <br>
@@ -8,13 +7,13 @@
       <img :src="product.image" style="width: 150px; height: 150px">
     </div>
     <div class="row justify-center">
-      <h5 class="text-grey"><small>{{quantity}}x &nbsp</small></h5>
+      <h5 class="text-grey"><small>{{mutation.quantity}}x &nbsp</small></h5>
       <h5 class="text-primary">${{ product.price_cents / 100 }} &nbsp</h5><h5>= ${{ total }}</h5>
     </div>
     <div class="product-details group">
       <div class="row no-wrap group justify-center">
         <q-btn icon="remove" big outline @click="offset(-1)"></q-btn>
-        <q-input align="center" :min="1" v-model="quantity" type="number"/>
+        <q-input align="center" :min="1" v-model="displayQuantity" type="number"/>
         <q-btn icon="add" outline @click="offset(1)"/>
       </div>
       <q-btn color="primary full-width" class="block" @click="addItem">Add</q-btn>
@@ -38,7 +37,14 @@
 //        return this.allProducts.find((p) => p.id === id) || {}
 //      },
       total: function () {
-        return (this.quantity * this.product.price_cents / 100)
+        return (this.mutation.quantity * this.product.price_cents / 100)
+      },
+      displayQuantity: function () {
+        if (this.mutation.name !== this.product.title) {
+          this.mutation.name = this.product.title
+          this.mutation.quantity = 1
+        }
+        return this.mutation.quantity
       }
     },
     methods: {
@@ -50,7 +56,9 @@
         'add_to_cart'
       ]),
       offset (num) {
-        this.quantity = this.quantity + num
+        if (this.mutation.quantity + num > 0) {
+          this.mutation.quantity = this.mutation.quantity + num
+        }
       },
       addItem () {
         this.addToCart({
@@ -58,17 +66,20 @@
           title: this.product.title,
           image: this.product.image,
           price_cents: this.product.price_cents,
-          quantity: this.quantity,
+          quantity: this.mutation.quantity,
           store_id: this.product.store_id,
           product_id: this.product.product_id
         })
         this.$emit('added')
-        this.quantity = 1
       }
     },
     data () {
       return {
-        quantity: 1
+        quantity: 1,
+        mutation: {
+          name: '',
+          quantity: 1
+        }
       }
     }
   }

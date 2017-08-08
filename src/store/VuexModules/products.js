@@ -7,7 +7,6 @@ const actions = {
   getAllProducts ({commit}, id) {
     shop.getProducts(id, products => {
       commit('recieve_products', products)
-      console.log(id)
       // console.log(products)
     })
   }

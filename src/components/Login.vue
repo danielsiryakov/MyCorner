@@ -1,5 +1,6 @@
 <template>
   <div class="group">
+    <!--------------login part----------->
     <h3>Log In</h3><br>
     <p>Log in to your account and access your corner!</p><br>
     <q-input autofocus :error="loginError" color="tertiary" v-model="email" type="email" stack-label="Enter Your Email" clearable />
@@ -9,7 +10,8 @@
     <q-btn loader color="primary" @click="submitLogIn">Log In</q-btn>
     <img class="float-right" src="../assets/basket.png" alt="" width="150px" height="150px">
 
-    <q-modal ref="forgotPassword" content-css="padding: 20px">
+    <!--------------reset password part----------->
+    <q-modal @close="resetSettings" ref="forgotPassword" content-css="padding: 20px">
       <div v-if="!resetClicked">
         <h5>Forgot Your Password?</h5><br>
         <p>No problem! Enter your email and new password.</p><br>
@@ -22,8 +24,8 @@
         <img class="float-right" src="../assets/basket.png" alt="" width="150px" height="150px">
       </div>
 
-      <div v-if="resetClicked">
-        <h5>we sent you a confirmation email!</h5><br>
+      <div v-if="resetClicked" style="max-width: 500px">
+        <h4>we sent you a confirmation email!</h4><br>
         <big class="text-tertiary">
           Confirm your email address and start shopping for everything you love!
         </big>
@@ -115,6 +117,9 @@
         shop.resendPassword(creds).catch(error => {
           console.log(error)
         })
+      },
+      resetSettings () {
+        this.resetClicked = false
       }
     }
   }

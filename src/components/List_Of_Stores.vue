@@ -1,15 +1,15 @@
 
 <template>
-  <div class="layout-view bg-light">
-    <div class="layout-padding">
-       <div class="row wrap group lg-gutter">
+  <div class="bg-light">
+    <div class="">
+       <div class="row wrap group">
          <!--<div class="lg-width-1of3"></div>-->
          <div v-if="currentAddress == ''">
            <h4 class="text-bold text-tertiary">Where are you? Please type in your address or enable geolocation!</h4>
            <p>Everything is around your corner...we just need to know which one that is</p>
          </div>
          <div v-if="currentAddress != ''">
-           <div v-if="currentAddress == '' || allStores.length ==0">
+           <div v-if="allStores.length ==0">
              <h4>Oh no! looks like there are no stores near you :/</h4>
              <p>Tell your favorite store to sign up! MyCorner empowers your neighborhood,
                allows you to shop local, and have your favorite items from your favorite store
@@ -49,7 +49,8 @@
     },
     methods: {
       ...mapActions([
-        'getAllStores'
+        'getAllStores',
+        'getUserInfo'
       ]),
       ...mapMutations([
         'activeStore'
@@ -58,11 +59,8 @@
     created () {
       // fetch the data when the view is created and the data is
       // already being observed
+      console.log('getallstores didnt start yet')
       this.getAllStores()
-    },
-    watch: {
-      // call again the method if the route changes
-      '$route': 'getAllStores'
     },
     data () {
       return {
