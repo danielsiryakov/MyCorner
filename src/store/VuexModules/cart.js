@@ -1,24 +1,26 @@
 import Vue from 'vue'
 import shop from '../../api/shop'
 const state = {
-  carts: {
-  },
+  carts: [],
   lastCheckout: null
 }
 
 const actions = {
   addToCart ({commit}, product) {
-    if (!(product.store_id in state.carts)) {
-      Vue.set(product, 'is_new_cart', true)
-      Vue.set(product, 'cart_id', '')
-    }
-    else {
-      Vue.set(product, 'is_new_cart', false)
-      Vue.set(product, 'cart_id', state.carts[product.store_id].cart_id)
-    }
-    shop.updateCart(product, response => {
-      Vue.set(product, 'cart_id', response.data.id)
-      commit('add_to_cart', product)
+    Vue.set(product, 'is_new_cart', true)
+    Vue.set(product, 'cart_id', '')
+    state.carts.forEach(function (cart) {
+      if (cart.hasOwnProperty('store_id')) {
+        if (product.store_id === cart.store_id) {
+          Vue.set(product, 'is_new_cart', false)
+          Vue.set(product, 'cart_id', cart.id)
+        }
+      }
+    })
+    shop.updateCart(product, carts => {
+      Vue.set(product, 'cart_id', carts.id)
+      // commit('add_to_cart', product)
+      commit('syncCarts', carts)
     }, error => {
       console.log(error)
     })
@@ -50,12 +52,13 @@ const mutations = {
     }
   },
   syncCarts (state, carts) {
-    Object.keys(carts).forEach(key => {
-      Vue.set(state.carts, carts[key].store_id, {
-        products: carts[key].products,
-        cart_id: carts[key].id
-      })
-    })
+    // Object.keys(carts).forEach(key => {
+    //   Vue.set(state.carts, carts[key].store_id, {
+    //     products: carts[key].products,
+    //     cart_id: carts[key].id
+    //   })
+    // })
+    state.carts = carts
   },
   checkout_request (state) {
     // clear cart
@@ -87,12 +90,27 @@ const getters = {
   },
   cartCount (state) {
     var totalCount = 0
-    Object.keys(state.carts).forEach(key => {
-      for (var i = 0; i < state.carts[key].products.length; i++) {
-        totalCount += state.carts[key].products[i].quantity
+    state.carts.forEach(cart => {
+      for (var i = 0; i < cart.products.length; i++) {
+        totalCount += cart.products[i].quantity
       }
     })
+    // Object.keys(state.carts).forEach(key => {
+    //   for (var i = 0; ivuex te.carts[key].products.length; i++) {
+    //     totalCount += state.carts[key].products[i].quantity
+    //   }
+    // })
     return totalCount
+  },
+  getProductCartQuantity: (state, getters) => (storeID, productID) => {
+    let productQuantity = 0
+    let storeCart = state.carts.find(cart => cart.store_id === storeID)
+    storeCart.products.forEach(product => {
+      if (product.id === productID) {
+        productQuantity = product.quantity
+      }
+    })
+    return productQuantity
   }
 }
 

@@ -37,11 +37,11 @@
       },
       total () {
         let totalDollar = 0
-        Object.keys(this.carts).forEach(key => {
-          for (var i = 0; i < this.carts[key].products.length; i++) {
-            totalDollar += (this.carts[key].products[i].quantity * this.carts[key].products[i].price_cents / 100)
-          }
-        })
+//        Object.keys(this.carts).forEach(key => {
+//          for (var i = 0; i < this.carts[key].products.length; i++) {
+//            totalDollar += (this.carts[key].products[i].quantity * this.carts[key].products[i].price_cents / 100)
+//          }
+//        })
         return totalDollar
       }
     },

@@ -96,7 +96,7 @@ export default {
       is_new_cart: product.is_new_cart,
       instructions: ''
     })).then(response => {
-      cb(response)
+      cb(response.data)
     }).catch(function (error) {
       errorCb(error)
       console.log(error)

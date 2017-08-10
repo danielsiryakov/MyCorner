@@ -1,6 +1,6 @@
 
 <template>
-  <div class="bg-light">
+  <div class=" layout-padding xbg-light">
     <div class="">
        <div class="row wrap group">
          <!--<div class="lg-width-1of3"></div>-->

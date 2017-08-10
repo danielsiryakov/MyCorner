@@ -37,8 +37,11 @@ const getters = {
   },
   savedAddress (state, getters, rootState) {
     // rootState.storeSearch.address2.formatted_address === 'Type Your Address' &&
-    if ((rootState.storeSearch.address2.formatted_address === 'Type Your Address' && state.info.address_book.length !== 0) || (rootState.storeSearch.address2.formatted_address === state.info.address_book[0].address_name)) {
-      return state.info.address_book[0].address_name
+    if (state.info.address_book.length !== 0) {
+      if ((rootState.storeSearch.address2.formatted_address === 'Type Your Address') || (rootState.storeSearch.address2.formatted_address === state.info.address_book[0].address_name)) {
+        return state.info.address_book[0].address_name
+        // return '1'
+      }
     }
     else {
       return rootState.storeSearch.address2.formatted_address

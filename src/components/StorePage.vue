@@ -25,7 +25,7 @@
                 <img :src="store.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">
                 <q-card-title slot="overlay">
                   <h4 class="text-bold">{{ store.name }}
-                    <q-chip v-if="store.delivery.service_offered" color="amber-9">Offers Delivery</q-chip>
+                    <q-chip v-if="deliveryOffered == true" color="amber-9">Offers Delivery</q-chip>
                   </h4>
                   <q-rating color="amber-4" slot="subtitle" v-model="stars" :max="5" />
                 </q-card-title>
@@ -40,6 +40,7 @@
                   <img :src="p.image" >
                   <q-card-title class="text-condensed" slot="overlay">
                     {{p.title}}<br>
+                    {{getProductCartQuantity(id, p.id)}}
                     <span class="text-bold">${{p.price_cents / 100}}</span>
                   </q-card-title>
                 </q-card-media>
@@ -93,11 +94,20 @@
       ...mapGetters([
         'allStores',
         'allProducts',
-        'cartCount'
+        'cartCount',
+        'getProductCartQuantity'
       ]),
       store () {
         return this.$store.state.storeSearch.currentStore
 //        return this.allStores.find((s) => s._id === this.id) || {}
+      },
+      deliveryOffered () {
+        if (this.store.hasOwnProperty('delivery')) {
+          return this.$store.state.storeSearch.currentStore.delivery.service_offered
+        }
+        else {
+          return false
+        }
       }
     },
     created () {
