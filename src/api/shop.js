@@ -5,11 +5,15 @@ const RESEND = API_URL + 'user/confirmation/resend'
 const PRODUCTS = API_URL + 'store/categories/retrieve/'
 const UPDATECART = API_URL + 'cart/update/product/quantity'
 const USER_RETRIEVE = API_URL + 'user/retrieve'
-const STOREINFO = API_URL + 'store/info/'
+const STOREINFO = API_URL + 'store/info/retrieve/'
 const ACTIVE_CARTS = API_URL + 'carts/retrieve/active'
 // const IMAGEUPLOAD = API_URL + 'assets/image/upload'
 const RETRIEVECARTS = API_URL + 'carts/retrieve/active'
 const STORE_RETRIEVE_FULL = API_URL + 'store/retrieve/full/'
+const ADDRESS_BOOK_RETRIEVE = API_URL + 'user/address_book/retrieve'
+const ADDRESS_BOOK_RETRIEVE_DEFAULT = API_URL + 'user/address_book/retrieve/default'
+const ADDRESS_BOOK_ADD = API_URL + 'user/address_book/add'
+const ADDRESS_BOOK_DEFAULT_CHANGE = API_URL + 'user/address_book/default/change'
 // import { Cookies } from 'quasar'
 import {
   Loading,
@@ -113,6 +117,37 @@ export default {
     axios.get(STORE_RETRIEVE_FULL + id).then(response => {
       cb(response.data)
       // console.log(response)
+    }).catch(error => {
+      console.log(error)
+    })
+  },
+  retrieveAddressBook (cb) {
+    axios.get(ADDRESS_BOOK_RETRIEVE).then(response => {
+      cb(response.data)
+      // console.log(response)
+    }).catch(error => {
+      console.log(error)
+    })
+  },
+  retrieveAddressBookDefualt (cb) {
+    axios.get(ADDRESS_BOOK_RETRIEVE_DEFAULT).then(response => {
+      cb(response.data)
+      // console.log(response)
+    }).catch(error => {
+      console.log(error)
+    })
+  },
+  changeDefaultAddress (id, cb) {
+    axios.get(ADDRESS_BOOK_DEFAULT_CHANGE + '?address_id=' + id).then(response => {
+      cb(response.data)
+      // console.log(response)
+    }).catch(error => {
+      console.log(error)
+    })
+  },
+  addAddress (cb, address) {
+    axios.post(ADDRESS_BOOK_ADD, address).then(response => {
+      cb(response.data)
     }).catch(error => {
       console.log(error)
     })
