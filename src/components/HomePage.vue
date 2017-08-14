@@ -8,9 +8,6 @@
     class="bg-light"
   >
     <q-toolbar color="tertiary" class="text-white" slot="header">
-      <q-btn flat @click="$refs.layout.toggleLeft()">
-        <q-icon name="menu"/>
-      </q-btn>
       <q-toolbar-title>
         <router-link to="/"><img src="../assets/fulllogo.png" id="logo"></router-link>
         <span slot="subtitle">Empowering Your Neighborhood</span>
@@ -40,24 +37,24 @@
       <q-route-tab hide="label" label="Home" slot="title" name="home" icon="home" to="/"/>
       <q-route-tab hide="label" label="Search Stores" slot="title" name="store_search" icon="search" to="/store_search"/>
       <!--<q-route-tab slot="title" name="store" icon="store" :to="{name: 'store', params: {id: ''}}"/>-->
-      <q-route-tab hide="label" label="Profile" slot="title" name="user" icon="person" to="/user/:id"/>
+      <q-route-tab hide="label" label="Profile" slot="title" name="user" icon="person"  :to="{name: 'profile', params: {id: this.$store.state.userInfo.info.user_id}}"/>
       <q-route-tab hide="label" label="Cart" slot="title" name="cart" icon="shopping_cart" to="/cart" :count="cartCount"/>
     </q-tabs>
 
-    <q-scroll-area slot="left" style="width: 100%; height: 100%">
-      <q-list-header class="bg-tertiary text-primary">Other Info</q-list-header>
-      <q-side-link item :to="{path: '/store-sign-up', exact: true}">
-        <q-item-side icon="business"/>
-        <q-item-main label="Are you a local business?" sublabel="Add your store - join the community!"/>
-      </q-side-link>
-      <q-side-link item to="/stores">
-        <q-item-side icon="info"/>
-        <q-item-main label="About Us"/>
-      </q-side-link>
-        <!--<q-side-link icon="compare_arrows" to="/stores">Contact Us</q-side-link>-->
-      <br>
-      <q-btn class="full-width" color="primary" @click="logout">Log out</q-btn>
-    </q-scroll-area>
+    <!--<q-scroll-area slot="left" style="width: 100%; height: 100%">-->
+      <!--<q-list-header class="bg-tertiary text-primary">Other Info</q-list-header>-->
+      <!--<q-side-link item :to="{path: '/store-sign-up', exact: true}">-->
+        <!--<q-item-side icon="business"/>-->
+        <!--<q-item-main label="Are you a local business?" sublabel="Add your store - join the community!"/>-->
+      <!--</q-side-link>-->
+      <!--<q-side-link item to="/stores">-->
+        <!--<q-item-side icon="info"/>-->
+        <!--<q-item-main label="About Us"/>-->
+      <!--</q-side-link>-->
+        <!--&lt;!&ndash;<q-side-link icon="compare_arrows" to="/stores">Contact Us</q-side-link>&ndash;&gt;-->
+      <!--<br>-->
+      <!--<q-btn class="full-width" color="primary" @click="logout">Log out</q-btn>-->
+    <!--</q-scroll-area>-->
 
     <q-scroll-area slot="right" class="bg-light" style="width: 100%; height: 100%">
       <cartpage class=""></cartpage>
@@ -69,6 +66,9 @@
 </template>
 <script>
   import VueGoogleAutocomplete from 'vue-google-autocomplete'
+  import axios from 'axios'
+  const API_URL = 'http://mycorner.store:8080/api/'
+  const ADDRESS_BOOK_ADD = API_URL + 'user/address_book/add'
   import { mapGetters, mapActions, mapMutations } from 'vuex'
   import {
     QLayout,
@@ -88,8 +88,8 @@
 
   import layoutStore from '../store/otherJS/layout-store'
 
-  import Login from './Login.vue'
-  import SignUp from './Signup.vue'
+  import Login from './LogInSignUp/Login.vue'
+  import SignUp from './LogInSignUp/Signup.vue'
   import cartpage from './CartPage.vue'
   import ProductCard from './ProductCard.vue'
   export default {
@@ -113,14 +113,34 @@
       ...mapActions([
         'logout',
         'searchForStores',
-        'getAllStores'
+        'getAllStores',
+        'addUserAddress'
       ]),
       ...mapMutations([
         'userAddress',
         'formattedAddress'
       ]),
       getLocation (addressData, placeResultData) {
+        axios.post(ADDRESS_BOOK_ADD, JSON.stringify(
+          {
+            street_number: addressData.street_number,
+            route: addressData.route,
+            administrative_area_level_1: addressData.administrative_area_level_1,
+            country: addressData.country,
+            postal_code: addressData.postal_code,
+            latitude: addressData.latitude,
+            longitude: addressData.longitude,
+            city: 'Brooklyn',
+            line1: placeResultData.formatted_address,
+            name: 'Home'
+          }
+        )).then(response => {
+          console.log(response)
+        }).catch(error => {
+          console.log(error)
+        })
         this.address = addressData
+//        this.addUserAddress(JSON.stringify(addressData))
         this.address2 = placeResultData
         this.userAddress(addressData)
 //        this.getAllStores()
@@ -177,12 +197,12 @@
 </script>
 
 <style>
-  .layout-footer {
-    border-top: 1px solid hsla(0, 0%, 0%, 0.27);
-  }
-  .layout-header {
-    border-bottom: 1px solid hsla(0, 0%, 0%, 0.27);
-  }
+  /*.layout-footer {*/
+    /*border-top-color: 1px solid hsla(0, 0%, 0%, 0.27);*/
+  /*}*/
+  /*.layout-header {*/
+  /*border-bottom-color: black*/
+  /*}*/
   #logo {
       /*background-image: url("../assets/fulllogo.png");*/
       padding-top: 0px;
