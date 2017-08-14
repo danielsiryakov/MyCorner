@@ -43,7 +43,7 @@ const mutations = {
   activeStore (state, id) {
     state.currentStore = id
   },
-  userAddress (state, address) {
+  setDefaultAddress (state, address) {
     Vue.set(state.address, 'lon', address.longitude)
     Vue.set(state.address, 'lat', address.latitude)
     Vue.set(state.address, 'time', 900)

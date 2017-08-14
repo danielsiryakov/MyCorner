@@ -90,7 +90,7 @@ const getters = {
   },
   cartCount (state) {
     var totalCount = 0
-    state.carts.forEach(cart => {
+    state.carts.forEach(function (cart) {
       for (var i = 0; i < cart.products.length; i++) {
         totalCount += cart.products[i].quantity
       }
@@ -102,15 +102,15 @@ const getters = {
     // })
     return totalCount
   },
-  getProductCartQuantity: (state, getters) => (storeID, productID) => {
-    let productQuantity = 0
-    let storeCart = state.carts.find(cart => cart.store_id === storeID)
-    storeCart.products.forEach(product => {
-      if (product.id === productID) {
-        productQuantity = product.quantity
-      }
-    })
-    return productQuantity
+  getCartByStore: (state, getters) => (storeID) => {
+    return state.carts.find(cart => cart.store_id === storeID)
+    // return storeCart.products.find(product => product._id === productID)
+    // storeCart.products.forEach(product => {
+    //   if (product.id === productID) {
+    //     productQuantity = product.quantity
+    //   }
+    // })
+    // return productQuantity
   }
 }
 

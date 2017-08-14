@@ -1,33 +1,50 @@
 import shop from '../../api/shop'
 const state = {
   info: {
-    address_book: [],
     confirmed: false,
     email: '',
     user_id: '',
     user_roles: {
       Access: {}
     }
-  }
+  },
+  address_book: [],
+  defaultAddress: {}
 }
 
 const actions = {
   async getUserInfo ({commit}) {
-    console.log('get user info started')
-    await shop.userInfo(info => {
+    shop.userInfo(info => {
       commit('setUserInfo', info)
-      commit('userAddress', {
-        longitude: info.address_book[0].location.coordinates[1],
-        latitude: info.address_book[0].location.coordinates[0]
-      })
     })
-    console.log('getuserfinished')
+    shop.retrieveAddressBookDefualt(addressBook => {
+      commit('setDefaultAddress', addressBook)
+    })
+  },
+  getAddressBook ({commit}) {
+    shop.retrieveAddressBook(addressBook => {
+      commit('setAddressBook', addressBook)
+    })
   }
+  // async addUserAddress ({commit}, address) {
+  //   await setTimeout(() => {
+  //     shop.addAddress(
+  //      , response => {
+  //       console.log(response)
+  //     })
+  //   }, 200)
+  // }
 }
 
 const mutations = {
   setUserInfo (state, info) {
     state.info = info
+  },
+  setAddressBook (state, addressbook) {
+    state.address_book = addressbook
+  },
+  setDefaultAddress (state, defaultAddress) {
+    state.defaultAddress = defaultAddress
   }
 }
 
@@ -37,9 +54,11 @@ const getters = {
   },
   savedAddress (state, getters, rootState) {
     // rootState.storeSearch.address2.formatted_address === 'Type Your Address' &&
-    if (state.info.address_book.length !== 0) {
-      if ((rootState.storeSearch.address2.formatted_address === 'Type Your Address') || (rootState.storeSearch.address2.formatted_address === state.info.address_book[0].address_name)) {
-        return state.info.address_book[0].address_name
+    console.log(state.address_book.length)
+    if (state.address_book.length > 0) {
+      let defaultAddress = state.address_book.find(address => address.default === true)
+      if ((rootState.storeSearch.address2.formatted_address === 'Type Your Address') || (rootState.storeSearch.address2.formatted_address === defaultAddress.line1)) {
+        return defaultAddress.line1
         // return '1'
       }
     }
