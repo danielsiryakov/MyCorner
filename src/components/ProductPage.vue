@@ -42,7 +42,12 @@
       displayQuantity: function () {
         if (this.mutation.name !== this.product.title) {
           this.mutation.name = this.product.title
-          this.mutation.quantity = 1
+          if (this.quantityProp) {
+            this.mutation.quantity = this.quantityProp
+          }
+          else {
+            this.mutation.quantity = 1
+          }
         }
         return this.mutation.quantity
       }

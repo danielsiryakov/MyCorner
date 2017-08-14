@@ -4,7 +4,7 @@
     :view="layoutStore.view"
     :right-breakpoint="layoutStore.rightBreakpoint"
     :reveal="true">
-    <q-toolbar color="tertiary" class="text-white">
+    <q-toolbar color="tertiary" class="text-white" slot="header">
       <q-btn v-go-back="'/store_search'" icon="arrow_back"/>
       <q-toolbar-title>{{ store.name }}</q-toolbar-title>
       <q-btn flat @click="$refs.layoutTwo.toggleRight()">
@@ -36,12 +36,18 @@
           <div class="row">
             <div v-for="(cat, index) in allProducts" :key="index">
               <q-card inline flat style="width: 30vh; height: 30vh" class="col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
+
                 <q-card-media overlay-position="bottom" style="padding: 20px">
+
                   <img :src="p.image" >
+
                   <q-card-title class="text-condensed" slot="overlay">
-                    {{p.title}}<br>
-                    {{getProductCartQuantity(id, p.id)}}
+
+                    {{p.title.substring(0,30)}}...<br>
+                    <!--{{getProductCartQuantity(id, p.id).quantity}}-->
                     <span class="text-bold">${{p.price_cents / 100}}</span>
+                    <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
+
                   </q-card-title>
                 </q-card-media>
 
@@ -52,17 +58,11 @@
         </div>
       </div>
 
-      <q-modal ref="productModal" :content-css="{padding: '20px', maxWidth: '500px'}">
+      <q-modal ref="productModal" class="minimized" :content-css="{padding: '20px', maxWidth: '500px', maxHeight: '500px'}">
         <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.productModal.close()"/></h4>
         <!--<i class="text-negative" @click="$refs.productModal.close()">close</i>-->
-        <product-page :product="ProductObject" quantityProp="1" v-on:added="close"></product-page>
+        <product-page :product="ProductObject" :quantityProp="cartQuantity" v-on:added="close"></product-page>
       </q-modal>
-
-
-      <!--<modal name="modal">-->
-        <!--<h2 class =categoryTitle>{{ProductObject.ProductName}}</h2>-->
-        <!--&lt;!&ndash;{{ProductObject.ProductName}}&ndash;&gt;-->
-      <!--</modal>-->
     </div>
 	</q-layout>
 </template>
@@ -81,8 +81,9 @@
     data () {
       return {
         ProductObject: {},
-        CatProducts: [],
+        cartProducts: [],
         stars: 4,
+        cartQuantity: 1,
         layoutStore
       }
     },
@@ -95,7 +96,7 @@
         'allStores',
         'allProducts',
         'cartCount',
-        'getProductCartQuantity'
+        'getCartByStore'
       ]),
       store () {
         return this.$store.state.storeSearch.currentStore
@@ -128,10 +129,21 @@
 //      },
       open: function (Product) {
         this.ProductObject = Product
+        this.cartQuantity = this.productCartQuantity(Product.asset_id)
         this.$refs.productModal.open()
       },
       close: function () {
         this.$refs.productModal.close()
+      },
+      productCartQuantity (productID) {
+        let cartProduct = this.getCartByStore(this.id).products.find(product => product.asset_id === productID)
+        this.cartProducts = this.getCartByStore(this.id).products
+        if (cartProduct) {
+          return cartProduct.quantity
+        }
+        else {
+          return cartProduct
+        }
       }
 //      getProducts: function () {
 //        axios.get(CATPRODS + this.id).then(response => {
