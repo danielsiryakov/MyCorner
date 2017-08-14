@@ -26,7 +26,7 @@ const Router = new VueRouter({
       children: [
         {path: '/store_search', meta: { Auth: true }, component: StoresListPage},
         {path: '/cart', component: load('CartPage')},
-        {path: '/user/:id', meta: { Auth: true }, component: load('UserProfile/Profile')}
+        {path: '/user/:id', meta: { Auth: true }, name: 'profile', component: load('UserProfile/Profile'), props: true}
       ]
     },
     {path: '/store/:id', name: 'store', component: load('StorePage'), props: true},
@@ -43,7 +43,7 @@ const Router = new VueRouter({
       path: '/login',
       name: 'intro',
       meta: { Auth: false },
-      component: load('IntroPage')
+      component: load('LogInSignUp/IntroPage')
     },
     {path: '*', component: load('Error404')}]
 })
