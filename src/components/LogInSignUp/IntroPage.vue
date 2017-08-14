@@ -2,7 +2,7 @@
   <div class="layout-view" id="corner">
     <div class="flex window-height">
       <div class="sm-width-1of1 md-width-1of1 bg-width-5of5 lg-width-3of5">
-        <img src="../assets/fulllogo.png" style="max-height: 8%; max-width: 80%">
+        <img src="../../assets/fulllogo.png" style="max-height: 8%; max-width: 80%">
 
         <q-modal ref="logInSignUp" transition="fade" >
           <h4><q-icon class="text-primary float-left" style="padding-left: 20px" @click="$refs.logInSignUp.close()" name="close"/></h4>
@@ -75,7 +75,7 @@
 
 <style lang="scss">
   #corner {
-    background-image: url("../assets/CornerShop.png");
+    background-image: url("../../assets/CornerShop.png");
     background-repeat: no-repeat;
     background-size: cover;
   }

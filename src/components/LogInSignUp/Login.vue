@@ -3,25 +3,25 @@
     <!--------------login part----------->
     <h3>Log In</h3><br>
     <p>Log in to your account and access your corner!</p><br>
-    <q-input autofocus :error="loginError" color="tertiary" v-model="email" type="email" stack-label="Enter Your Email" clearable />
-    <q-input :error="loginError" color="tertiary" v-model="password" type="password" stack-label="Enter Your Password" v-on:keyup.enter="submitLogIn" clearable />
+    <q-input autofocus :error="loginError"  v-model="email" type="email" stack-label="Enter Your Email" clearable name="email"/>
+    <q-input :error="loginError"  v-model="password" type="password" stack-label="Enter Your Password" v-on:keyup.enter="submitLogIn" clearable />
     <small @click="$refs.forgotPassword.open()">forgot your password?</small>
     <br><br>
     <q-btn loader color="primary" @click="submitLogIn">Log In</q-btn>
-    <img class="float-right" src="../assets/basket.png" alt="" width="150px" height="150px">
+    <img class="float-right" src="../../assets/basket.png" alt="" width="150px" height="150px">
 
     <!--------------reset password part----------->
     <q-modal @close="resetSettings" ref="forgotPassword" content-css="padding: 20px">
       <div v-if="!resetClicked">
         <h5>Forgot Your Password?</h5><br>
         <p>No problem! Enter your email and new password.</p><br>
-        <q-input :error="resetError" color="tertiary" v-model="email" type="email" stack-label="Enter Your Email" clearable />
+        <q-input :error="resetError" color="tertiary" v-model="email" type="email" stack-label="Enter Your Email" clearable name="email"/>
         <q-input :error="resetError" color="tertiary" v-model="newPassword" type="password" stack-label="Enter Your New Password" v-on:keyup.enter="resetPassword" clearable />
         <br><br>
         <q-btn loader color="primary" @click="resetPassword">Reset Password</q-btn>
         <q-btn class="float-right" color="tertiary" @click="$refs.forgotPassword.close()">close</q-btn>
         <br><br><br>
-        <img class="float-right" src="../assets/basket.png" alt="" width="150px" height="150px">
+        <img class="float-right" src="../../assets/basket.png" alt="" width="150px" height="150px">
       </div>
 
       <div v-if="resetClicked" style="max-width: 500px">
@@ -36,7 +36,7 @@
 
 <script>
   import { mapActions, mapMutations } from 'vuex'
-  import shop from '../api/shop'
+  import shop from '../../api/shop'
   import {
     QInput, QBtn, Cookies, LocalStorage
   } from 'quasar'
@@ -64,7 +64,8 @@
 //        'login',
         'retrieve',
         'getUserInfo',
-        'retriesActiveCarts'
+        'retriesActiveCarts',
+        'getAddressBook'
       ]),
       ...mapMutations([
 //        'login',
@@ -93,6 +94,7 @@
           this.$store.commit('authenticationTrue')
           this.authenticationTrue()
           this.getUserInfo()
+          this.getAddressBook()
           this.retriesActiveCarts()
           this.$router.push('/')
           // Router.push('/')

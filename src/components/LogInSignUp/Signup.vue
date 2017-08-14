@@ -1,15 +1,23 @@
 <template>
   <div class="group" style="padding: 0px">
     <h3>Sign Up</h3><br>
-    Are you a shopper or shop owner?
+    Are you a user or store owner?
+    <q-tabs :refs="$refs" v-model="formTab" no-pane-border color="white" >
+      <q-tab default slot="title" name="login" label="User" class="text-tertiary text-bold"/>
+      <q-tab slot="title" name="signup" label="Store Owner"class="text-tertiary text-bold" />
+
+      <!--<q-tab-pane name="login"><login></login></q-tab-pane>-->
+      <!--<q-tab-pane v-if="!signedup" name="signup"><sign-up v-on:submit="signedup = true"></sign-up></q-tab-pane>-->
+    </q-tabs>
+
     <p>Signup and join YOUR corner!
       Groceries, wine, and more!</p>
     <br>
-    <q-input v-model="email" type="email" stack-label="Enter Your Email" clearable />
+    <q-input v-model="email" type="email" stack-label="Enter Your Email" clearable name="email"/>
     <q-input v-model="password" type="password" stack-label="Enter Your password" clearable @keyup.enter="submit"/>
     <br>
     <q-btn loader color="primary" @click="submit">Sign Up</q-btn>
-    <img class="float-right" src="../assets/basket.png" alt="" width="150px" height="150px">
+    <img class="float-right" src="../../assets/basket.png" alt="" width="150px" height="150px">
   </div>
 </template>
 
