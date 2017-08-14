@@ -3,8 +3,8 @@
     <!--------------login part----------->
     <h3>Log In</h3><br>
     <p>Log in to your account and access your corner!</p><br>
-    <q-input autofocus :error="loginError" color="tertiary" v-model="email" type="email" stack-label="Enter Your Email" clearable />
-    <q-input :error="loginError" color="tertiary" v-model="password" type="password" stack-label="Enter Your Password" v-on:keyup.enter="submitLogIn" clearable />
+    <q-input autofocus :error="loginError" color="tertiary" v-model="email" type="email" stack-label="Enter Your Email" name="email" clearable />
+    <q-input :error="loginError" color="tertiary" v-model="password" type="password" stack-label="Enter Your Password" name="password" v-on:keyup.enter="submitLogIn" clearable />
     <small @click="$refs.forgotPassword.open()">forgot your password?</small>
     <br><br>
     <q-btn loader color="primary" @click="submitLogIn">Log In</q-btn>
