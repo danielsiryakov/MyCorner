@@ -9,7 +9,8 @@ const state = {
     }
   },
   address_book: [],
-  defaultAddress: {}
+  defaultAddress: {},
+  wallet: []
 }
 
 const actions = {
@@ -25,6 +26,14 @@ const actions = {
     shop.retrieveAddressBook(addressBook => {
       commit('setAddressBook', addressBook)
     })
+  },
+  getWallet ({commit}) {
+    shop.userWalletRetrieve(wallet => {
+      commit('setUserWallet', wallet)
+    })
+  },
+  addWallet ({commit}, id) {
+    shop.userWalletAdd(id)
   }
   // async addUserAddress ({commit}, address) {
   //   await setTimeout(() => {
@@ -45,6 +54,9 @@ const mutations = {
   },
   setDefaultAddress (state, defaultAddress) {
     state.defaultAddress = defaultAddress
+  },
+  setUserWallet (state, wallet) {
+    state.wallet = wallet
   }
 }
 

@@ -7,13 +7,8 @@
 
     <div v-show="hasNonEmptyCart">
       <q-list multiline no-border inset-separator	sparse highlight
-              v-show="hasNonEmptyCart"
+              v-if="hasNonEmptyCart"
               v-for="(cart, key) in carts" :key="key">
-<!--<<<<<<< HEAD-->
-        <!--<q-list-header class="text-bold" inset><q-icon name="shopping_cart"/> {{ cart.store_name }}</q-list-header>-->
-        <!--<q-item class="bg-white" v-for="p in cart.products" :key="p.asset_id" v-if="p.quantity > 0">-->
-
-<!--=======-->
         <q-list-header v-if="cart.totals.subtotal" class="text-bold" inset>
           <q-icon name="shopping_cart"/>{{ formattedTitle(cart.store_name) }}
         </q-list-header>
@@ -32,11 +27,11 @@
             <!--style: 'currency',-->
             <!--currency: 'USD',-->
           <!--}) }}-->
-        <q-list slot="footer" v-if="cart.totals.subtotal">
+        <q-list no-border slot="footer" v-if="cart.totals.subtotal">
           <br>
           <span class="text-bold" style="padding-left: 20px;">Cart Subtotal:</span>
-          <span>{{ formattedPrice(cart.totals.subtotal) }}</span>
-          <q-btn color="primary" :disabled="true" @click="" class="on-right">Checkout</q-btn>
+          <span>{{ formattedPrice(cart.totals.subtotal) }}</span><br><br>
+          <q-btn  color="primary" :disabled="true" @click="" class="full-width">Checkout</q-btn>
         </q-list>
 
       </q-list>

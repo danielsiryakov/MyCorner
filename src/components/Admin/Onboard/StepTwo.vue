@@ -58,10 +58,10 @@
           </div>
         </q-field>
       </div>
-      <div class="col-12">
+      <div class="col-12 group">
         <q-field icon="access_time">
           <div v-for="(day_hours,day) in StepTwoForm.working_hours" >
-            <span class="text-tertiary">{{ day }}:</span><br>
+            <span class="text-tertiary text-bold">{{ capitalizeFirstLetter(day) }}:</span><br>
             <q-datetime-range @change="update_working_hours(StepTwoForm.working_hours)"
                               color="primary"
                               v-model="day_hours.hours"
@@ -250,6 +250,9 @@
       ]),
       getAddressData: function (addressData, placeResultData) {
         this.address = addressData
+      },
+      capitalizeFirstLetter (string) {
+        return string.charAt(0).toUpperCase() + string.slice(1)
       }
     },
     computed: {

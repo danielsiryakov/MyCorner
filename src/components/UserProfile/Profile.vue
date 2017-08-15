@@ -27,7 +27,14 @@
               </q-collapsible>
               <q-collapsible label="Your Wallet">
                 <div>
-                  Content
+                  <card class='stripe-card'
+                        :class='{ complete }'
+                        :stripe= stripeKey
+                        :options='stripeOptions'
+                        @change='complete = $event.complete'
+                  />
+                  <q-btn class='pay-with-stripe' @click='pay' :disabled='!complete'>Pay with credit card</q-btn>
+                  {{ wallet }}
                 </div>
               </q-collapsible>
             </q-list>
@@ -55,21 +62,31 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
+  import { Card, createToken } from 'vue-stripe-elements'
+  import { stripeKey, stripeOptions } from '../Admin/Onboard/stripeConfig.json'
   import shop from '../../api/shop'
   import AddressEdit from './AddressEdit.vue'
   export default {
     components: {
-      AddressEdit
+      AddressEdit,
+      Card
     },
     computed: {
       ...mapGetters([
         'user'
-      ])
+      ]),
+      wallet: {
+        get () {
+          return this.$store.state.userInfo.wallet
+        }
+      }
     },
     methods: {
       ...mapActions([
         'getUserInfo',
-        'logout'
+        'logout',
+        'getWallet',
+        'addWallet'
       ]),
       editAddress (address) {
         this.selectedAddress = address
@@ -77,14 +94,29 @@
       },
       makeDefault () {
         shop.changeDefaultAddress(this.selectedAddress.address_id)
+      },
+      pay () {
+        // createToken returns a Promise which resolves in a result object with
+        // either a token or an error key.
+        // See https://stripe.com/docs/api#tokens for the token object.
+        // See https://stripe.com/docs/api#errors for the error object.
+        // More general https://stripe.com/docs/stripe.js#stripe-create-token.
+        createToken().then(data => {
+          shop.userWalletAdd(data.token.id)
+          console.log(data.token)
+        })
       }
     },
     created () {
       this.getUserInfo()
+      this.getWallet()
     },
     data () {
       return {
-        selectedAddress: {}
+        selectedAddress: {},
+        complete: false,
+        stripeKey: stripeKey,
+        stripeOptions: stripeOptions
       }
     }
   }
@@ -95,5 +127,10 @@
     font-weight: bold;
     font-size: larger;
     color: #0f1f38;
+  }
+  .stripe-card {
+  }
+  .stripe-card.complete {
+    border-color: green;
   }
 </style>

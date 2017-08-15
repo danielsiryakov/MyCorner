@@ -14,6 +14,8 @@ const ADDRESS_BOOK_RETRIEVE = API_URL + 'user/address_book/retrieve'
 const ADDRESS_BOOK_RETRIEVE_DEFAULT = API_URL + 'user/address_book/retrieve/default'
 const ADDRESS_BOOK_ADD = API_URL + 'user/address_book/add'
 const ADDRESS_BOOK_DEFAULT_CHANGE = API_URL + 'user/address_book/default/change'
+const USER_WALLET_RETRIEVE = API_URL + 'user/wallet/retrieve'
+const USER_WALLET_ADD = API_URL + 'user/wallet/add?stripe_src='
 // import { Cookies } from 'quasar'
 import {
   Loading,
@@ -139,6 +141,22 @@ export default {
   },
   changeDefaultAddress (id, cb) {
     axios.get(ADDRESS_BOOK_DEFAULT_CHANGE + '?address_id=' + id).then(response => {
+      cb(response.data)
+      // console.log(response)
+    }).catch(error => {
+      console.log(error)
+    })
+  },
+  userWalletRetrieve (cb) {
+    axios.get(USER_WALLET_RETRIEVE).then(response => {
+      cb(response.data)
+      // console.log(response)
+    }).catch(error => {
+      console.log(error)
+    })
+  },
+  userWalletAdd (id, cb) {
+    axios.get(USER_WALLET_ADD + id).then(response => {
       cb(response.data)
       // console.log(response)
     }).catch(error => {
