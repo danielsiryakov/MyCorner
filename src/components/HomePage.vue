@@ -33,7 +33,7 @@
       <!--<q-search icon="location_on" :debounce="0" inverted color="primary light" v-model="searchValue" @enter="searchForStores"></q-search>-->
     </q-toolbar>
 
-    <q-tabs inverted color="tertiary" slot="navigation">
+    <q-tabs inverted color="tertiary" class="bg-white" slot="navigation">
       <q-route-tab hide="label" label="Home" slot="title" name="home" icon="home" to="/"/>
       <q-route-tab hide="label" label="Search Stores" slot="title" name="store_search" icon="search" to="/store_search"/>
       <!--<q-route-tab slot="title" name="store" icon="store" :to="{name: 'store', params: {id: ''}}"/>-->

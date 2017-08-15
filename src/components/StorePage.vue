@@ -1,6 +1,7 @@
 <template>
   <q-layout
     ref="layoutTwo"
+    class="bg-light"
     :view="layoutStore.view"
     :right-breakpoint="layoutStore.rightBreakpoint"
     :reveal="true">
@@ -34,15 +35,11 @@
           </div>
           <br>
           <div class="row">
-            <div v-for="(cat, index) in allProducts" :key="index">
+            <q-collapsible opened :label="cat.name" v-for="(cat, index) in allProducts" :key="index">
               <q-card inline flat style="width: 30vh; height: 30vh" class="col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
-
                 <q-card-media overlay-position="bottom" style="padding: 20px">
-
                   <img :src="p.image" >
-
                   <q-card-title class="text-condensed" slot="overlay">
-
                     {{p.title.substring(0,30)}}...<br>
                     <!--{{getProductCartQuantity(id, p.id).quantity}}-->
                     <span class="text-bold">${{p.price_cents / 100}}</span>
@@ -52,8 +49,7 @@
                 </q-card-media>
 
               </q-card>
-            </div>
-                <!--</q-collapsible>-->
+            </q-collapsible>
           </div>
         </div>
       </div>
@@ -136,13 +132,16 @@
         this.$refs.productModal.close()
       },
       productCartQuantity (productID) {
-        let cartProduct = this.getCartByStore(this.id).products.find(product => product.asset_id === productID)
-        this.cartProducts = this.getCartByStore(this.id).products
-        if (cartProduct) {
-          return cartProduct.quantity
-        }
-        else {
-          return cartProduct
+        let storeCart = this.getCartByStore(this.id)
+        if (storeCart) {
+          let cartProduct = storeCart.products.find(product => product.asset_id === productID)
+//          this.cartProducts = this.getCartByStore(this.id).products
+          if (cartProduct) {
+            return cartProduct.quantity
+          }
+          else {
+            return cartProduct
+          }
         }
       }
 //      getProducts: function () {
