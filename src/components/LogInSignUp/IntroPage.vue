@@ -4,7 +4,7 @@
       <div class="sm-width-1of1 md-width-1of1 bg-width-5of5 lg-width-3of5">
         <img src="../../assets/fulllogo.png" style="max-height: 8%; max-width: 80%">
 
-        <q-modal ref="logInSignUp" transition="fade" >
+        <q-modal ref="logInSignUp" transition="fade" :content-css="{maxWidth: '500px', maxHeight: '500px'}">
           <h4><q-icon class="text-primary float-left" style="padding-left: 20px" @click="$refs.logInSignUp.close()" name="close"/></h4>
           <br><br>
           <div class="">
@@ -16,7 +16,7 @@
               <q-tab-pane v-if="!signedup" name="signup"><sign-up v-on:submit="signedup = true"></sign-up></q-tab-pane>
             </q-tabs>
 
-            <div v-if="signedup" class="layout-padding">
+            <div v-if="signedup" style="padding: 20px;">
               <h4>we sent you a confirmation email!</h4><br>
               <big class="text-tertiary">
                 Confirm your email address and start shopping for everything you love!

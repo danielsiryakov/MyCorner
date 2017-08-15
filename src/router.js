@@ -25,18 +25,18 @@ const Router = new VueRouter({
       meta: {Auth: true, name: 'home'},
       children: [
         {path: '/store_search', meta: { Auth: true }, component: StoresListPage},
-        {path: '/cart', component: load('CartPage')},
+        {path: '/cart', meta: { Auth: true }, component: load('CartPage')},
         {path: '/user/:id', meta: { Auth: true }, name: 'profile', component: load('UserProfile/Profile'), props: true}
       ]
     },
-    {path: '/store/:id', name: 'store', component: load('StorePage'), props: true},
-    {path: '/product/:id', component: load('ProductPage')},
-    {path: '/store-sign-up', component: load('Admin/Onboard/Store_Onboarding_Page')},
+    {path: '/store/:id', meta: { Auth: true }, name: 'store', component: load('StorePage'), props: true},
+    {path: '/product/:id', meta: { Auth: true }, component: load('ProductPage')},
+    {path: '/store-sign-up', meta: { Auth: true }, component: load('Admin/Onboard/Store_Onboarding_Page')},
     {path: '/admin',
       component: load('Admin/Dashboard'),
       children: [
-        {path: '/admin/store', component: load('Admin/StoreInfo')},
-        {path: '/admin/products', component: load('Admin/ProductView')}
+        {path: '/admin/store', meta: { Auth: true }, component: load('Admin/Onboard/StepTwo')},
+        {path: '/admin/products', meta: { Auth: true }, component: load('Admin/Onboard/StepThree')}
       ]
     },
     {
