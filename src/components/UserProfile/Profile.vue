@@ -26,16 +26,15 @@
                 </div>
               </q-collapsible>
               <q-collapsible label="Your Wallet">
-                <div>
+                <q-collapsible label="Add a CC to your wallet">
                   <card class='stripe-card'
                         :class='{ complete }'
                         :stripe= stripeKey
                         :options='stripeOptions'
                         @change='complete = $event.complete'
                   />
-                  <q-btn class='pay-with-stripe' @click='pay' :disabled='!complete'>Pay with credit card</q-btn>
-                  {{ wallet }}
-                </div>
+                  <q-item-side right color="primary"><q-btn class='pay-with-stripe' @click='pay' :disabled='!complete'>Save</q-btn></q-item-side>
+                </q-collapsible>
               </q-collapsible>
             </q-list>
             <q-modal ref="addressDisplay" class="minimized" :content-css="{padding: '20px', maxWidth: '500px', maxHeight: '300px'}">
@@ -103,8 +102,8 @@
         // More general https://stripe.com/docs/stripe.js#stripe-create-token.
         createToken().then(data => {
           shop.userWalletAdd(data.token.id)
-          console.log(data.token)
         })
+        shop.userWalletRetrieve()
       }
     },
     created () {
