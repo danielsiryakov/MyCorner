@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="21d65ece-150f-469c-b255-ae2799613de3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/api/shop.js" afterPath="$PROJECT_DIR$/src/api/shop.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Admin/Onboard/StepTwo.vue" afterPath="$PROJECT_DIR$/src/components/Admin/Onboard/StepTwo.vue" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Admin/Onboard/stripeConfig.json" afterPath="$PROJECT_DIR$/src/components/Admin/Onboard/stripeConfig.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/CartPage.vue" afterPath="$PROJECT_DIR$/src/components/CartPage.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/List_Of_Stores.vue" afterPath="$PROJECT_DIR$/src/components/List_Of_Stores.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/StorePage.vue" afterPath="$PROJECT_DIR$/src/components/StorePage.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/UserProfile/Profile.vue" afterPath="$PROJECT_DIR$/src/components/UserProfile/Profile.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/index.html" afterPath="$PROJECT_DIR$/src/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/store/VuexModules/user_info.js" afterPath="$PROJECT_DIR$/src/store/VuexModules/user_info.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -85,8 +76,8 @@
       <file leaf-file-name="stripeConfig.json" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/Admin/Onboard/stripeConfig.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="462">
-              <caret line="22" column="2" lean-forward="false" selection-start-line="22" selection-start-column="2" selection-end-line="22" selection-end-column="2" />
+            <state relative-caret-position="441">
+              <caret line="21" column="1" lean-forward="false" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -487,12 +478,12 @@
       <workItem from="1501284479257" duration="71000" />
       <workItem from="1501285252616" duration="60092000" />
       <workItem from="1502294785574" duration="34438000" />
-      <workItem from="1502667572541" duration="27369000" />
+      <workItem from="1502667572541" duration="27405000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="356177000" />
+    <option name="totallyTimeSpent" value="356213000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -963,8 +954,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Admin/Onboard/stripeConfig.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="22" column="2" lean-forward="false" selection-start-line="22" selection-start-column="2" selection-end-line="22" selection-end-column="2" />
+        <state relative-caret-position="441">
+          <caret line="21" column="1" lean-forward="false" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
           <folding />
         </state>
       </provider>
