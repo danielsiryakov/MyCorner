@@ -2,10 +2,9 @@
   <div>
     <div>
       <h4 class="text-dark text-bold">Enter Products for {{current_category.name}}</h4>
-      <q-btn outline color="tertiary" @click="create_product_modal_view=true">
-        New Product
-      </q-btn>
-      <br><br>
+      <!--<q-btn outline color="tertiary" @click="create_product_modal_view=true">-->
+        <!--New Product-->
+      <!--</q-btn>-->
       <q-search inverted placeholder="Search for Products to Add!" v-model="terms" v-if="create_product_modal_view">
         <q-autocomplete
           separator
@@ -30,12 +29,11 @@
         <img :src="new_product.image" alt="" height="200px" width="200px">
         <br>
       </div>
-      <div v-if="new_product.image" class="item">
+      <br>
         <div class="item-content">
           <q-btn color="primary" @click="add_product()">Add Product</q-btn>
-          <q-btn outline class="negative float-right" @click="reset_temp_product()">Cancel</q-btn>
+          <q-btn outline class="negative float-right" @click="reset_temp_product()">Reset Product</q-btn>
         </div>
-      </div>
       <br>
     </div>
       <!--Category products-->
@@ -106,11 +104,11 @@
           description: '',
           price_cents: '' // different for variants but top level for product list
         }
-        this.create_product_modal_view = false
+        this.create_product_modal_view = true
       },
       add_product: function () {
         this.productAddedToast()
-        this.create_product_modal_view = false
+        this.create_product_modal_view = true
         // ajax call to verify and queue storing
         this.current_category.products.push({
           image: this.new_product.image,
@@ -140,9 +138,9 @@
     data () {
       return {
         terms: '',
-        newProduct: false,
+        newProduct: true,
         checked: false,
-        create_product_modal_view: false,
+        create_product_modal_view: true,
         temp_category_prods: [],
         asset_id: '',
         new_product: {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="">
+    <div class="layout-padding">
       <div class="panel panel-default">
         <div class="panel-heading categories_header">
           <h5 class="text-tertiary text-bold">Add Item Categories</h5>
@@ -17,11 +17,10 @@
       </div>
       <br>
       <div v-if="categories.length > 0" class="panel-body">
-        <q-list>
+        <q-list inset-separator	>
           <draggable v-model="categories">
             <transition-group name="list-complete">
-
-              <q-item v-for="(category, cindex) in categories" v-bind:key="category.name">
+              <q-item separator v-for="(category, cindex) in categories" v-bind:key="category.name">
                 <q-input type="text"
                        v-if="category.edit"
                        v-model="category.new_c_name"
@@ -33,16 +32,24 @@
                 <q-item-main class="text-bold" v-if="!category.edit">
                   {{ category.name }}
                 </q-item-main>
-                <q-item-side v-if="!category.edit" class="group">
-                  <q-icon name="mode_edit" class="text-tertiary" v-on:click="prepCategoryUpdateState(cindex)"/>
-                  <q-icon name="add" class="text-primary" v-bind:key="category.showNewPostModal" @click="$refs.basicModal.open(); current_category = cindex"/>
+                <q-item-side v-if="!category.edit" class="">
+                  <q-btn icon="mode_edit" class="text-tertiary" v-on:click="prepCategoryUpdateState(cindex)">
+                    Edit
+                  </q-btn>
+
+                  <q-btn icon="add_box" color="primary" class="text-primary" v-bind:key="category.showNewPostModal" @click="$refs.basicModal.open(); current_category = cindex">
+                    <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
+                      Add Products in Category
+                    </q-tooltip>
+                    Products
+                  </q-btn>
                   <q-icon name="delete" class="text-negative" v-on:click="removeCategory(cindex)"/>
                 </q-item-side>
-
               </q-item>
             </transition-group>
           </draggable>
         </q-list>
+        <span class="text-italic">Tip: drag and drop to change category order </span><br>
       </div>
       <q-modal ref="basicModal" v-if="categories.length > 0" :content-css="{padding: '20px', minWidth: '50vw'}">
         <modal :current_category="categories[current_category]"></modal>

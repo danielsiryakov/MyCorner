@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-  <div>
+  <div class="layout-padding">
     <div class="row sm-gutter">
       <div class="col-12">
         <h5 class="text-tertiary text-bold">Enter Store Information</h5>

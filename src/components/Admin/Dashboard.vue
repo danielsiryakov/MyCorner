@@ -4,7 +4,7 @@
     :left-breakpoint="800"
     :view="'hHr LpR lFr'"
     :reveal="true"
-    class="bg-dark text-white"
+    class=""
   >
     <q-toolbar inverted color="primary" class="text-tertiary" slot="header">
       <q-btn class="hide-me" flat @click="$refs.layoutD.toggleLeft()">
@@ -17,7 +17,7 @@
     </q-toolbar>
 
 
-    <q-scroll-area slot="left" class="bg-dark" style="width: 100%; height: 100%">
+    <q-scroll-area slot="left" class="bg-light " style="width: 100%; height: 100%">
       <drawer></drawer>
     </q-scroll-area>
 
