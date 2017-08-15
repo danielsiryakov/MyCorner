@@ -10,7 +10,7 @@
               v-show="Object.keys(carts).length > 0"
               v-for="(cart, key) in carts" :key="key">
         <q-list-header class="text-bold" inset><q-icon name="shopping_cart"/> {{ cart.store_name }}</q-list-header>
-        <q-item class="bg-white" v-for="p in cart.products" :key="p.asset_id" v-if="p.quantity > -1">
+        <q-item class="bg-white" v-for="p in cart.products" :key="p.asset_id" v-if="p.quantity > 0">
 
           <q-item-side :avatar="p.image">
             <q-item-tile>
@@ -23,7 +23,7 @@
         </q-item>
         <br>
         <span class="text-bold" style="padding-left: 20px;">Cart Total:</span>
-          {{ (cart.totals.total/100).toLocaleString('en-US', {
+          {{ (cart.totals.subtotal/100).toLocaleString('en-US', {
             style: 'currency',
             currency: 'USD',
           }) }}
