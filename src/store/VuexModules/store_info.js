@@ -258,6 +258,7 @@ const mutations = {
   },
   update_full_store (state, store) {
     state.dashboardStore = store
+    state.store = store
   },
   update_store_selection (state, value) {
     state.selectedStore = value

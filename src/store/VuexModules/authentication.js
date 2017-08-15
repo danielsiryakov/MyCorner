@@ -18,6 +18,7 @@ const actions = {
         password: creds.password
       }
     }).then(function (response) {
+      console.log(response.data)
       Cookies.set('userID', response.data.login.userID, {
         path: '/',
         expires: 10
