@@ -158,7 +158,8 @@ export default {
   userWalletAdd (id, cb) {
     axios.get(USER_WALLET_ADD + id).then(response => {
       cb(response.data)
-      console.log(response)
+      axios.defaults.headers.common['authtoken'] = response.data.login.authtoken
+      axios.defaults.headers.common['userID'] = response.data.login.userID
     }).catch(error => {
       console.log(error)
     })

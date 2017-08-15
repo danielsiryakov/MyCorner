@@ -61,8 +61,8 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import { Card, createToken } from 'vue-stripe-elements'
   import { stripeKey, stripeOptions } from '../Admin/Onboard/stripeConfig.json'
+  import { Card, createToken } from 'vue-stripe-elements'
   import shop from '../../api/shop'
   import AddressEdit from './AddressEdit.vue'
   export default {
