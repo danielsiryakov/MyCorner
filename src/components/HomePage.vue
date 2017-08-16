@@ -28,7 +28,7 @@
         :enableGeolocation="true"
         class="locationSearch full-width"
       >
-        <q-input></q-input>
+        <!--<q-input></q-input>-->
       </vue-google-autocomplete>
       <!--<q-search icon="location_on" :debounce="0" inverted color="primary light" v-model="searchValue" @enter="searchForStores"></q-search>-->
     </q-toolbar>
@@ -83,7 +83,8 @@
     QItemMain,
     QSideLink,
     QListHeader,
-    QScrollArea
+    QScrollArea,
+    Dialog
   } from 'quasar'
 
   import layoutStore from '../store/otherJS/layout-store'
@@ -117,36 +118,62 @@
         'addUserAddress'
       ]),
       ...mapMutations([
-        'userAddress',
+        'setDefaultAddress',
         'formattedAddress'
       ]),
       getLocation (addressData, placeResultData) {
-        axios.post(ADDRESS_BOOK_ADD, JSON.stringify(
-          {
-            street_number: addressData.street_number,
-            route: addressData.route,
-            administrative_area_level_1: addressData.administrative_area_level_1,
-            country: addressData.country,
-            postal_code: addressData.postal_code,
-            latitude: addressData.latitude,
-            longitude: addressData.longitude,
-            city: 'Brooklyn',
-            line1: placeResultData.formatted_address,
-            name: 'Home'
-          }
-        )).then(response => {
-          console.log(response)
-        }).catch(error => {
-          console.log(error)
-        })
-        this.address = addressData
+        Dialog.create({
+          title: 'Add Address',
+          message: 'Do you want to add address to Address Book? ',
+          buttons: [
+            {
+              label: 'Add',
+              handler: () => {
+                axios.post(ADDRESS_BOOK_ADD, JSON.stringify(
+                  {
+                    street_number: addressData.street_number,
+                    route: addressData.route,
+                    administrative_area_level_1: addressData.administrative_area_level_1,
+                    country: addressData.country,
+                    postal_code: addressData.postal_code,
+                    latitude: addressData.latitude,
+                    longitude: addressData.longitude,
+                    city: 'Brooklyn',
+                    line1: placeResultData.formatted_address,
+                    name: 'Home'
+                  }
+                )).then(response => {
+                  console.log(response)
+                }).catch(error => {
+                  console.log(error)
+                })
+                this.address = addressData
 //        this.addUserAddress(JSON.stringify(addressData))
-        this.address2 = placeResultData
-        this.userAddress(addressData)
+                this.address2 = placeResultData
+                this.setDefaultAddress(addressData)
 //        this.getAllStores()
-        this.formattedAddress(placeResultData)
-        this.$refs.addressSearch.clear()
-        this.searchForStores()
+                this.formattedAddress(placeResultData)
+                this.$refs.addressSearch.clear()
+                this.searchForStores()
+              }
+            },
+            {
+              label: 'Cancel',
+              color: 'negative',
+              handler: () => {
+                this.address = addressData
+//        this.addUserAddress(JSON.stringify(addressData))
+                this.address2 = placeResultData
+                this.setDefaultAddress(addressData)
+//        this.getAllStores()
+                this.formattedAddress(placeResultData)
+                this.$refs.addressSearch.clear()
+                this.searchForStores()
+              }
+            }
+          ]
+        // empty the trash bin, yo
+        })
 
 //        if (navigator.geolocation) {
 //          navigator.geolocation.getCurrentPosition((position) => {
@@ -241,6 +268,9 @@
     box-shadow: inset 0 1px 2px rgba(10,10,10,.1);
     max-width: 100%;
     width: 100%;
+  }
+  locationSearch:focus {
+    border: 1px solid #40dba1;
   }
   .siginup {
     /*padding-left: 50px;*/

@@ -14,13 +14,14 @@ const state = {
 }
 
 const actions = {
-  async getUserInfo ({commit}) {
+  async getUserInfo ({dispatch, commit}) {
     shop.userInfo(info => {
       commit('setUserInfo', info)
     })
     shop.retrieveAddressBookDefualt(addressBook => {
       commit('setDefaultAddress', addressBook)
     })
+    dispatch('getAddressBook')
   },
   getAddressBook ({commit}) {
     shop.retrieveAddressBook(addressBook => {
@@ -72,6 +73,9 @@ const getters = {
       if ((rootState.storeSearch.address2.formatted_address === 'Type Your Address') || (rootState.storeSearch.address2.formatted_address === defaultAddress.line1)) {
         return defaultAddress.line1
         // return '1'
+      }
+      else {
+        return rootState.storeSearch.address2.formatted_address
       }
     }
     else {

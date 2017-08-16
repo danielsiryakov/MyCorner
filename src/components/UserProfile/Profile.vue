@@ -4,10 +4,10 @@
         <div class="row justify-center">
           <div class="col-lg-8">
             <h4 class="text-bold">Profile Information</h4>
-            <q-list highlight class="bg-white">
+            <q-list separator	highlight class="bg-white">
               <q-list-header>{{ user.email }}</q-list-header>
-              <q-collapsible indent label="Address Book">
-                <q-item class="group" v-for="address in this.$store.state.userInfo.address_book" :key="address.id">
+              <q-collapsible opened indent label="Address Book">
+                <q-item  class="group" v-for="address in this.$store.state.userInfo.address_book" :key="address.id">
                   <span class="text-bold" style="padding-right: 10px">{{address.name}}: </span> {{address.line1}}
                   <q-chip v-if="address.default" small color="amber-9">default</q-chip>
                   <q-item-side right color="primary">
@@ -15,17 +15,17 @@
                   </q-item-side>
                 </q-item>
               </q-collapsible>
-              <q-collapsible label="Track Your Order">
+              <q-collapsible opened label="Track Your Order">
                 <div>
                   Content
                 </div>
               </q-collapsible>
-              <q-collapsible label="Past Orders/ Reorder">
+              <q-collapsible opened label="Past Orders/ Reorder">
                 <div>
                   Content
                 </div>
               </q-collapsible>
-              <q-collapsible label="Your Wallet">
+              <q-collapsible opened label="Your Wallet">
                 <q-item-side right color="primary"><q-btn class='pay-with-stripe' @click='customButton'>Add CC to your wallet</q-btn></q-item-side>
               </q-collapsible>
             </q-list>
@@ -116,6 +116,9 @@
       },
       makeDefault () {
         shop.changeDefaultAddress(this.selectedAddress.address_id)
+        this.$refs.addressDisplay.close()
+        this.getUserInfo()
+        this.getWallet()
       }
 //      pay () {
 //        // createToken returns a Promise which resolves in a result object with
