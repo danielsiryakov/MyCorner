@@ -26,15 +26,7 @@
                 </div>
               </q-collapsible>
               <q-collapsible label="Your Wallet">
-                <q-collapsible label="Add a CC to your wallet">
-                  <card class='stripe-card'
-                        :class='{ complete }'
-                        :stripe= stripeKey
-                        :options='stripeOptions'
-                        @change='complete = $event.complete'
-                  />
-                  <q-item-side right color="primary"><q-btn class='pay-with-stripe' @click='pay' :disabled='!complete'>Save</q-btn></q-item-side>
-                </q-collapsible>
+                <q-item-side right color="primary"><q-btn class='pay-with-stripe' @click='customButton'>Add CC to your wallet</q-btn></q-item-side>
               </q-collapsible>
             </q-list>
             <q-modal ref="addressDisplay" class="minimized" :content-css="{padding: '20px', maxWidth: '500px', maxHeight: '300px'}">
@@ -62,13 +54,13 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import { stripeKey, stripeOptions } from '../Admin/Onboard/stripeConfig.json'
-  import { Card, createToken } from 'vue-stripe-elements'
+  import StripeCheckout from 'stripe-checkout'
   import shop from '../../api/shop'
   import AddressEdit from './AddressEdit.vue'
   export default {
     components: {
-      AddressEdit,
-      Card
+      'stripe-checkout': StripeCheckout,
+      AddressEdit
     },
     computed: {
       ...mapGetters([
@@ -87,23 +79,28 @@
         'getWallet',
         'addWallet'
       ]),
+      customButton () {
+        const stripe = StripeCheckout({
+          key: this._data.stripeKey
+        })
+        stripe({
+          locale: 'auto',
+          name: 'Wallet',
+          description: 'Add a credit card to your wallet!',
+          allowRememberMe: false,
+          email: 'users@email.com',
+          image: './statics/iconDark.ico'
+        }).then(function (token) {
+          shop.userWalletAdd(token)
+          shop.userWalletRetrieve()
+        })
+      },
       editAddress (address) {
         this.selectedAddress = address
         this.$refs.addressDisplay.open()
       },
       makeDefault () {
         shop.changeDefaultAddress(this.selectedAddress.address_id)
-      },
-      pay () {
-        // createToken returns a Promise which resolves in a result object with
-        // either a token or an error key.
-        // See https://stripe.com/docs/api#tokens for the token object.
-        // See https://stripe.com/docs/api#errors for the error object.
-        // More general https://stripe.com/docs/stripe.js#stripe-create-token.
-        createToken().then(data => {
-          shop.userWalletAdd(data.token.id)
-        })
-        shop.userWalletRetrieve()
       }
     },
     created () {

@@ -27,6 +27,7 @@
     "vue-google-autocomplete": "^1.0.10",
     "vue-lazy-images": "^1.2.1",
     "vue-router": "^2.0.0",
+    "vue-stripe": "^0.1.3",
     "vue-stripe-elements": "0.0.3-2",
     "vue-time-picker": "^0.2.6",
     "vue2-timepicker": "^0.1.4",
