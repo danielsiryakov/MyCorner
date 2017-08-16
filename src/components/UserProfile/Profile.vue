@@ -66,6 +66,8 @@
   import { stripeKey, stripeOptions } from '../Admin/Onboard/stripeConfig.json'
   import shop from '../../api/shop'
   import AddressEdit from './AddressEdit.vue'
+  import axios from 'axios'
+  import {Cookies, LocalStorage} from 'quasar'
   export default {
     components: {
       AddressEdit,
@@ -102,7 +104,19 @@
         // See https://stripe.com/docs/api#errors for the error object.
         // More general https://stripe.com/docs/stripe.js#stripe-create-token.
         createToken().then(data => {
-          shop.userWalletAdd(data.token.id)
+          shop.userWalletAdd(data.token.id, response => {
+            Cookies.set('userID', response.data.login.userID, {
+              path: '/',
+              expires: 10
+            })
+            Cookies.set('authtoken', response.data.login.authtoken, {
+              path: '/',
+              expires: 10
+            })
+            axios.defaults.headers.common['authtoken'] = response.data.login.authtoken
+            axios.defaults.headers.common['userID'] = response.data.login.userID
+            LocalStorage.set('authtoken', response.data.login.authtoken)
+          })
           console.log(data.token)
         })
       }
