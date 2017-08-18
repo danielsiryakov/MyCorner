@@ -21,9 +21,10 @@ Vue.use(VueRouter)
 const Router = new VueRouter({
   routes: [
     {path: '/',
-      component: load('HomePage'),
-      meta: {Auth: true, name: 'home'},
+      component: load('HomePageLayout'),
+      meta: {Auth: true},
       children: [
+        {path: '/home', meta: { Auth: true, name: 'home' }, component: load('HomePage')},
         {path: '/store_search', meta: { Auth: true }, component: StoresListPage},
         {path: '/cart', meta: { Auth: true }, component: load('CartPage')},
         {path: '/user/:id', meta: { Auth: true }, name: 'profile', component: load('UserProfile/Profile'), props: true}
@@ -55,7 +56,12 @@ Router.beforeEach((to, from, next) => {
     next({path: '/login', replace: true})
   }
   else {
-    next()
+    if (to.path === '/') {
+      next({path: '/home', replace: true})
+    }
+    else {
+      next()
+    }
   }
 })
 
