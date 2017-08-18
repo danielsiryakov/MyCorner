@@ -21,8 +21,11 @@
                 </div>
               </q-collapsible>
               <q-collapsible opened label="Past Orders/ Reorder">
-                <div>
-                  Content
+                <div v-if="completedCarts.length > 0">
+                  {{ completedCarts }}
+                </div>
+                <div v-if="completedCarts.length === 0">
+                  No orders to show :/ order some products...they are good, we promise :)
                 </div>
               </q-collapsible>
               <q-collapsible opened label="Your Wallet">
@@ -69,9 +72,10 @@
         'user'
       ]),
       wallet: {
-        get () {
-          return this.$store.state.userInfo.wallet
-        }
+        get () { return this.$store.state.userInfo.wallet }
+      },
+      completedCarts: {
+        get () { return this.$store.state.userInfo.completedCarts }
       }
     },
     methods: {
@@ -79,7 +83,8 @@
         'getUserInfo',
         'logout',
         'getWallet',
-        'addWallet'
+        'addWallet',
+        'getCompletedCarts'
       ]),
       customButton () {
         const stripe = StripeCheckout({
@@ -120,33 +125,11 @@
         this.getUserInfo()
         this.getWallet()
       }
-//      pay () {
-//        // createToken returns a Promise which resolves in a result object with
-//        // either a token or an error key.
-//        // See https://stripe.com/docs/api#tokens for the token object.
-//        // See https://stripe.com/docs/api#errors for the error object.
-//        // More general https://stripe.com/docs/stripe.js#stripe-create-token.
-//        createToken().then(data => {
-//          shop.userWalletAdd(data.token.id, response => {
-//            Cookies.set('userID', response.data.login.userID, {
-//              path: '/',
-//              expires: 10
-//            })
-//            Cookies.set('authtoken', response.data.login.authtoken, {
-//              path: '/',
-//              expires: 10
-//            })
-//            axios.defaults.headers.common['authtoken'] = response.data.login.authtoken
-//            axios.defaults.headers.common['userID'] = response.data.login.userID
-//            LocalStorage.set('authtoken', response.data.login.authtoken)
-//          })
-//          console.log(data.token)
-//        })
-//      }
     },
     created () {
       this.getUserInfo()
       this.getWallet()
+      this.getCompletedCarts()
     },
     data () {
       return {

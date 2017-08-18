@@ -7,6 +7,7 @@ const UPDATECART = API_URL + 'cart/update/product/quantity'
 const USER_RETRIEVE = API_URL + 'user/retrieve'
 const STOREINFO = API_URL + 'store/info/retrieve/'
 const ACTIVE_CARTS = API_URL + 'carts/retrieve/active'
+const COMPLETED_CARTS = API_URL + 'carts/retrieve/completed'
 // const IMAGEUPLOAD = API_URL + 'assets/image/upload'
 const RETRIEVECARTS = API_URL + 'carts/retrieve/active'
 const STORE_RETRIEVE_FULL = API_URL + 'store/retrieve/full/'
@@ -14,6 +15,7 @@ const ADDRESS_BOOK_RETRIEVE = API_URL + 'user/address_book/retrieve'
 const ADDRESS_BOOK_RETRIEVE_DEFAULT = API_URL + 'user/address_book/retrieve/default'
 const ADDRESS_BOOK_ADD = API_URL + 'user/address_book/add'
 const ADDRESS_BOOK_DEFAULT_CHANGE = API_URL + 'user/address_book/default/change'
+// const ADDRESS_BOOK_ADDRESS_REMOVE = API_URL + 'user/address_book/remove_by_id:'
 const USER_WALLET_RETRIEVE = API_URL + 'user/wallet/retrieve'
 const USER_WALLET_ADD = API_URL + 'user/wallet/add?stripe_src='
 // import { Cookies } from 'quasar'
@@ -110,6 +112,13 @@ export default {
   },
   retrieveCarts (cb) {
     axios.get(RETRIEVECARTS).then(response => {
+      cb(response.data)
+    }).catch(error => {
+      console.log(error)
+    })
+  },
+  retrieveCompletedCarts (cb) {
+    axios.get(COMPLETED_CARTS).then(response => {
       cb(response.data)
     }).catch(error => {
       console.log(error)
