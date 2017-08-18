@@ -21,7 +21,7 @@
       <div class="layout-padding">
         <div class="row">
           <div class="">
-            <q-card class="bigger">'
+            <q-card class="bigger">
               <q-card-media overlay-position="bottom">
                 <img class="dimmed" :src="store.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">
                 <q-card-title slot="overlay">
