@@ -18,7 +18,7 @@
               <q-step name="second" title="Create Categories and Add Products" subtitle="">
                 <step-three></step-three>
                 <q-stepper-navigation>
-                  <q-btn color="primary" @click="$refs.stepper.next()">Next</q-btn>
+                  <q-btn color="primary" @click="$refs.stepper.next()">Continue</q-btn>
                   <q-btn color="secondary" flat @click="$refs.stepper.previous()">Back</q-btn>
                 </q-stepper-navigation>
               </q-step>

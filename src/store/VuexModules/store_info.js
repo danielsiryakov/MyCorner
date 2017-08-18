@@ -16,6 +16,7 @@ const state = {
     store_categories: []
   },
   store: {
+    email: '',
     platform_categories: ['Grocery', 'Corner Store'],
     working_hours: {
       thursday: {
@@ -91,15 +92,15 @@ const state = {
     tax_rate: 4.5,
     address: {
       street_number: '',
-      country: 'USA',
+      country: '',
       route: '',
-      postal_code: '11235',
-      longitude: -73.950,
-      latitude: 40.680,
-      administrative_area_level_1: 'NY'
+      postal_code: '',
+      longitude: '',
+      latitude: '',
+      administrative_area_level_1: ''
     },
-    short_description: 'some short description with words',
-    long_description: 'some long description with lots of words describing the store. more words',
+    short_description: '',
+    long_description: '',
     category_names: ['Grocery', 'Corner Store'],
     categories: []
   },
@@ -254,7 +255,7 @@ const mutations = {
     }
   },
   update_working_hours (state, workingHours) {
-    state.hours = workingHours
+    state.store.working_hours = workingHours
   },
   update_full_store (state, store) {
     state.dashboardStore = store

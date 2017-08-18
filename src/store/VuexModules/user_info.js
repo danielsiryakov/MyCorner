@@ -10,7 +10,8 @@ const state = {
   },
   address_book: [],
   defaultAddress: {},
-  wallet: []
+  wallet: [],
+  completedCarts: []
 }
 
 const actions = {
@@ -35,6 +36,11 @@ const actions = {
   },
   addWallet ({commit}, id) {
     shop.userWalletAdd(id)
+  },
+  getCompletedCarts ({commit}) {
+    shop.retrieveCompletedCarts(carts => {
+      commit('setCompletedCarts', carts)
+    })
   }
   // async addUserAddress ({commit}, address) {
   //   await setTimeout(() => {
@@ -58,6 +64,9 @@ const mutations = {
   },
   setUserWallet (state, wallet) {
     state.wallet = wallet
+  },
+  setCompletedCarts (state, carts) {
+    state.completedCarts = carts
   }
 }
 

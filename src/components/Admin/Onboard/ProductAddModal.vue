@@ -45,7 +45,7 @@
         <!--<q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>-->
         <img :src="product.image" alt="" width="100px" height="100px">
         {{product.title}}<br>
-        $ {{product.price_cents}}<br>
+        $ {{product.price_cents / 100}}<br>
         {{product.description}}
         <q-icon class="text-negative" @click="removeProduct(p_index)" name="delete"/>
       </q-item>

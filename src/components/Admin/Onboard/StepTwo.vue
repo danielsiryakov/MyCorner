@@ -9,6 +9,11 @@
                    :value = "name"
                    :after="[{icon: 'done', condition: name.length >= 1, handler () {}}]" clearable/>
         </q-field>
+        <q-field icon="mail">
+          <q-input v-model="email" type="email" float-label="Enter Email for Notifications" @input="$v.StepTwoForm.businessname.$touch()"
+                   :value = "email"
+                   :after="[{icon: 'done', condition: email.length >= 4, handler () {}}]" clearable/>
+        </q-field>
       </div>
       <div class="col-12">
         <q-field icon="location_on">
@@ -124,7 +129,7 @@
 </template>
 
 <script>
-  import {required, minLength} from 'vuelidate/lib/validators'
+  import {required, email, minLength} from 'vuelidate/lib/validators'
   import Cleave from 'vue-cleave'
   import VueGoogleAutocomplete from 'vue-google-autocomplete'
   import {
@@ -140,9 +145,10 @@
   export default {
     data () {
       return {
+        address2: '',
         StepTwoForm: {
+          email: '',
           businessname: '',
-          description: '',
           working_hours: {
             monday: {
               hours: {
@@ -195,7 +201,6 @@
             }
           },
           phone: '',
-          address: '',
           pickup: {
             service_offered: false,
             items: 25,
@@ -221,6 +226,7 @@
     },
     validations: {
       StepTwoForm: {
+        email: {required, email},
         businessname: {required},
         address: {required},
         phone: {required, minLength: minLength(10)}
@@ -249,7 +255,9 @@
         'update_working_hours'
       ]),
       getAddressData: function (addressData, placeResultData) {
-        this.address = addressData
+        this.address2 = addressData
+        this.address2['line1'] = placeResultData.formatted_address
+        this.address = this.address2
       },
       capitalizeFirstLetter (string) {
         return string.charAt(0).toUpperCase() + string.slice(1)
@@ -266,6 +274,13 @@
           this.StepTwoForm.businessname = value
         }
       },
+      email: {
+        get () { return this.$store.state.storeInfo.store.email },
+        set (value) {
+          this.$store.commit('update_store', {email: value})
+          this.StepTwoForm.email = value
+        }
+      },
       address: {
         get () { return this.$store.state.storeInfo.store.address },
         set (value) {
@@ -274,8 +289,8 @@
         }
       },
       description: {
-        get () { return this.$store.state.storeInfo.store.description },
-        set (value) { this.$store.commit('update_store', {description: value}) }
+        get () { return this.$store.state.storeInfo.store.short_description },
+        set (value) { this.$store.commit('update_store', {short_description: value}) }
       },
       phoneNumber: {
         get () { return this.$store.state.storeInfo.store.phone },
