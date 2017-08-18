@@ -5,43 +5,48 @@
       Please add some products to cart :/
     </p>
 
-    <div v-show="hasNonEmptyCart">
+    <div v-if="hasNonEmptyCart">
       <q-list multiline no-border inset-separator	sparse highlight
               v-if="hasNonEmptyCart"
               v-for="(cart, key) in carts" :key="key">
-        <q-list-header v-if="cart.totals.subtotal" class="text-bold" inset>
-          <q-icon name="shopping_cart"/>{{ formattedTitle(cart.store_name) }}
-        </q-list-header>
-        <q-item class="bg-white" v-for="p in cart.products" :key="p.asset_id" v-if="p.quantity && cart.totals.subtotal">
-          <q-item-side :avatar="p.image">
-            <q-item-tile>
-              {{ p.quantity }} x {{ formattedPrice(p.price_cents) }}
-            </q-item-tile>
-          </q-item-side>
-          <q-item-main>{{ formattedTitle(p.title) }}</q-item-main>
-          <q-icon name="delete" color="negative" @click="removeFromCart(p, cart)"></q-icon>
-        </q-item>
-        <br>
-        <!--<span class="text-bold" style="padding-left: 20px;">Cart Total:</span>-->
-          <!--{{ (cart.totals.subtotal/100).toLocaleString('en-US', {-->
-            <!--style: 'currency',-->
-            <!--currency: 'USD',-->
-          <!--}) }}-->
-        <q-list no-border slot="footer" v-if="cart.totals.subtotal">
+        <q-collapsible opened icon="shopping_cart" :label="formattedTitle(cart.store_name)" v-if="cart.totals.subtotal" class="" inset>
+          <q-side-link class="bg-tertiary text-white" item :to="{name: 'store', params: {id: cart.store_id}}" exact>< Shop for more items!</q-side-link>
           <br>
-          <span class="text-bold" style="padding-left: 20px;">Cart Subtotal:</span>
-          <span>{{ formattedPrice(cart.totals.subtotal) }}</span><br><br>
-          <q-btn  color="primary" :disabled="true" @click="" class="full-width">Checkout</q-btn>
-        </q-list>
+          <q-item class="bg-white" @click="open(p, cart)" v-for="p in cart.products" :key="p.asset_id" v-if="p.quantity && cart.totals.subtotal">
+            <q-item-side :avatar="p.image">
+              <q-item-tile>
+                {{ p.quantity }} x {{ formattedPrice(p.price_cents) }}
+              </q-item-tile>
+            </q-item-side>
+            <q-item-main>{{ formattedTitle(p.title) }}</q-item-main>
+            <q-icon name="delete" color="negative" @click="removeFromCart(p, cart)"></q-icon>
+          </q-item>
+          <br>
+            <span class="text-bold" style="padding-left: 20px;">Cart Subtotal:</span>
+            <span>{{ formattedPrice(cart.totals.subtotal) }}</span><br><br>
+            <q-btn  color="primary" :disabled="true" @click="" class="full-width">Checkout</q-btn>
+        </q-collapsible>
+        <!--<q-list-header v-if="cart.totals.subtotal" class="text-bold" inset>-->
+          <!--<q-icon name="shopping_cart"/>{{ formattedTitle(cart.store_name) }}-->
+        <!--</q-list-header>-->
 
       </q-list>
     </div>
+    <q-modal ref="productModal" class="minimized" :content-css="{padding: '20px', maxWidth: '500px', maxHeight: '500px'}">
+      <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.productModal.close()"/></h4>
+      <!--<i class="text-negative" @click="$refs.productModal.close()">close</i>-->
+      <product-page :product="ProductObject" :quantityProp="cartQuantity" v-on:added="close"></product-page>
+    </q-modal>
   </div>
 </template>
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
+  import ProductPage from './ProductPage.vue'
   export default {
+    components: {
+      ProductPage
+    },
     computed: {
       ...mapGetters({
         carts: 'cartProducts'
@@ -88,10 +93,21 @@
           store_id: cart.store_id,
           product_id: product.product_id
         })
+      },
+      open: function (Product, cart) {
+        this.ProductObject = Product
+        this.ProductObject['store_id'] = cart.store_id
+        this.cartQuantity = Product.quantity
+        this.$refs.productModal.open()
+      },
+      close: function () {
+        this.$refs.productModal.close()
       }
     },
     data () {
       return {
+        cartQuantity: 1,
+        ProductObject: {}
       }
     }
   }

@@ -17,12 +17,13 @@
            </div>
          </div>
           <div v-for="s in allStores" class="col-md-12 col-bg-12 col-lg-12 bg-light">
-            <router-link :to="{name: 'store', params: {id: s._id}}" tag="div" @click.native="activeStore(s._id)">
+            <router-link :to="{name: 'store', params: {id: s.store_id}}" tag="div" @click.native="activeStore(s.store_id)">
               <q-card class="bigger">
                 <q-card-media overlay-position="bottom">
                   <img class="dimmed" :src="s.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">
                   <q-card-title slot="overlay">
                     <h4 class="text-bold">{{ s.name }}</h4>
+
                     <!--<q-rating slot="subtitle" v-model="stars" :max="5" />-->
                   </q-card-title>
                 </q-card-media>

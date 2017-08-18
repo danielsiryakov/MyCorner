@@ -21,7 +21,7 @@
       <div class="layout-padding">
         <div class="row">
           <div class="">
-            <q-card class="bigger">
+            <q-card class="bigger">'
               <q-card-media overlay-position="bottom">
                 <img class="dimmed" :src="store.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">
                 <q-card-title slot="overlay">
@@ -33,25 +33,48 @@
               </q-card-media>
             </q-card>
           </div>
-          <br>
-          <div class="row">
-            <q-collapsible opened :label="cat.name" v-for="(cat, index) in allProducts" :key="index">
-              <q-card inline flat style="width: 30vh; height: 30vh" class="col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
-                <q-card-media overlay-position="bottom" style="padding: 20px">
-                  <img :src="p.image" >
-                  <q-card-title class="text-condensed" slot="overlay">
-                    {{p.title.substring(0,30)}}...<br>
-                    <!--{{getProductCartQuantity(id, p.id).quantity}}-->
-                    <span class="text-bold">${{p.price_cents / 100}}</span>
-                    <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
-
-                  </q-card-title>
-                </q-card-media>
-
-              </q-card>
-            </q-collapsible>
-          </div>
         </div>
+          <q-tabs class="" no-pane-border inverted>
+            <q-tab default slot="title" name="Products" label="Products" class="text-bold text-tertiary"/>
+            <q-tab slot="title" name="Information" label="Information" class="text-bold text-tertiary"/>
+            <!-- Targets -->
+            <q-tab-pane name="Products">
+              <div class="row">
+                <q-collapsible opened :label="cat.name" v-for="(cat, index) in allProducts" :key="index">
+                  <q-card inline flat style="width: 30vh; height: 30vh" class="col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
+                    <q-card-media overlay-position="bottom" style="padding: 20px">
+                      <img :src="p.image" >
+                      <q-card-title class="text-condensed" slot="overlay">
+                        {{p.title.substring(0,30)}}...<br>
+                        <!--{{getProductCartQuantity(id, p.id).quantity}}-->
+                        <span class="text-bold">${{p.price_cents / 100}}</span>
+                        <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
+
+                      </q-card-title>
+                    </q-card-media>
+                  </q-card>
+                </q-collapsible>
+              </div>
+          </q-tab-pane>
+          <q-tab-pane name="Information">
+            <h4 class="text-bold">Information about {{ store.name }}</h4>
+            <q-item>
+              <h5><span class="text-bold">Phone:</span> {{ store.phone }}</h5>
+            </q-item>
+            <q-item>
+              <h5><span class="text-bold">Address:</span> {{ store.address.street_number + ' ' + store.address.route }}</h5>
+            </q-item>
+            <q-item>
+              <h5 class="text-bold">Working Hours:</h5>
+            </q-item>
+            <q-item v-for="(day, key) in store.working_hours" :key="key">
+              <div>
+                {{ capitalizeFirstLetter(key) }}: {{day.hours.from }} - {{day.hours.to }}
+              </div>
+           </q-item>
+          </q-tab-pane>
+        </q-tabs>
+        <br>
       </div>
 
       <q-modal ref="productModal" class="minimized" :content-css="{padding: '20px', maxWidth: '500px', maxHeight: '500px'}">
@@ -143,6 +166,9 @@
             return cartProduct
           }
         }
+      },
+      capitalizeFirstLetter (string) {
+        return string.charAt(0).toUpperCase() + string.slice(1)
       }
 //      getProducts: function () {
 //        axios.get(CATPRODS + this.id).then(response => {
@@ -152,6 +178,14 @@
 //          console.log(error)
 //        })
 //      }
+    },
+    watch: {
+      '$route' (to, from) {
+        Loading.show()
+        this.getStore(this.id)
+        this.getAllProducts(this.id)
+        Loading.hide()
+      }
     }
   }
 </script>
@@ -252,5 +286,9 @@
     height: 250px;
     width: 250px;
     padding: 20px;
+  }
+  .q-item-main {
+    font-weight: bold;
+    font-size: 24px;
   }
 </style>
