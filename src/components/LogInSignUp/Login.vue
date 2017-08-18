@@ -7,7 +7,7 @@
     <q-input :error="loginError"  v-model="password" type="password" stack-label="Enter Your Password" v-on:keyup.enter="submitLogIn" clearable />
     <small @click="$refs.forgotPassword.open()">forgot your password?</small>
     <br><br>
-    <q-btn loader color="primary" @click="submitLogIn">Log In</q-btn>
+    <q-btn :loader="loading" color="primary" @click="submitLogIn">Log In</q-btn>
     <img class="float-right" src="../../assets/basket.png" alt="" width="150px" height="150px">
 
     <!--------------reset password part----------->
@@ -48,6 +48,7 @@
     data () {
       return {
         password: '',
+        loading: false,
         newPassword: '',
         email: '',
         loginError: false,
@@ -72,12 +73,14 @@
         'authenticationTrue'
       ]),
       login (creds) {
+        this.loading = true
         axios.get(LOGIN_URL, {
           params: {
             email: creds.email,
             password: creds.password
           }
         }).then(response => {
+          this.loading = false
           console.log('user info: ')
           console.log(response)
           Cookies.set('userID', response.data.login.userID, {
@@ -99,6 +102,7 @@
           this.$router.push('/')
           // Router.push('/')
         }).catch(error => {
+          this.loading = false
           this.loginError = true
           console.log(error)
         })
