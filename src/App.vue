@@ -14,7 +14,8 @@
       ...mapActions([
         'retriesActiveCarts',
         'getUserInfo',
-        'getAddressBook'
+        'getAddressBook',
+        'getWallet'
       ]),
       atStartUp () {
 //        isAuthenticated =
@@ -22,6 +23,7 @@
           this.getUserInfo()
           this.getAddressBook()
           this.retriesActiveCarts()
+          this.getWallet()
         }
       }
     },

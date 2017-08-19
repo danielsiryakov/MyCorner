@@ -17,7 +17,7 @@
     </q-toolbar>
 
 
-    <q-scroll-area slot="left" class="bg-light " style="width: 100%; height: 100%">
+    <q-scroll-area slot="left" class="bg-dark text-white" style="width: 100%; height: 100%">
       <drawer></drawer>
     </q-scroll-area>
 

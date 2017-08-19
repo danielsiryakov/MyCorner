@@ -18,6 +18,7 @@ const ADDRESS_BOOK_DEFAULT_CHANGE = API_URL + 'user/address_book/default/change'
 // const ADDRESS_BOOK_ADDRESS_REMOVE = API_URL + 'user/address_book/remove_by_id:'
 const USER_WALLET_RETRIEVE = API_URL + 'user/wallet/retrieve'
 const USER_WALLET_ADD = API_URL + 'user/wallet/add?stripe_src='
+const REVIEW_PLATFORM_ADD = API_URL + 'review/platform/add'
 // import { Cookies } from 'quasar'
 import {
   Loading,
@@ -164,14 +165,8 @@ export default {
       console.log(error)
     })
   },
-  userWalletAdd (id, cb) {
-    axios.get(USER_WALLET_ADD + id).then(response => {
-      cb(response.data)
-      axios.defaults.headers.common['authtoken'] = response.data.login.authtoken
-      axios.defaults.headers.common['userID'] = response.data.login.userID
-    }).catch(error => {
-      console.log(error)
-    })
+  userWalletAdd (id) {
+    return axios.get(USER_WALLET_ADD + id)
   },
   addAddress (cb, address) {
     axios.post(ADDRESS_BOOK_ADD, address).then(response => {
@@ -179,6 +174,14 @@ export default {
     }).catch(error => {
       console.log(error)
     })
+  },
+  addPlatformReview (review, cb, errorCb) {
+    return axios.post(REVIEW_PLATFORM_ADD, JSON.stringify({
+      reviewed_on: '',
+      review_for: '',
+      comment: '',
+      score: 0
+    }))
   }
   //  buyProducts (products, cb, errorCb) {
 //    setTimeout(() => {

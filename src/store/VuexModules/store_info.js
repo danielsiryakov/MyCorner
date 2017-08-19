@@ -177,6 +177,8 @@ const actions = {
     Object.keys(storePayload.working_hours).forEach(function (key) {
       var from = new Date(storePayload.working_hours[key].hours.from)
       var to = new Date(storePayload.working_hours[key].hours.to)
+      console.log(from.getHours() * 100 + from.getMinutes())
+      console.log(to.getHours() * 100 + to.getMinutes())
       storePayload.working_hours[key].hours = {
         from: from.getHours() * 100 + from.getMinutes(),
         to: to.getHours() * 100 + to.getMinutes()

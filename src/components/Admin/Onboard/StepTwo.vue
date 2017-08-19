@@ -12,7 +12,7 @@
         <q-field icon="mail">
           <q-input v-model="email" type="email" float-label="Enter Email for Notifications" @input="$v.StepTwoForm.businessname.$touch()"
                    :value = "email"
-                   :after="[{icon: 'done', condition: email.length >= 4, handler () {}}]" clearable/>
+                   :after="[{icon: 'done', condition: name.length >= 4, handler () {}}]" clearable/>
         </q-field>
       </div>
       <div class="col-12">

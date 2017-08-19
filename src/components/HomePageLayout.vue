@@ -61,6 +61,7 @@
     </q-scroll-area>
 
     <router-view class="layout-view"></router-view>
+    <q-btn class="full-width" color="tertiary">Need Help? Have Feedback?</q-btn>
 
   </q-layout>
 </template>

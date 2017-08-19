@@ -36,7 +36,6 @@
                   <q-btn icon="mode_edit" class="text-tertiary" v-on:click="prepCategoryUpdateState(cindex)">
                     Edit
                   </q-btn>
-
                   <q-btn icon="add_box" color="primary" class="text-primary" v-bind:key="category.showNewPostModal" @click="$refs.basicModal.open(); current_category = cindex">
                     <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                       Add Products in Category

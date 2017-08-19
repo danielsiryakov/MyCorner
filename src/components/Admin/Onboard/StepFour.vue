@@ -12,6 +12,7 @@
           v-show="ccAccepted"
           @change='complete = $event.complete'
     ></card>
+    <button class='pay-with-stripe' @click='pay' :disabled='!complete'>Pay with credit card</button>
 
     <q-input v-show="cashAccepted" name="cardholder-name" placeholder="Minimum cash order" class="full-width" v-model="cashMinOrderAmount" type="number" prefix="$"/>
   </div>
@@ -20,7 +21,7 @@
 <script>
   import Cleave from 'vue-cleave'
   import { stripeKey, stripeOptions } from './stripeConfig.json'
-  import { Card } from 'vue-stripe-elements'
+  import { Card, createToken } from 'vue-stripe-elements'
   export default {
     data () {
       return {
@@ -45,6 +46,16 @@
         complete: false,
         stripeKey: stripeKey,
         stripeOptions: stripeOptions
+      }
+    },
+    methods: {
+      pay () {
+        // createToken returns a Promise which resolves in a result object with
+        // either a token or an error key.
+        // See https://stripe.com/docs/api#tokens for the token object.
+        // See https://stripe.com/docs/api#errors for the error object.
+        // More general https://stripe.com/docs/stripe.js#stripe-create-token.
+        createToken().then(data => console.log(data.token))
       }
     },
     components: {

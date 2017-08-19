@@ -38,7 +38,7 @@
   import { mapActions, mapMutations } from 'vuex'
   import shop from '../../api/shop'
   import {
-    QInput, QBtn, Cookies, LocalStorage
+    QInput, QBtn, Cookies, LocalStorage, Alert
   } from 'quasar'
   import axios from 'axios'
   const LOGIN_URL = shop.API_URL + 'user/login'
@@ -66,7 +66,8 @@
         'retrieve',
         'getUserInfo',
         'retriesActiveCarts',
-        'getAddressBook'
+        'getAddressBook',
+        'getWallet'
       ]),
       ...mapMutations([
 //        'login',
@@ -81,7 +82,7 @@
           }
         }).then(response => {
           this.loading = false
-          console.log('user info: ')
+          console.log(response.data.is_store_owner)
           console.log(response)
           Cookies.set('userID', response.data.login.userID, {
             path: '/',
@@ -99,7 +100,14 @@
           this.getUserInfo()
           this.getAddressBook()
           this.retriesActiveCarts()
-          this.$router.push('/')
+          this.getWallet()
+          if (response.data.is_store_owner === true) {
+            this.$router.push('/admin')
+          }
+          else {
+            this.$router.push('/')
+          }
+
           // Router.push('/')
         }).catch(error => {
           this.loading = false
@@ -122,6 +130,7 @@
         }
         shop.resendPassword(creds).catch(error => {
           console.log(error)
+          Alert.create({html: 'Something unexpected happened :/ password reset failed.'})
         })
       },
       resetSettings () {

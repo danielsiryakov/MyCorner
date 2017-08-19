@@ -20,7 +20,8 @@
             <router-link :to="{name: 'store', params: {id: s.store_id}}" tag="div" @click.native="activeStore(s.store_id)">
               <q-card class="bigger">
                 <q-card-media overlay-position="bottom">
-                  <img class="dimmed" :src="s.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">
+                  <img v-if="s.image" class="dimmed" :src="s.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">
+                  <img v-if="!s.image" class="dimmed" src="../assets/fulllogo.png" alt="" style="object-fit: contain;  width: 100vw; height: 40vh;">
                   <q-card-title slot="overlay">
                     <h4 class="text-bold">{{ s.name }}</h4>
 

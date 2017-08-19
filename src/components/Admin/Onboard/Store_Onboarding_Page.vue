@@ -1,7 +1,7 @@
 <template>
   <q-layout>
     <q-toolbar color="tertiary" class="text-white">
-      <q-btn v-go-back="'/'" icon="arrow_back"/>
+      <q-btn v-go-back="'/admin'" icon="arrow_back"/>
       <q-toolbar-title>Sign Up</q-toolbar-title>
     </q-toolbar>
     <div class="layout-view">

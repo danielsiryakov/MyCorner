@@ -1,16 +1,17 @@
 <template>
   <div class="group">
-    <q-side-link item :to="{path: '/store-sign-up', exact: true}">
-      <q-item-side icon="dashboard"/>
-      <q-item-main label="Dashboard"/>
-    </q-side-link>
+
     <q-side-link item to="/admin/store">
-      <q-item-side icon="store"/>
+      <q-item-side icon="store" color="white"/>
       <q-item-main label="Store Info"/>
     </q-side-link>
     <q-side-link item to="/admin/products">
-      <q-item-side icon="motorcycle"/>
+      <q-item-side icon="motorcycle" color="white"/>
       <q-item-main label="Products"/>
+    </q-side-link>
+    <q-side-link item :to="{path: '/store-sign-up', exact: true}">
+      <q-item-side icon="dashboard" color="white"/>
+      <q-item-main label="Create New Store"/>
     </q-side-link>
       <!--<img src="../../../dist/statics/logoIcon.ico" style='height: 80px' class="inline-block">-->
       <!--img src="../img/avatar-1.svg" id="avatar" class="inline-block"-->

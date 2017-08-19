@@ -10,7 +10,9 @@
               v-if="hasNonEmptyCart"
               v-for="(cart, key) in carts" :key="key">
         <q-collapsible opened icon="shopping_cart" :label="formattedTitle(cart.store_name)" v-if="cart.totals.subtotal" class="" inset>
-          <q-side-link class="bg-tertiary text-white" item :to="{name: 'store', params: {id: cart.store_id}}" exact>< Shop for more items!</q-side-link>
+          <q-side-link class="text-tertiary" style="border: 1px solid" item :to="{name: 'store', params: {id: cart.store_id}}" exact>
+            <q-icon name="keyboard_arrow_left"></q-icon>Shop for more items!
+          </q-side-link>
           <br>
           <q-item class="bg-white" @click="open(p, cart)" v-for="p in cart.products" :key="p.asset_id" v-if="p.quantity && cart.totals.subtotal">
             <q-item-side :avatar="p.image">
@@ -22,16 +24,18 @@
             <q-icon name="delete" color="negative" @click="removeFromCart(p, cart)"></q-icon>
           </q-item>
           <br>
-            <span class="text-bold" style="padding-left: 20px;">Cart Subtotal:</span>
+            <span class="text-bold" style="padding-left: 20px;">Subtotal:</span>
             <span>{{ formattedPrice(cart.totals.subtotal) }}</span><br><br>
-            <q-btn  color="primary" :disabled="true" @click="" class="full-width">Checkout</q-btn>
+            <q-btn  color="primary" :disabled="false" @click="checkout(cart)" class="full-width">Checkout</q-btn>
         </q-collapsible>
-        <!--<q-list-header v-if="cart.totals.subtotal" class="text-bold" inset>-->
-          <!--<q-icon name="shopping_cart"/>{{ formattedTitle(cart.store_name) }}-->
-        <!--</q-list-header>-->
-
       </q-list>
     </div>
+
+    <q-modal  ref="checkout" class="bg-light maximized" content-classes="bg-light"	>
+      <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.checkout.close()"/></h4>
+      <checkout  :cart="checkoutCart"></checkout>
+    </q-modal>
+
     <q-modal ref="productModal" class="minimized" :content-css="{padding: '20px', maxWidth: '500px', maxHeight: '500px'}">
       <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.productModal.close()"/></h4>
       <!--<i class="text-negative" @click="$refs.productModal.close()">close</i>-->
@@ -43,9 +47,11 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import ProductPage from './ProductPage.vue'
+  import Checkout from './Checkout.vue'
   export default {
     components: {
-      ProductPage
+      ProductPage,
+      Checkout
     },
     computed: {
       ...mapGetters({
@@ -102,12 +108,17 @@
       },
       close: function () {
         this.$refs.productModal.close()
+      },
+      checkout (cart) {
+        this.checkoutCart = cart
+        this.$refs.checkout.open()
       }
     },
     data () {
       return {
         cartQuantity: 1,
-        ProductObject: {}
+        ProductObject: {},
+        checkoutCart: ''
       }
     }
   }
