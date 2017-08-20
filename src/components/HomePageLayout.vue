@@ -41,27 +41,18 @@
       <q-route-tab hide="label" label="Cart" slot="title" name="cart" icon="shopping_cart" exact to="/cart" :count="cartCount"/>
     </q-tabs>
 
-    <!--<q-scroll-area slot="left" style="width: 100%; height: 100%">-->
-      <!--<q-list-header class="bg-tertiary text-primary">Other Info</q-list-header>-->
-      <!--<q-side-link item :to="{path: '/store-sign-up', exact: true}">-->
-        <!--<q-item-side icon="business"/>-->
-        <!--<q-item-main label="Are you a local business?" sublabel="Add your store - join the community!"/>-->
-      <!--</q-side-link>-->
-      <!--<q-side-link item to="/stores">-->
-        <!--<q-item-side icon="info"/>-->
-        <!--<q-item-main label="About Us"/>-->
-      <!--</q-side-link>-->
-        <!--&lt;!&ndash;<q-side-link icon="compare_arrows" to="/stores">Contact Us</q-side-link>&ndash;&gt;-->
-      <!--<br>-->
-      <!--<q-btn class="full-width" color="primary" @click="logout">Log out</q-btn>-->
-    <!--</q-scroll-area>-->
-
     <q-scroll-area slot="right" class="bg-light" style="width: 100%; height: 100%">
       <cartpage class=""></cartpage>
     </q-scroll-area>
+    <q-modal ref="review" class="" :content-css="{padding: '20px', maxWidth: '800px', maxHeight: '800px'}">
+      <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.review.close()"/></h4>
+      <h4>Need Help? Have Feedback?</h4>
+      <review @submittedReview="$refs.review.close()"></review>
+      <!--<address-edit :address="selectedAddress"></address-edit>-->
+    </q-modal>
 
     <router-view class="layout-view"></router-view>
-    <q-btn class="full-width" color="tertiary">Need Help? Have Feedback?</q-btn>
+    <q-btn @click="$refs.review.open()" class=" full-width" color="tertiary">Need Help? Have Feedback?</q-btn>
 
   </q-layout>
 </template>
@@ -70,6 +61,7 @@
   import axios from 'axios'
   const API_URL = 'http://mycorner.store:8080/api/'
   const ADDRESS_BOOK_ADD = API_URL + 'user/address_book/add'
+  import Review from './Review.vue'
   import { mapGetters, mapActions, mapMutations } from 'vuex'
   import {
     QLayout,
@@ -185,6 +177,7 @@
       }
     },
     components: {
+      Review,
       Login,
       SignUp,
       cartpage,

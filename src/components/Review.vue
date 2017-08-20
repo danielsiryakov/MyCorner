@@ -2,24 +2,41 @@
   <!-- if you want automatic padding use "layout-padding" class -->
   <div class="layout-padding">
     <!-- your content -->
-    <q-field icon="mail">
-      <q-input v-model="comment" type="text" float-label="Enter your issue or comment" @input="$v.StepTwoForm.businessname.$touch()"
-               :value = "comment"/>
+    <br>
+    <h5><q-rating v-model="score" :max="5" /></h5>
+    <q-field icon="">
+      <q-input v-model="comment" type="text" float-label="Enter your"
+               :value = "comment" clearable/>
+      <br>        <!--:value = "comment" clearable/>-->
     </q-field>
-    <q-field icon="mail">
-      <q-input v-model="email" type="email" float-label="Enter Email for Notifications" @input="$v.StepTwoForm.businessname.$touch()"
-               :value = "email" clearable/>
+    <q-field>
+      <q-input v-model="username" type="email" float-label="Enter your name"
+               :value = "username" clearable/>
     </q-field>
+    <br>
+    <q-btn color="tertiary" outline @click="submitReview">Submit</q-btn>
   </div>
 </template>
 
 <script>
+  import shop from '../api/shop'
   export default {
     data () {
       return {
         comment: '',
-        firstName: '',
+        score: 5,
+        username: '',
         lastName: ''
+      }
+    },
+    methods: {
+      submitReview () {
+        shop.addPlatformReview({
+          comment: this.comment,
+          username: this.username,
+          score: this.score
+        })
+        this.$emit('submittedReview')
       }
     }
   }

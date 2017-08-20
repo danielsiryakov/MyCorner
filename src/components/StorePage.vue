@@ -28,7 +28,7 @@
                   <h4 class="text-bold">{{ store.name }}
                     <q-chip v-if="deliveryOffered == true" color="amber-9">Offers Delivery</q-chip>
                   </h4>
-                  <q-rating color="amber-4" slot="subtitle" v-model="stars" :max="5" />
+                  <q-rating @change="submitReview" color="amber-4" slot="subtitle" v-model="stars" :max="5" />
                 </q-card-title>
               </q-card-media>
             </q-card>
@@ -59,7 +59,10 @@
           <q-tab-pane name="Information">
             <h4 class="text-bold">Information about {{ store.name }}</h4>
             <q-item>
-              <h5><span class="text-bold">Phone:</span> {{ store.phone }}</h5>
+              <h5>
+                <span class="text-bold">Phone:</span>
+                {{ store.phone }}
+              </h5>
             </q-item>
             <q-item>
               <h5><span class="text-bold">Address:</span> {{ store.address.street_number + ' ' + store.address.route }}</h5>
@@ -87,10 +90,10 @@
 </template>
 
 <script>
-//  const CATPRODS = 'http://mycorner.store:8080/api/store/categories/retrieve/'
   import ProductPage from './ProductPage.vue'
   import layoutStore from '../store/otherJS/layout-store'
   import CartPage from './CartPage.vue'
+  import shop from '../api/shop'
   import {
     Loading
   } from 'quasar'
@@ -141,6 +144,13 @@
         'getStore',
         'getAllProducts'
       ]),
+      submitReview () {
+        shop.addStoreReview({
+          comment: '',
+          score: this.stars,
+          store_id: this.store.store_id
+        })
+      },
 
 //      showProductModal: function (Product) {
 //        this.ProductObject = Product

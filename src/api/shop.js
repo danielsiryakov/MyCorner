@@ -19,6 +19,7 @@ const ADDRESS_BOOK_DEFAULT_CHANGE = API_URL + 'user/address_book/default/change'
 const USER_WALLET_RETRIEVE = API_URL + 'user/wallet/retrieve'
 const USER_WALLET_ADD = API_URL + 'user/wallet/add?stripe_src='
 const REVIEW_PLATFORM_ADD = API_URL + 'review/platform/add'
+const REVIEW_STORE_ADD = API_URL + 'review/store/add'
 // import { Cookies } from 'quasar'
 import {
   Loading,
@@ -175,12 +176,19 @@ export default {
       console.log(error)
     })
   },
-  addPlatformReview (review, cb, errorCb) {
+  addPlatformReview (review) {
     return axios.post(REVIEW_PLATFORM_ADD, JSON.stringify({
-      reviewed_on: '',
-      review_for: '',
-      comment: '',
-      score: 0
+      username: review.username,
+      comment: review.comment,
+      score: review.score
+    }))
+  },
+  addStoreReview (review) {
+    return axios.post(REVIEW_STORE_ADD, JSON.stringify({
+      username: review.username,
+      comment: review.comment,
+      score: review.score,
+      store_id: review.store_id
     }))
   }
   //  buyProducts (products, cb, errorCb) {
