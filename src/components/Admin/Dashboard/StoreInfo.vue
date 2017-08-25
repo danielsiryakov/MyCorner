@@ -2,39 +2,17 @@
   <!-- if you want automatic padding use "layout-padding" class -->
   <div class="layout-padding">
     <h4>Review Store Details</h4>
-    <q-list v-if="selectedStore">
-      <q-item>
-        <q-item-main>
-          <q-field label="Business Name" class="">
-            <q-input dark v-model="fullStoreInfo.name" color="primary"/>
-          </q-field>
-        </q-item-main>
-      </q-item>
+    <q-btn big @click="updateStore" outline>Save Changes</q-btn>
+    <step-two></step-two>
+    <q-btn big @click="updateStore" outline>Save Changes</q-btn>
 
-      <q-item>
-        <q-item-main>
-          <q-field label="Phone Number">
-            <q-input dark v-model="fullStoreInfo.phone" color="primary"/>
-          </q-field>
-        </q-item-main>
-      </q-item>
-      <q-item>
-        <q-item-main>
-          <q-field label="Business Address">
-            <q-input dark v-model="fullStoreInfo.address['postal_code']" color="primary"/>
-          </q-field>
-        </q-item-main>
-      </q-item>
-
-    </q-list>
-
-    <!-- your content -->
   </div>
 </template>
 
 <script>
   import { mapActions } from 'vuex'
-  import StepTwo from './Onboard/StepTwo.vue'
+  import shop from '../../../api/shop'
+  import StepTwo from '../Onboard/StepTwo.vue'
   export default {
     data () {
       return {
@@ -46,7 +24,10 @@
     methods: {
       ...mapActions([
         'getFullStoreInfo'
-      ])
+      ]),
+      updateStore () {
+        shop.updateStoreInfo(this.updatedStore)
+      }
     },
     computed: {
       storeID: function () {
@@ -69,6 +50,9 @@
       },
       selectedStore: {
         get () { return this.$store.state.storeInfo.selectedStore }
+      },
+      updatedStore: {
+        get () { return this.$store.state.storeInfo.store }
       }
     },
     mounted () {

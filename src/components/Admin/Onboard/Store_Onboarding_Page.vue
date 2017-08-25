@@ -10,12 +10,14 @@
           <div class="col-lg-8">
             <q-stepper vertical ref="stepper" color="primary" alternative-labels>
               <q-step default  name="first" title="Enter Store Info">
+                <h5 class="text-tertiary text-bold">Enter Store Information</h5>
                 <step-two></step-two>
                 <q-stepper-navigation>
                   <q-btn color="primary" @click="$refs.stepper.next()">Continue</q-btn>
                 </q-stepper-navigation>
               </q-step>
               <q-step name="second" title="Create Categories and Add Products" subtitle="">
+                <h5 class="text-tertiary text-bold">Add Categories and Products</h5>
                 <step-three></step-three>
                 <q-stepper-navigation>
                   <q-btn color="primary" @click="$refs.stepper.next()">Continue</q-btn>

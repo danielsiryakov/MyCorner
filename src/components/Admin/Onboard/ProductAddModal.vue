@@ -2,9 +2,6 @@
   <div>
     <div>
       <h4 class="text-dark text-bold">Enter Products for {{current_category.name}}</h4>
-      <!--<q-btn outline color="tertiary" @click="create_product_modal_view=true">-->
-        <!--New Product-->
-      <!--</q-btn>-->
       <q-search inverted placeholder="Search for Products to Add!" v-model="terms" v-if="create_product_modal_view">
         <q-autocomplete
           separator
@@ -38,25 +35,42 @@
     </div>
       <!--Category products-->
     <h5 class="text-dark text-bold">{{current_category.name}} Products</h5>
-    <div v-if="current_category.products.length==0">No products added :/ Please add some products!</div>
-    <div v-if="!current_category.products.length==0">Edit, remove, and finalize category products.</div>
-    <div v-for="(product, p_index) in current_category.products" class="list highlight">
-      <q-item class="group">
-        <!--<q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>-->
-        <img :src="product.image" alt="" width="100px" height="100px">
-        {{product.title}}<br>
-        $ {{product.price_cents / 100}}<br>
-        {{product.description}}
-        <q-icon class="text-negative" @click="removeProduct(p_index)" name="delete"/>
-      </q-item>
+    <div v-if="current_category.products">
+      <div v-if="current_category.products.length==0">No products added :/ Please add some products!</div>
+      <div v-if="!current_category.products.length==0">Edit, remove, drag, drop and finalize products.</div>
+      <q-list highlight no-pane>
+        <draggable v-model="current_category.products">
+          <transition-group>
+            <q-item separator class=" group" v-for="(product, p_index) in current_category.products" :key="p_index">
+              <!--<q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>-->
+              <q-item-side>
+                <img :src="product.image" alt="" width="100px" height="100px">
+              </q-item-side>
+              <q-item-main>
+                {{product.title}}<br>
+                $ {{product.price_cents / 100}}<br>
+                {{product.description}}
+              </q-item-main>
+              <q-item-side>
+                <q-icon class="text-negative" @click="removeProduct(p_index)" name="delete"/>
+              </q-item-side>
+            </q-item>
+          </transition-group>
+        </draggable>
+      </q-list>
     </div>
   </div>
 </template>
 <script>
   import {Toast} from 'quasar'
   import axios from 'axios'
+  import draggable from 'vuedraggable'
+  import shop from '../../../api/shop'
   export default {
     props: ['current_category'],
+    components: {
+      draggable
+    },
     methods: {
       search: function (terms, done) {
         axios.get('http://mycorner.store:8080/api/assets/image/search/' + terms, {
@@ -114,8 +128,22 @@
           image: this.new_product.image,
           title: this.new_product.title,
           asset_id: this.new_product.asset_id,
+          description: this.new_product.description,
           price_cents: this.new_product.price_cents * 100
         })
+        if (this.$route.path === '/admin/products') {
+          shop.categoryProductCreate({
+            image: this.new_product.image,
+            asset_id: this.new_product.asset_id,
+            enabled: true,
+            store_id: this.current_category.store_id,
+            price_cents: this.new_product.price_cents * 100,
+            category_id: this.current_category.category_id,
+            description: this.new_product.description,
+            title: this.new_product.title,
+            display_price: this.new_product.price_cents
+          })
+        }
         // reset product template
         this.new_product = {
           title: '',
@@ -163,5 +191,15 @@
 <style>
   .modal-content.scroll{
     padding: 10px;
+  }
+  .list-complete-item {
+    padding: 4px;
+    margin-top: 4px;
+    border: solid 1px;
+    transition: all 1s;
+  }
+
+  .list-complete-enter, .list-complete-leave-active {
+    opacity: 0;
   }
 </style>

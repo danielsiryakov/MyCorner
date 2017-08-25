@@ -1,50 +1,49 @@
 <template>
-  <div>
+  <div v-if="show">
     <div class="layout-padding">
       <div class="panel panel-default">
         <div class="panel-heading categories_header">
-          <h5 class="text-tertiary text-bold">Add Item Categories</h5>
-            <q-field icon="business">
-              <q-input type="text"
-                       v-model="new_category_name"
-                       placeholder="Category Name"
-                       @keyup.enter="addCategory()"
-                       id="addCategory"
-                       class="form-control"
-                       :after="[{icon: 'add', handler () {addCategory()}}]" />
-            </q-field>
+          <q-field icon="business">
+            <q-input type="text"
+                     v-model="new_category_name"
+                     placeholder="Category Name"
+                     @keyup.enter="addCategory()"
+                     :after="[{icon: 'add', handler () {addCategory()}}]" />
+          </q-field>
         </div>
       </div>
       <br>
       <div v-if="categories.length > 0" class="panel-body">
-        <q-list inset-separator	>
-          <draggable v-model="categories">
+        <q-list no-border>
+          <draggable v-model="categories" @end="categoriesReorder">
             <transition-group name="list-complete">
-              <q-item separator v-for="(category, cindex) in categories" v-bind:key="category.name">
-                <q-input type="text"
-                       v-if="category.edit"
-                       v-model="category.new_c_name"
-                       placeholder="Category Name"
-                       @keyup.enter="updateCategory(cindex)"
-                       id="updateCategory"
-                       class="item-content"/>
+              <div separator v-for="(category, cindex) in categories" :key="category.name">
+                <q-item v-show="category.edit">
+                  <q-field v-show="category.edit">
+                    <q-input type="text"
+                             v-show="category.edit"
+                             v-model="old_category_name"
+                             placeholder="Enter Category Name"
+                             autofocus
+                             @keyup.enter="updateCategory(cindex)"
+                    />
+                  </q-field>
+                </q-item>
 
-                <q-item-main class="text-bold" v-if="!category.edit">
-                  {{ category.name }}
-                </q-item-main>
-                <q-item-side v-if="!category.edit" class="">
-                  <q-btn icon="mode_edit" class="text-tertiary" v-on:click="prepCategoryUpdateState(cindex)">
-                    Edit
-                  </q-btn>
-                  <q-btn icon="add_box" color="primary" class="text-primary" v-bind:key="category.showNewPostModal" @click="$refs.basicModal.open(); current_category = cindex">
-                    <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
-                      Add Products in Category
-                    </q-tooltip>
-                    Products
-                  </q-btn>
-                  <q-icon name="delete" class="text-negative" v-on:click="removeCategory(cindex)"/>
-                </q-item-side>
-              </q-item>
+                <q-item separator v-show="!category.edit">
+                  <q-item-main class="text-bold">{{ category.name }}</q-item-main>
+                  <q-item-side class="group">
+                    <q-btn small icon="mode_edit" outline @click="prepCategoryUpdateState(cindex)">Edit</q-btn>
+                    <q-btn small icon="add_box" outline color="primary" class="text-primary" @click="$refs.basicModal.open(); current_category = cindex">
+                      <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
+                        Add Products in Category
+                      </q-tooltip>
+                      Products
+                    </q-btn>
+                    <q-icon name="delete" class="text-negative" v-on:click="removeCategory(cindex)"/>
+                  </q-item-side>
+                </q-item>
+              </div>
             </transition-group>
           </draggable>
         </q-list>
@@ -61,8 +60,10 @@
 
 
 <script>
+import { Alert } from 'quasar'
 import draggable from 'vuedraggable'
 import modal from './ProductAddModal.vue'
+import shop from '../../../api/shop'
 export default {
   data () {
     return {
@@ -75,7 +76,9 @@ export default {
       lastStep: '',
       laststep: false,
       new_category_name: '',
-      new_category_i_name: ''
+      old_category_name: '',
+      new_category_i_name: '',
+      show: true
     }
   },
   components: {
@@ -83,37 +86,82 @@ export default {
     modal
   },
   methods: {
-    removeCategory: function (cindex) {
+    rerender () {
+      this.show = false
+      this.$nextTick(() => {
+        this.show = true
+        console.log('re-render start')
+        this.$nextTick(() => {
+          console.log('re-render end')
+        })
+      })
+    },
+    removeCategory (cindex) {
       this.categories.splice(cindex, 1)
     },
-    addCategory: function () {
-      // add in for category state (false because done editing)
-      // when clicking edit on the category you would like to update
-      // the state of the respective bool in the category_states
-      // will be true for input rendering until done editing
-      this.categories.push({
-        name: this.new_category_name,
-        products: []
-      })
-      this.$store.commit('update_store', {categories: this.categories})
-      this.new_category_name = ''
+    addCategory () {
+      if (this.$route.path === '/admin/products') {
+        shop.createCategory({
+          category_id: '',
+          name: this.new_category_name,
+          store_id: this.selectedStore,
+          sort_order: 0,
+          enabled: true,
+          products: []
+        }).then(() => {
+          this.categories.push({
+            name: this.new_category_name,
+            products: []
+          })
+        }).catch(error => {
+          Alert.create({html: 'Oops :/ category creation failed.' + error.response.data})
+        })
+      }
+      else {
+        this.$store.commit('update_store', {categories: this.categories})
+        this.new_category_name = ''
+      }
     },
-    prepCategoryUpdateState: function (cindex) {
+    prepCategoryUpdateState (cindex) {
       this.categories[cindex].edit = true
+      this.old_category_name = this.categories[cindex].name
+      this.rerender()
     },
-    updateCategory: function (cindex) {
-//      this.categories[cindex].name = this.categories[cindex].new_category_name
+    updateCategory (cindex) {
+      this.categories[cindex].name = this.old_category_name
       this.$store.commit('update_store', {categories: this.categories})
+      console.log('id:' + this.categories[cindex].category_id)
+      if (this.$route.path === '/admin/products') {
+        shop.updateCategory({
+          category_id: this.categories[cindex].category_id,
+          name: this.old_category_name,
+          store_id: this.selectedStore,
+          sort_order: 0,
+          enabled: true
+        }).then(() => this.rerender())
+      }
+      this.categories[cindex].edit = false
+    },
+    categoriesReorder () {
+      let categoryIDs = []
+      for (var i = 0; i < this.categories.length; i++) {
+        categoryIDs.push(this.categories[i].category_id)
+      }
+      if (this.$route.path === '/admin/products') {
+        shop.reorderCategories({
+          category_ids: categoryIDs,
+          store_id: this.selectedStore
+        }).then(() => this.rerender())
+      }
     }
   },
   computed: {
     categories: {
-      get () {
-        return this.$store.state.storeInfo.store.categories
-      },
-      set (value) {
-        this.$store.commit('update_store', {categories: value})
-      }
+      get () { return this.$store.state.storeInfo.store.categories },
+      set (value) { this.$store.commit('update_store', {categories: value}) }
+    },
+    selectedStore: {
+      get () { return this.$store.state.storeInfo.selectedStore }
     }
   }
 }

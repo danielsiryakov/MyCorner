@@ -3,16 +3,11 @@
   <div class="layout-padding">
     <div class="row sm-gutter">
       <div class="col-12">
-        <h5 class="text-tertiary text-bold">Enter Store Information</h5>
         <q-field icon="business">
-          <q-input v-model="name" type="text" float-label="Enter Business Name" @input="$v.StepTwoForm.businessname.$touch()"
-                   :value = "name"
-                   :after="[{icon: 'done', condition: name.length >= 1, handler () {}}]" clearable/>
+          <q-input v-model="name" type="text" float-label="Enter Business Name" :value = "name" clearable/>
         </q-field>
         <q-field icon="mail">
-          <q-input v-model="email" type="email" float-label="Enter Email for Notifications" @input="$v.StepTwoForm.businessname.$touch()"
-                   :value = "email"
-                   :after="[{icon: 'done', condition: name.length >= 4, handler () {}}]" clearable/>
+          <q-input v-model="email" type="email" float-label="Enter Email for Notifications" :value = "email" clearable/>
         </q-field>
       </div>
       <div class="col-12">
@@ -23,7 +18,6 @@
             v-on:placechanged="getAddressData"
             country="usa"
             :enableGeolocation="true"
-            @input="$v.StepTwoForm.address.$touch()"
             class="search"
           >
           </vue-google-autocomplete>
@@ -32,8 +26,7 @@
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <q-field icon="phone" >
           <q-input v-model="phoneNumber" type="tel" float-label="Enter Business Phone #"
-                   clearable
-                   :after="[{icon: 'done', condition: phoneNumber.length >= 10, handler () {}}]"/>
+                   clearable/>
         </q-field>
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -65,10 +58,11 @@
       </div>
       <div class="col-12 group">
         <q-field icon="access_time">
-          <div v-for="(day_hours,day) in StepTwoForm.working_hours" >
+          <div class="group" v-for="(day_hours,day) in working_hours" :key="day">
             <span class="text-tertiary text-bold">{{ capitalizeFirstLetter(day) }}:</span><br>
-            <q-datetime-range @change="update_working_hours(StepTwoForm.working_hours)"
+            <q-datetime-range @change="update_working_hours(working_hours)"
                               color="primary"
+                              inverted
                               v-model="day_hours.hours"
                               type="time"
                               class="full-width" />
@@ -78,10 +72,8 @@
       <q-field icon="info">
         <span class="text-bold">Additional Information </span><br><br>
         <div class="group">
-          Pickup Offered?
-          <q-toggle v-model="StepTwoForm.pickup.service_offered"></q-toggle>
-          Delivery Offered?
-          <q-toggle v-model="StepTwoForm.delivery.service_offered"></q-toggle>
+          <q-toggle label="Pickup Offered?" v-model="pickUpOffered"></q-toggle>
+          <q-toggle label="Delivery Offered?" v-model="deliveryOffered"></q-toggle>
         </div>
       </q-field>
     </div>
@@ -89,39 +81,50 @@
     <div class="row">
       <q-field
           helper="Touch to select # of pickup item"
-          label="Pick Up May Contain Up To:"
-          v-if="StepTwoForm.pickup.service_offered"
+          v-if="pickUpOffered"
+          class="full-width"
       >
-        <q-slider class="text-tertiary" v-model="StepTwoForm.pickup.items" :min="1" :max="50" label-always :label-value="`${StepTwoForm.pickup.items} items`"/>
-      </q-field>
-      <q-field
-        helper="Touch to select min pickup time"
-        label="Minimum Time for Pickup:"
-        v-if="StepTwoForm.pickup.service_offered"
-      >
-        <q-slider class="text-tertiary" v-model="StepTwoForm.pickup.minimum_time_to_pickup" :min="0" :max="200" label-always
-                  :label-value="`${StepTwoForm.pickup.minimum_time_to_pickup} min`"
-        />
+        <span class="text-bold"># of pickup items:</span><br><br>
+        <q-range class="text-tertiary "
+                 v-model="pickUpItems"
+                 :min="1"
+                 :max="100"
+                 label-always
+                 :left-label-value="`${pickUpItems.min}`"
+                 :right-label-value="`${pickUpItems.max}`"/>
       </q-field>
     </div>
-    <div class="row ">
-      <q-field
-
-        helper="Touch to select # of pickup item"
-        label="Delivery May Contain Up To:"
-        v-if="StepTwoForm.delivery.service_offered"
-      >
-        <q-slider class="text-tertiary" v-model="StepTwoForm.delivery.items" :min="1" :max="50" label-always
-                  :label-value="`${StepTwoForm.delivery.items} items`"/>
-      </q-field>
-
+    <div class="row md-gutter" v-if="deliveryOffered">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <q-field>
+          <span class="text-bold">Delivery Fee:</span>
+          <q-input v-model="deliveryFee"
+                 type="number"
+                 prefix="$"
+                 placeholder="Enter your delivery fee amount"
+          />
+        </q-field>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <q-field>
+          <span class="text-bold">Minimum $ min for delivery:</span>
+          <q-input v-model="deliveryMinimum"
+                 type="number"
+                 prefix="$"
+                 placeholder="Enter the minimum amount needed for delivery"
+          />
+        </q-field>
+      </div>
+    </div>
+    <br>
+    <div class="">
       <q-field
         helper="Touch to select min delivery time"
-        label="Minimum Time for Delivery:"
-        v-if="StepTwoForm.delivery.service_offered"
+        v-if="deliveryOffered"
       >
-        <q-slider class="text-tertiary" v-model="StepTwoForm.delivery.minimum_time_to_delivery" :min="0" :max="200" label-always
-                  :label-value="`${StepTwoForm.delivery.minimum_time_to_delivery} min`"
+        <span class="text-bold">Minimum Time for Delivery:</span>
+        <q-slider class="text-tertiary" v-model="minDeliveryTime" :min="0" :max="200" label-always
+                  :label-value="`${minDeliveryTime} min`"
         />
       </q-field>
     </div>
@@ -129,7 +132,7 @@
 </template>
 
 <script>
-  import {required, email, minLength} from 'vuelidate/lib/validators'
+//  import {required, email, minLength} from 'vuelidate/lib/validators'
   import Cleave from 'vue-cleave'
   import VueGoogleAutocomplete from 'vue-google-autocomplete'
   import {
@@ -146,73 +149,55 @@
     data () {
       return {
         address2: '',
-        StepTwoForm: {
-          email: '',
-          businessname: '',
-          working_hours: {
-            monday: {
-              hours: {
-                from: '2017-06-29T09:00:00.000-04:00',
-                to: '2017-06-29T17:00:00.000-04:00'
-              },
-              open: true
+        working_hours: {
+          monday: {
+            hours: {
+              from: '2017-06-29T09:00:00.000-04:00',
+              to: '2017-06-29T17:00:00.000-04:00'
             },
-            tuesday: {
-              hours: {
-                from: '2017-06-29T09:00:00.000-04:00',
-                to: '2017-06-29T17:00:00.000-04:00'
-              },
-              open: true
-            },
-            wednesday: {
-              hours: {
-                from: '2017-06-29T09:00:00.000-04:00',
-                to: '2017-06-29T17:00:00.000-04:00'
-              },
-              open: true
-            },
-            thursday: {
-              hours: {
-                from: '2017-06-29T09:00:00.000-04:00',
-                to: '2017-06-29T17:00:00.000-04:00'
-              },
-              open: true
-            },
-            friday: {
-              hours: {
-                from: '2017-06-29T09:00:00.000-04:00',
-                to: '2017-06-29T17:00:00.000-04:00'
-              },
-              open: true
-            },
-            saturday: {
-              hours: {
-                from: '2017-06-29T09:00:00.000-04:00',
-                to: '2017-06-29T17:00:00.000-04:00'
-              },
-              open: true
-            },
-            sunday: {
-              hours: {
-                from: '2017-06-29T09:00:00.000-04:00',
-                to: '2017-06-29T17:00:00.000-04:00'
-              },
-              open: true
-            }
+            open: true
           },
-          phone: '',
-          pickup: {
-            service_offered: false,
-            items: 25,
-            minimum_time_to_pickup: 90
+          tuesday: {
+            hours: {
+              from: '2017-06-29T09:00:00.000-04:00',
+              to: '2017-06-29T17:00:00.000-04:00'
+            },
+            open: true
           },
-          delivery: {
-            service_offered: false,
-            items: 25,
-            delivery_fee: '$0.00',
-            delivery_minimum: '$10.00',
-            delivery_distance: 2,
-            minimum_time_to_delivery: 60
+          wednesday: {
+            hours: {
+              from: '2017-06-29T09:00:00.000-04:00',
+              to: '2017-06-29T17:00:00.000-04:00'
+            },
+            open: true
+          },
+          thursday: {
+            hours: {
+              from: '2017-06-29T09:00:00.000-04:00',
+              to: '2017-06-29T17:00:00.000-04:00'
+            },
+            open: true
+          },
+          friday: {
+            hours: {
+              from: '2017-06-29T09:00:00.000-04:00',
+              to: '2017-06-29T17:00:00.000-04:00'
+            },
+            open: true
+          },
+          saturday: {
+            hours: {
+              from: '2017-06-29T09:00:00.000-04:00',
+              to: '2017-06-29T17:00:00.000-04:00'
+            },
+            open: true
+          },
+          sunday: {
+            hours: {
+              from: '2017-06-29T09:00:00.000-04:00',
+              to: '2017-06-29T17:00:00.000-04:00'
+            },
+            open: true
           }
         },
         hovering: false,
@@ -222,14 +207,6 @@
           phone: true,
           phoneRegionCode: 'US'
         }
-      }
-    },
-    validations: {
-      StepTwoForm: {
-        email: {required, email},
-        businessname: {required},
-        address: {required},
-        phone: {required, minLength: minLength(10)}
       }
     },
     components: {
@@ -269,24 +246,15 @@
       }),
       name: {
         get () { return this.$store.state.storeInfo.store.name },
-        set (value) {
-          this.$store.commit('update_store', {name: value})
-          this.StepTwoForm.businessname = value
-        }
+        set (value) { this.$store.commit('update_store', {name: value}) }
       },
       email: {
         get () { return this.$store.state.storeInfo.store.email },
-        set (value) {
-          this.$store.commit('update_store', {email: value})
-          this.StepTwoForm.email = value
-        }
+        set (value) { this.$store.commit('update_store', {email: value}) }
       },
       address: {
         get () { return this.$store.state.storeInfo.store.address },
-        set (value) {
-          this.$store.commit('update_store', {address: value})
-          this.StepTwoForm.address = value
-        }
+        set (value) { this.$store.commit('update_store', {address: value}) }
       },
       description: {
         get () { return this.$store.state.storeInfo.store.short_description },
@@ -294,20 +262,51 @@
       },
       phoneNumber: {
         get () { return this.$store.state.storeInfo.store.phone },
-        set (value) {
-          this.$store.commit('update_store', {phone: value})
-          this.StepTwoForm.phone = value.toString()
-        }
+        set (value) { this.$store.commit('update_store', {phone: value}) }
+      },
+      pickUpOffered: {
+        get () { return this.$store.state.storeInfo.store.pickup.offered },
+        set (value) { this.$store.commit('update_pickup', {offered: value}) }
+      },
+      pickUpMinTime: {
+        get () { return this.$store.state.storeInfo.store.pickup.minimum_time_to_pickup },
+        set (value) { this.$store.commit('update_pickup', {minimum_time_to_pickup: value}) }
+      },
+      deliveryOffered: {
+        get () { return this.$store.state.storeInfo.store.delivery.service_offered },
+        set (value) { this.$store.commit('update_delivery', {service_offered: value}) }
+      },
+      deliveryFee: {
+        get () { return this.$store.state.storeInfo.store.delivery.delivery_fee / 100 },
+        set (value) { this.$store.commit('update_delivery', {delivery_fee: value * 100}) }
+      },
+      deliveryMinimum: {
+        get () { return this.$store.state.storeInfo.store.delivery.delivery_minimum / 100 },
+        set (value) { this.$store.commit('update_delivery', {delivery_minimum: value * 100}) }
+      },
+      minDeliveryTime: {
+        get () { return this.$store.state.storeInfo.store.delivery.minimum_time_to_delivery },
+        set (value) { this.$store.commit('update_delivery', {minimum_time_to_delivery: value}) }
       },
       pickUpItems: {
-        get () { return this.$store.state.storeInfo.store.pickup.pickUpItems },
-        set (value) { this.$store.commit('update_store', {pickUpItems: value}) }
+        get () { return this.$store.state.storeInfo.store.pickup.pickup_items },
+        set (value) { this.$store.commit('update_pickup', {pickup_items: value}) }
       }
     }
   }
 </script>
 
-<style>
+<style >
+  .q-datetime-range.row .q-datetime-range-right {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin: 10px !important;
+  }
+  .q-datetime-range.row .q-datetime-range-left {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin: 10px !important;
+  }
   .search {
     width: 100%;
     border: 0;

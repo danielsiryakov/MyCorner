@@ -3,20 +3,21 @@
   "stripeOptions": {
     "style": {
       "base": {
-        "color": "#303238",
+        "color": "#32325d",
         "fontSize": "16px",
-        "lineHeight": "48px",
-        "fontSmoothing": "antialiased",
-        ":placeholder": {
-          "color": "#ccc"
-        }
+        "lineHeight": "24px",
+        "fontSmoothing": "antialiased"
       },
       "invalid": {
-        "color": "#e5424d",
+        "color": "#fa755a",
         ":focus": {
           "color": "#303238"
-        }
+        },
+        "iconColor": "#fa755a"
       }
+    },
+    "value": {
+      "currency": "USD"
     }
   }
 }
