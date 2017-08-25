@@ -11,15 +11,22 @@ const COMPLETED_CARTS = API_URL + 'carts/retrieve/completed'
 // const IMAGEUPLOAD = API_URL + 'assets/image/upload'
 const RETRIEVECARTS = API_URL + 'carts/retrieve/active'
 const STORE_RETRIEVE_FULL = API_URL + 'store/retrieve/full/'
+const STORE_CATEGORIES_RETRIEVE = API_URL + 'store/categories/retrieve/'
 const ADDRESS_BOOK_RETRIEVE = API_URL + 'user/address_book/retrieve'
 const ADDRESS_BOOK_RETRIEVE_DEFAULT = API_URL + 'user/address_book/retrieve/default'
 const ADDRESS_BOOK_ADD = API_URL + 'user/address_book/add'
 const ADDRESS_BOOK_DEFAULT_CHANGE = API_URL + 'user/address_book/default/change'
-// const ADDRESS_BOOK_ADDRESS_REMOVE = API_URL + 'user/address_book/remove_by_id:'
+const ADDRESS_BOOK_ADDRESS_REMOVE = API_URL + 'user/address_book/remove_by_id'
 const USER_WALLET_RETRIEVE = API_URL + 'user/wallet/retrieve'
 const USER_WALLET_ADD = API_URL + 'user/wallet/add?stripe_src='
 const REVIEW_PLATFORM_ADD = API_URL + 'review/platform/add'
 const REVIEW_STORE_ADD = API_URL + 'review/store/add'
+const CATEGORY_CREATE = API_URL + 'store/category/create/'
+const CATEGORY_UPDATE = API_URL + 'store/category/update/'
+const CATEGORY_REORDER = API_URL + 'store/categories/reorder/'
+const CATEGORY_PRODUCT_CREATE = API_URL + 'store/category/product/create/'
+const STORE_INFO_UPDATE = API_URL + 'store/info/update/'
+const PAYMENT_STORE_CREATE = API_URL + 'payment/store/create/account?stripe_src='
 // import { Cookies } from 'quasar'
 import {
   Loading,
@@ -134,6 +141,14 @@ export default {
       console.log(error)
     })
   },
+  storeCategoriesRetrieve (id, cb) {
+    axios.get(STORE_CATEGORIES_RETRIEVE + id).then(response => {
+      cb(response.data)
+      // console.log(response)
+    }).catch(error => {
+      console.log(error)
+    })
+  },
   retrieveAddressBook (cb) {
     axios.get(ADDRESS_BOOK_RETRIEVE).then(response => {
       cb(response.data)
@@ -152,6 +167,14 @@ export default {
   },
   changeDefaultAddress (id, cb) {
     axios.get(ADDRESS_BOOK_DEFAULT_CHANGE + '?address_id=' + id).then(response => {
+      cb(response.data)
+      // console.log(response)
+    }).catch(error => {
+      console.log(error)
+    })
+  },
+  removeAddressByID (id, cb) {
+    axios.get(ADDRESS_BOOK_ADDRESS_REMOVE + '?address_id=' + id).then(response => {
       cb(response.data)
       // console.log(response)
     }).catch(error => {
@@ -190,6 +213,65 @@ export default {
       score: review.score,
       store_id: review.store_id
     }))
+  },
+  createCategory (payload) {
+    return axios.post(CATEGORY_CREATE + payload.store_id, JSON.stringify({
+      category_id: '',
+      name: payload.name,
+      store_id: payload.store_id,
+      sort_order: 0,
+      enabled: true
+    }))
+  },
+  updateCategory (payload) {
+    return axios.post(CATEGORY_UPDATE + payload.store_id, JSON.stringify({
+      category_id: payload.category_id,
+      name: payload.name,
+      store_id: payload.store_id,
+      sort_order: 0,
+      enabled: true
+    }))
+  },
+  reorderCategories (payload) {
+    return axios.post(CATEGORY_REORDER + payload.store_id, JSON.stringify({
+      category_ids: payload.category_ids,
+      store_id: payload.store_id
+    }))
+  },
+  categoryProductCreate (payload) {
+    return axios.post(CATEGORY_PRODUCT_CREATE + payload.store_id, JSON.stringify({
+      image: payload.image,
+      asset_id: payload.asset_id,
+      enabled: true,
+      sort_order: 0,
+      store_id: payload.store_id,
+      price_cents: payload.price_cents,
+      category_id: payload.category_id,
+      description: payload.description,
+      title: payload.title,
+      display_price: String(payload.display_price),
+      ProductRatings: {
+        total_reviews: 0,
+        review_percent: 0
+      }
+    }))
+  },
+  updateStoreInfo (payload) {
+    var storePayload = payload
+    Object.keys(storePayload.working_hours).forEach(function (key) {
+      var from = new Date(storePayload.working_hours[key].hours.from)
+      var to = new Date(storePayload.working_hours[key].hours.to)
+      console.log(from.getHours() * 100 + from.getMinutes())
+      console.log(to.getHours() * 100 + to.getMinutes())
+      storePayload.working_hours[key].hours = {
+        from: from.getHours() * 100 + from.getMinutes(),
+        to: to.getHours() * 100 + to.getMinutes()
+      }
+    })
+    return axios.post(STORE_INFO_UPDATE + storePayload.store_id, JSON.stringify(storePayload))
+  },
+  paymentStoreCreate (payload) {
+    return axios.post(PAYMENT_STORE_CREATE + payload.token, JSON.stringify(payload))
   }
   //  buyProducts (products, cb, errorCb) {
 //    setTimeout(() => {

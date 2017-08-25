@@ -81,12 +81,12 @@ const state = {
     },
     phone: '',
     pickup: {
-      offered: true,
+      offered: false,
       maximum_time_to_pickup: 90,
       minimum_time_to_pickup: 30,
       pickup_items: {
-        max: 100,
-        min: 1
+        max: 80,
+        min: 20
       }
     },
     tax_rate: 4.5,
@@ -104,39 +104,48 @@ const state = {
     category_names: ['Grocery', 'Corner Store'],
     categories: []
   },
-  product: {
-    title: '',
-    images: [], // leaving at top level for now (which means variants cant have imgs)
-    category: '', // ? just one or list of cats it falls in (tempted to say list)
-    keywords: [],
-    description: '',
-    asset_id: '',
-    dislplay_price: '', // different for variants but top level for product list view
-    rating: {
-      // not there yet, just throwing it in the code for not to not forget it in the models
-      reviews: [],
-      total_reviews: 0,
-      review_percent: null
+  payment_details: {
+    store_id: '',
+    legal_entity: {
+      billing_address: {
+        name: '',
+        city: '',
+        phone: '',
+        line1: '',
+        route: '',
+        user_id: '',
+        default: false,
+        country: '',
+        location: {
+          coordinates: null
+        },
+        apt_suite: '',
+        latitude: 0,
+        longitude: 0,
+        postal_code: '',
+        street_number: '',
+        administrative_area_level_1: '',
+        formatted_address: '',
+        NewDefaultID: ''
+      },
+      business_tax_id: '',
+      legal_business_name: '',
+      personal_id: '',
+      last_4_ssn: '',
+      Owner: {
+        First: '',
+        Last: '',
+        DOB: {
+          day: 0,
+          month: 0,
+          year: 0
+        }
+      }
     },
-    variants: [],
-    variant_product: [],
-    new_variant_name: ''
-  },
-  payment: {
-    cash: {
-      accepted: false,
-      minimum_order_amount: null
-      // not sure if we want to ask for a min amount required but this is fine for now
-    },
-    cc: {
-      accepted: false,
-      cardName: '',
-      cc_number: null,
-      cc_exp: null,
-      ccv: null
-    }
-  },
-  category_tree: []
+    business_type: '',
+    cc_payment_available: false,
+    cash_payment_available: false
+  }
 }
 
 const actions = {
@@ -193,8 +202,12 @@ const actions = {
     })
   },
   getFullStoreInfo ({commit}, id) {
+    // shop.storeInfo
     shop.storeInfoFull(id, store => {
       commit('update_full_store', store)
+      shop.storeCategoriesRetrieve(id, store => {
+        commit('update_store', {categories: store})
+      })
     })
   }
 }
@@ -242,6 +255,28 @@ const mutations = {
 
       if (state.payment.cash.hasOwnProperty(key)) {
         state.payment.cash[key] = field[key]
+      }
+    }
+  },
+  update_pickup (state, field) {
+    let keys = Object.keys(field),
+      key
+    for (let index = keys.length - 1; index > -1; index--) {
+      key = keys[index]
+
+      if (state.store.pickup.hasOwnProperty(key)) {
+        state.store.pickup[key] = field[key]
+      }
+    }
+  },
+  update_delivery (state, field) {
+    let keys = Object.keys(field),
+      key
+    for (let index = keys.length - 1; index > -1; index--) {
+      key = keys[index]
+
+      if (state.store.delivery.hasOwnProperty(key)) {
+        state.store.delivery[key] = field[key]
       }
     }
   },

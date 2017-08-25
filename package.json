@@ -1,8 +1,8 @@
 {
   "name": "quasar-app",
   "version": "0.0.1",
-  "description": "A Quasar App",
-  "author": "Your Name",
+  "description": "myCorner provides a platform that connects local neighborhood grocery sellers with local customers. myCorner offers in-store pickup and grocery delivery right to your door step.",
+  "author": "MyCorner LLC",
   "scripts": {
     "clean": "node build/script.clean.js",
     "dev": "node build/script.dev.js",
@@ -39,7 +39,6 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",
-    "babel-cli": "^6.26.0",
     "babel-core": "^6.0.0",
     "babel-eslint": "^7.0.0",
     "babel-loader": "^7.0.0",

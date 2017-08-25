@@ -34,10 +34,11 @@ const Router = new VueRouter({
     {path: '/product/:id', meta: { Auth: true }, component: load('ProductPage')},
     {path: '/store-sign-up', meta: { Auth: true }, component: load('Admin/Onboard/Store_Onboarding_Page')},
     {path: '/admin',
-      component: load('Admin/Dashboard'),
+      component: load('Admin/Dashboard/Dashboard'),
       children: [
-        {path: '/admin/store', meta: { Auth: true }, component: load('Admin/Onboard/StepTwo')},
-        {path: '/admin/products', meta: { Auth: true }, component: load('Admin/Onboard/StepThree')}
+        {path: '/admin/store', meta: { Auth: true }, component: load('Admin/Dashboard/StoreInfo')},
+        {path: '/admin/products', meta: { Auth: true }, component: load('Admin/Dashboard/ProductAndCategories')},
+        {path: '/admin/payments', meta: { Auth: true }, component: load('Admin/Dashboard/StorePayments')}
       ]
     },
     {
