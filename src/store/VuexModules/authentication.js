@@ -48,20 +48,7 @@ const actions = {
   },
 
   signup ({ commit }, creds) {
-    axios.post(SIGNUP_URL, JSON.stringify(creds)).then(function (response) {
-      Cookies.set('userID', response.data.login.userID, {
-        path: '/',
-        expires: 10
-      })
-      Cookies.set('authtoken', response.data.login.authtoken, {
-        path: '/',
-        expires: 10
-      })
-      commit('authenticationTrue')
-      // router.push('/')
-    }).catch(function (error) {
-      console.log(error)
-    })
+    return axios.post(SIGNUP_URL, JSON.stringify(creds))
   },
 
   logout ({ commit }) {

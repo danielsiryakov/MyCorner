@@ -2,7 +2,7 @@
 <template>
   <div class=" layout-padding xbg-light">
     <div class="">
-       <div class="row wrap group">
+       <div class="row wrap group justify-center">
          <!--<div class="lg-width-1of3"></div>-->
          <div v-if="currentAddress == ''">
            <h4 class="text-bold text-tertiary">Where are you? Please type in your address or enable geolocation!</h4>
@@ -16,15 +16,17 @@
              delivered within an hour!</p>
            </div>
          </div>
-          <div v-for="s in allStores" class="col-md-12 col-bg-12 col-lg-12 bg-light">
-            <router-link :to="{name: 'store', params: {id: s.store_id}}" tag="div" @click.native="activeStore(s.store_id)">
+          <div v-for="s in allStores" class="col-md-12 col-bg-10 col-lg-8 bg-light">
+            <router-link :to="{name: 'store', params: {id: s.store_id}}" tag="div" @click.native="activeStore(s.store_id)" v-if="s.store_id">
               <q-card class="bigger">
                 <q-card-media overlay-position="bottom">
                   <img v-if="s.image" class="dimmed" :src="s.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">
                   <img v-if="!s.image" class="dimmed" src="../assets/fulllogo.png" alt="" style="object-fit: contain;  width: 100vw; height: 40vh;">
                   <q-card-title slot="overlay">
-                    <h4 class="text-bold">{{ s.name }}</h4>
-
+                    <h4 class="text-bold" v-if="s.delivery">{{ s.name }}
+                      <q-chip v-if="s.delivery.service_offered == true" small color="amber-9">Offers Delivery</q-chip>
+                    </h4>
+                    {{ Math.round(s.distance * 100) / 100 }} miles
                     <!--<q-rating slot="subtitle" v-model="stars" :max="5" />-->
                   </q-card-title>
                 </q-card-media>

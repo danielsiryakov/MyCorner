@@ -30,7 +30,7 @@
 <script>
   import { mapActions } from 'vuex'
   import {
-    QInput, QBtn
+    QInput, QBtn, Cookies
   } from 'quasar'
   import TermsOfService from './TermsOfService.vue'
   export default {
@@ -56,8 +56,21 @@
             'password': this.password,
             'email': this.email,
             'is_store_owner': this.is_store_owner
+          }).then(response => {
+            Cookies.set('userID', response.data.login.userID, {
+              path: '/',
+              expires: 10
+            })
+            Cookies.set('authtoken', response.data.login.authtoken, {
+              path: '/',
+              expires: 10
+            })
+            this.$store.commit('authenticationTrue')
+            this.$emit('submit')
+            // router.push('/')
+          }).catch(error => {
+            console.log(error)
           })
-        this.$emit('submit')
       }
     }
   }

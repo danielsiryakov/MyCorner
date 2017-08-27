@@ -23,7 +23,9 @@
           <div class="">
             <q-card class="bigger">
               <q-card-media overlay-position="bottom">
-                <img class="dimmed" :src="store.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">
+                <!--<img v-if="store.image" class="dimmed" :src="s.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">-->
+                <img v-if="!store.image" class="dimmed" src="../assets/fulllogo.png" alt="" style="object-fit: contain;  width: 100vw; height: 40vh;">
+                <img class="dimmed" v-if="store.image" :src="store.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">
                 <q-card-title slot="overlay">
                   <h4 class="text-bold">{{ store.name }}
                     <q-chip v-if="deliveryOffered == true" color="amber-9">Offers Delivery</q-chip>
@@ -34,47 +36,47 @@
             </q-card>
           </div>
         </div>
-          <q-tabs class="" no-pane-border inverted>
-            <q-tab default slot="title" name="Products" label="Products" class="text-bold text-tertiary"/>
-            <q-tab slot="title" name="Information" label="Information" class="text-bold text-tertiary"/>
-            <!-- Targets -->
-            <q-tab-pane name="Products">
-              <div class="row">
-                <q-collapsible opened :label="cat.name" v-for="(cat, index) in allProducts" :key="index">
-                  <q-card inline flat style="width: 30vh; height: 30vh" class="col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
-                    <q-card-media overlay-position="bottom" style="padding: 20px">
-                      <img :src="p.image" >
-                      <q-card-title class="text-condensed" slot="overlay">
-                        {{p.title.substring(0,30)}}...<br>
-                        <!--{{getProductCartQuantity(id, p.id).quantity}}-->
-                        <span class="text-bold">${{p.price_cents / 100}}</span>
-                        <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
-
-                      </q-card-title>
-                    </q-card-media>
-                  </q-card>
-                </q-collapsible>
-              </div>
+        <q-tabs class="" no-pane-border inverted>
+          <q-tab default slot="title" name="Products" label="Products" class="text-bold text-tertiary"/>
+          <q-tab slot="title" name="Information" label="Information" class="text-bold text-tertiary"/>
+          <!-- Targets -->
+          <q-tab-pane name="Products">
+            <div class="row">
+              <q-collapsible separator class="full-width" opened :label="cat.name" v-for="(cat, index) in allProducts" :key="index" v-if="cat.products.length !== 0">
+                <q-card inline flat style="width: 30vh; height: 30vh" class="col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
+                  <q-card-media overlay-position="bottom" style="padding: 20px">
+                    <img :src="p.image" >
+                    <q-card-title class="text-condensed" slot="overlay">
+                      {{p.title.substring(0,30)}}...<br>
+                      <!--{{getProductCartQuantity(id, p.id).quantity}}-->
+                      <span class="text-bold">${{p.price_cents / 100}}</span>
+                      <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
+                    </q-card-title>
+                  </q-card-media>
+                </q-card>
+              </q-collapsible>
+            </div>
           </q-tab-pane>
-          <q-tab-pane name="Information">
-            <h4 class="text-bold">Information about {{ store.name }}</h4>
-            <q-item>
-              <h5>
+          <q-tab-pane name="Information" class="bg-white" v-if="store">
+            <h5 class="">Information about {{ store.name }}</h5>
+            <div class="group">
+              <div class="group">
                 <span class="text-bold">Phone:</span>
-                {{ store.phone }}
-              </h5>
-            </q-item>
-            <q-item>
-              <h5><span class="text-bold">Address:</span> {{ store.address.street_number + ' ' + store.address.route }}</h5>
-            </q-item>
-            <q-item>
-              <h5 class="text-bold">Working Hours:</h5>
-            </q-item>
-            <q-item v-for="(day, key) in store.working_hours" :key="key">
-              <div>
-                {{ capitalizeFirstLetter(key) }}: {{day.hours.from }} - {{day.hours.to }}
+                {{ formatPhone(store.phone) }}<br>
               </div>
-           </q-item>
+              <div class="group" v-if="store.address">
+                <span class="text-bold" >Address:</span>
+                {{ store.address.line1 }}
+              </div>
+              <div class="group">
+                <span class="text-bold">Working Hours:</span>
+                <div class="group" v-for="(day, key) in store.working_hours" :key="key">
+                  <div>
+                    &nbsp &nbsp{{ capitalizeFirstLetter(key) }}: {{ formatTime(day.hours.from) }} - {{ formatTime( day.hours.to) }}
+                  </div>
+                </div>
+              </div>
+            </div>
           </q-tab-pane>
         </q-tabs>
         <br>
@@ -179,15 +181,14 @@
       },
       capitalizeFirstLetter (string) {
         return string.charAt(0).toUpperCase() + string.slice(1)
+      },
+      formatTime (string) {
+        string = string.toString()
+        return string.slice(0, -2) + ':' + string.slice(-2)
+      },
+      formatPhone (string) {
+        return string.slice(0, 3) + '-' + string.slice(3, 6) + '-' + string.slice(6, 10)
       }
-//      getProducts: function () {
-//        axios.get(CATPRODS + this.id).then(response => {
-//          this.CatProducts = response.data
-//          console.log(response.data)
-//        }).catch(function (error) {
-//          console.log(error)
-//        })
-//      }
     },
     watch: {
       '$route' (to, from) {
@@ -268,37 +269,9 @@
      background-color: #fff;
      width: 50%
    }
+  div .q-item .q-item-division .relative-position {
+    background-color: white !important;
+    font-weight: bold !important;
+  }
 
-   /*li{*/
-     /*float: left;*/
-   /*}*/
-   /*@media (max-width: 991px){*/
-     /*.StoreItem{*/
-       /*width: 100%*/
-     /*}*/
-   /*}*/
-  .item-card{
-    /*display: inline-block;*/
-    /*position: relative;*/
-    /*width: 206px;*/
-    /*height: 336px;*/
-    /*vertical-align: top;*/
-    /*background: #fff;*/
-    /*border: 1px solid #e5edec;*/
-    /*text-align: left;*/
-    /*color: #5a5a5a;*/
-    /*font-weight: 400;*/
-    /*margin: 0 -1px -1px 0;*/
-    /*cursor: pointer;*/
-    /*white-space: initial;*/
-  }
-  .product {
-    height: 250px;
-    width: 250px;
-    padding: 20px;
-  }
-  .q-item-main {
-    font-weight: bold;
-    font-size: 24px;
-  }
 </style>

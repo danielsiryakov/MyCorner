@@ -13,22 +13,24 @@
               <q-tab slot="title" name="signup" label="Sign Up" />
 
               <q-tab-pane name="login"><login></login></q-tab-pane>
-              <q-tab-pane v-if="!signedup" name="signup"><sign-up v-on:submit="signedup = true"></sign-up></q-tab-pane>
+              <q-tab-pane  name="signup"><sign-up v-if="!signedup" v-on:submit="signedup = true"></sign-up>
+                <div v-if="signedup" style="padding: 20px;">
+                  <h4>we sent you a confirmation email!</h4><br>
+                  <big class="text-tertiary">
+                    Confirm your email address and start shopping for everything you love!
+                  </big>
+                </div>
+              </q-tab-pane>
             </q-tabs>
 
-            <div v-if="signedup" style="padding: 20px;">
-              <h4>we sent you a confirmation email!</h4><br>
-              <big class="text-tertiary">
-                Confirm your email address and start shopping for everything you love!
-              </big>
-            </div>
+
           </div>
         </q-modal>
           <div class="row justify-center group" id="footer" style="padding: 20px;">
             <div class="col-lg-8">
               <div class="row justify-center group">
-                <q-btn big color="primary" outline class="bg-light text-bold col-5" @click="formTab='login', $refs.logInSignUp.open()">Login</q-btn>
-                <q-btn big color="primary"  outline class="bg-light text-bold col-5" @click="formTab='signup', $refs.logInSignUp.open()">Sign Up</q-btn>
+                <q-btn big color="primary" outline class="bg-light col-5" @click="formTab='login', $refs.logInSignUp.open()">Login</q-btn>
+                <q-btn big color="primary"  outline class="bg-light  col-5" @click="formTab='signup', $refs.logInSignUp.open()">Sign Up</q-btn>
               </div>
             </div>
           </div>

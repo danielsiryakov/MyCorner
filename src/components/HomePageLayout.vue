@@ -44,6 +44,7 @@
     <q-scroll-area slot="right" class="bg-light" style="width: 100%; height: 100%">
       <cartpage class=""></cartpage>
     </q-scroll-area>
+
     <q-modal ref="review" class="" :content-css="{padding: '20px', maxWidth: '800px', maxHeight: '800px'}">
       <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.review.close()"/></h4>
       <h4>Need Help? Have Feedback?</h4>
@@ -115,6 +116,7 @@
         'formattedAddress'
       ]),
       getLocation (addressData, placeResultData) {
+        console.log(placeResultData)
         Dialog.create({
           title: 'Add Address',
           message: 'Do you want to add address to Address Book? ',

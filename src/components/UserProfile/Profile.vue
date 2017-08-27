@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+    <div class="" v-if="show">
       <div class ="layout-padding">
         <div class="row justify-center">
           <div class="col-lg-8">
@@ -8,11 +8,12 @@
               <q-list-header>{{ user.email }}</q-list-header>
 
               <q-collapsible opened indent label="Address Book">
-                <q-item  class="group" v-for="address in this.$store.state.userInfo.address_book" :key="address.id">
+                <q-item  class="group" v-for="address in addressBook" :key="address.id">
                   <span class="text-bold" style="padding-right: 10px">{{address.name}}: </span> {{address.line1}}
                   <q-chip v-if="address.default" small color="amber-9">default</q-chip>
                   <q-item-side right color="primary">
                     <q-icon name="edit" @click="editAddress(address)"/>
+                    <q-icon color="negative" name="delete" @click="removeAddress(address.address_id)"/>
                   </q-item-side>
                 </q-item>
               </q-collapsible>
@@ -25,7 +26,11 @@
 
               <q-collapsible opened label="Past Orders/ Reorder">
                 <div v-if="completedCarts.length > 0">
-                  {{ completedCarts }}
+                  <q-item v-for="(order, key) in completedCarts" :key="key">
+                    <q-item-main>
+                      {{ order.store_name }}
+                    </q-item-main>
+                  </q-item>
                 </div>
                 <div v-if="completedCarts.length === 0">
                   No orders to show :/ order some products...they are good, we promise :)
@@ -33,10 +38,13 @@
               </q-collapsible>
 
               <q-collapsible opened label="Your Wallet">
-                <q-item class="group" v-for="(card, key) in wallet.sources.data" :key="key" v-if="wallet">
-                  <span class="text-bold">{{ card.brand }}: </span>
-                  ******{{ card.last4 }} <span style="padding-left: 10px;">exp: </span>{{ card.exp_month }}/{{ card.exp_year }}
-                </q-item>
+                <div v-if="Object.keys(wallet).length !== 0 && wallet.constructor === Object">
+                  <q-item class="group" v-for="(card, key) in wallet.data" :key="key">
+                    <span class="text-bold">{{ card.brand }}: </span>
+                    ******{{ card.last4 }} <span style="padding-left: 10px;">exp: </span>{{ card.exp_month }}/{{ card.exp_year }}
+                  </q-item>
+                </div>
+
                 <q-item-side right color="primary">
                   <q-btn color="primary"  @click='customButton'>Add CC to your wallet</q-btn>
                 </q-item-side>
@@ -93,10 +101,13 @@
         'user'
       ]),
       wallet: {
-        get () { return this.$store.state.userInfo.wallet }
+        get () { return this.$store.state.userInfo.wallet.sources }
       },
       completedCarts: {
         get () { return this.$store.state.userInfo.completedCarts }
+      },
+      addressBook: {
+        get () { return this.$store.state.userInfo.address_book }
       }
     },
     methods: {
@@ -105,6 +116,7 @@
         'logout',
         'getWallet',
         'addWallet',
+        'getAddressBook',
         'getCompletedCarts'
       ]),
       customButton () {
@@ -118,7 +130,7 @@
           allowRememberMe: true,
           email: 'users@email.com',
           image: './statics/iconDark.ico'
-        }).then(function (token) {
+        }).then(token => {
           console.log(token)
           shop.userWalletAdd(token.id).then(response => {
             console.log(response.data)
@@ -149,6 +161,23 @@
         this.$refs.addressDisplay.close()
         this.getUserInfo()
         this.getWallet()
+        this.rerender()
+      },
+      removeAddress (id) {
+        shop.removeAddressByID(id).then(() => {
+          this.getAddressBook()
+        })
+        this.rerender()
+      },
+      rerender () {
+        this.show = false
+        this.$nextTick(() => {
+          this.show = true
+          console.log('re-render start')
+          this.$nextTick(() => {
+            console.log('re-render end')
+          })
+        })
       }
     },
     created () {
@@ -158,6 +187,7 @@
     },
     data () {
       return {
+        show: true,
         selectedAddress: {},
         complete: false,
         stripeKey: stripeKey,
