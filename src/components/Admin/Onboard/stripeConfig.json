@@ -16,8 +16,7 @@
         "iconColor": "#fa755a"
       }
     },
-    "value": {
-      "currency": "USD"
-    }
+    "value": {"currency": "usd"},
+    "currency" : "usd"
   }
 }
