@@ -29,7 +29,7 @@
             <h5><span class="text-bold">Order Total: </span> {{ formattedPrice(cart.totals.total) }}</h5>
           </div>
           <br>
-          <q-btn color="primary" class="full-width">Checkout</q-btn>
+          <q-btn color="primary" class="full-width" @click="checkout">Checkout</q-btn>
         </div>
       </div>
     </div>
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+  import shop from '../api/shop'
   import { mapActions } from 'vuex'
   export default {
     data () {
@@ -66,7 +67,9 @@
       }
     },
     created () {
-      this.getStore(this.cart.store_id)
+      if (this.cart.store_id) {
+        this.getStore(this.cart.store_id)
+      }
 //      this.getAllProducts(this.id)
     },
     methods: {
@@ -78,6 +81,18 @@
         return (itemTotal / 100).toLocaleString('en-US', {
           style: 'currency',
           currency: 'USD'
+        })
+      },
+      checkout () {
+        shop.orderCashPickup({
+          cart_id: this.cart.id,
+          store_id: this.cart.store_id,
+          instructions: ''
+        }).then(response => {
+          console.log('checkout successful')
+          console.log(response.data)
+        }).catch(error => {
+          console.log(error)
         })
       }
     }

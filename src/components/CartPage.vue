@@ -14,13 +14,13 @@
             <q-icon name="keyboard_arrow_left"></q-icon>Shop for more items!
           </q-side-link>
           <br>
-          <q-item class="bg-white" @click="open(p, cart)" v-for="p in cart.products" :key="p.asset_id" v-if="p.quantity && cart.totals.subtotal">
-            <q-item-side :avatar="p.image">
+          <q-item class="bg-white" v-for="p in cart.products" :key="p.asset_id" v-if="p.quantity && cart.totals.subtotal">
+            <q-item-side @click="open(p, cart)" :avatar="p.image">
               <q-item-tile>
                 {{ p.quantity }} x {{ formattedPrice(p.price_cents) }}
               </q-item-tile>
             </q-item-side>
-            <q-item-main>{{ formattedTitle(p.title) }}</q-item-main>
+            <q-item-main @click="open(p, cart)">{{ formattedTitle(p.title) }}</q-item-main>
             <q-icon name="delete" color="negative" @click="removeFromCart(p, cart)"></q-icon>
           </q-item>
           <br>

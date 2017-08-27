@@ -27,6 +27,7 @@ const CATEGORY_REORDER = API_URL + 'store/categories/reorder/'
 const CATEGORY_PRODUCT_CREATE = API_URL + 'store/category/product/create/'
 const STORE_INFO_UPDATE = API_URL + 'store/info/update/'
 const PAYMENT_STORE_CREATE = API_URL + 'payment/store/create/account?stripe_src='
+const ORDER_CASH_PICKUP = API_URL + 'order/cash/pickup'
 // import { Cookies } from 'quasar'
 import {
   Loading,
@@ -173,13 +174,8 @@ export default {
       console.log(error)
     })
   },
-  removeAddressByID (id, cb) {
-    axios.get(ADDRESS_BOOK_ADDRESS_REMOVE + '?address_id=' + id).then(response => {
-      cb(response.data)
-      // console.log(response)
-    }).catch(error => {
-      console.log(error)
-    })
+  removeAddressByID (id) {
+    return axios.get(ADDRESS_BOOK_ADDRESS_REMOVE + '?address_id=' + id)
   },
   userWalletRetrieve (cb) {
     axios.get(USER_WALLET_RETRIEVE).then(response => {
@@ -272,6 +268,9 @@ export default {
   },
   paymentStoreCreate (payload) {
     return axios.post(PAYMENT_STORE_CREATE + payload.token, JSON.stringify(payload))
+  },
+  orderCashPickup (payload) {
+    return axios.post(ORDER_CASH_PICKUP, JSON.stringify(payload))
   }
   //  buyProducts (products, cb, errorCb) {
 //    setTimeout(() => {

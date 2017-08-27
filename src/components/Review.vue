@@ -3,7 +3,7 @@
   <div class="layout-padding">
     <!-- your content -->
     <br>
-    <h5><q-rating v-model="score" :max="5" /></h5>
+    <h5><q-rating color="amber-4"  v-model="score" :max="5" /></h5>
     <q-field icon="">
       <q-input v-model="comment" type="text" float-label="Enter your"
                :value = "comment" clearable/>
@@ -36,6 +36,8 @@
           username: this.username,
           score: this.score
         })
+        this.comment = ''
+        this.username = ''
         this.$emit('submittedReview')
       }
     }
