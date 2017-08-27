@@ -1,84 +1,89 @@
 <template>
   <!-- if you want automatic padding use "layout-padding" class -->
   <div class="layout-padding">
-    <h5>Payments are around the corner!</h5>
-    ...but first we need some information. It's secure and confidential!
-    <!-- your content -->
-    <br><br>
-    <div class="row sm-gutter">
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+    <div class="row justify-center">
+      <div class="col-lg-8">
+        <h5>Payments are around the corner!</h5>
+        ...but first we need some information. <span class="text-bold">It's secure and confidential!</span>
+        <!-- your content -->
+        <br><br>
+        <div class="row sm-gutter">
+          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <q-field>
+              <span class="">First Name:</span>
+              <input v-model="legal_entity.Owner.First"
+                     type="text"
+                     placeholder="Enter your first name"
+                     class="formInput"/>
+            </q-field>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <q-field>
+              <span class="">Last Name:</span>
+              <input v-model="legal_entity.Owner.Last"
+                     type="text"
+                     placeholder="Enter your last name"
+                     class="formInput"/>
+            </q-field>
+          </div>
+        </div>
         <q-field>
-          <span class="text-bold">First Name:</span>
-          <input v-model="legal_entity.Owner.First"
+          <span class="">Date of birth:</span>
+          <cleave class="formInput" v-model="birthday" placeholder="mm/dd/yyyy" :options="{date: true, datePattern: ['m', 'd', 'Y']}"></cleave>
+        </q-field>
+
+        <!--<q-field>-->
+          <!--<span class="">SSN:</span>-->
+          <!--<input v-model="legal_entity.personal_id"-->
+                 <!--type="text"-->
+                 <!--placeholder="Enter your personal tax id number"-->
+                 <!--class="formInput"/>-->
+        <!--</q-field>-->
+
+        <q-field>
+          <span class="">Last 4 digits of your SSN:</span>
+          <input v-model="legal_entity.last_4_ssn"
                  type="text"
-                 placeholder="Enter your first name"
+                 placeholder="Enter your personal tax id number"
                  class="formInput"/>
         </q-field>
-      </div>
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+
         <q-field>
-          <span class="text-bold">Last Name:</span>
-          <input v-model="legal_entity.Owner.Last"
+          <span class="text-bold">Legal Business Name:</span>
+          <input v-model="legal_entity.legal_business_name"
                  type="text"
-                 placeholder="Enter your last name"
+                 placeholder="Enter Legal Business Name"
                  class="formInput"/>
         </q-field>
+
+        <q-field>
+          <span class="text-bold">Address:</span>
+          <vue-google-autocomplete
+            id="map"
+            ref="addressSearch"
+            placeholder="Enter your LEGAL business address"
+            v-on:placechanged="getLocation"
+            country="usa"
+            :enableGeolocation="true"
+            class="formInput full-width"
+          />
+        </q-field>
+        <q-field>
+          <span class="text-bold">Employer Identification Number (EIN):</span>
+          <input v-model="legal_entity.business_tax_id"
+                 type="text"
+                 placeholder="Enter 9 digit Employer Identification Number"
+                 class="formInput"/>
+        </q-field>
+        <q-field>
+          <span class="text-bold">Enter card information:</span>
+          <stripe-card  @gotToken="updateStripe"></stripe-card>
+        </q-field>
+        <br><br>
+        <q-btn big @click="createPayment" outline>Create Payment Options!</q-btn>
       </div>
     </div>
-    <q-field>
-      <span class="text-bold">Date of birth:</span>
-      <cleave class="formInput" v-model="birthday" placeholder="mm/dd/yyyy" :options="{date: true, datePattern: ['m', 'd', 'Y']}"></cleave>
-    </q-field>
 
-    <q-field>
-      <span class="text-bold">Personal Tax ID:</span>
-      <input v-model="legal_entity.personal_id"
-             type="text"
-             placeholder="Enter your personal tax id number"
-             class="formInput"/>
-    </q-field>
-
-    <q-field>
-      <span class="text-bold">Last 4 digits of your SSN:</span>
-      <input v-model="legal_entity.last_4_ssn"
-             type="text"
-             placeholder="Enter your personal tax id number"
-             class="formInput"/>
-    </q-field>
-
-    <q-field>
-      <span class="text-bold">Legal Business Name:</span>
-      <input v-model="legal_entity.legal_business_name"
-             type="text"
-               placeholder="Enter Legal Business Name"
-               class="formInput"/>
-    </q-field>
-
-    <q-field>
-      <span class="text-bold">Address:</span>
-      <vue-google-autocomplete
-      id="map"
-      ref="addressSearch"
-      placeholder="Enter your LEGAL business address"
-      v-on:placechanged="getLocation"
-      country="usa"
-      :enableGeolocation="true"
-      class="formInput full-width"
-    />
-    </q-field>
-    <q-field>
-      <span class="text-bold">Business Tax ID:</span>
-      <input v-model="legal_entity.business_tax_id"
-             type="text"
-             placeholder="Enter Business Tax ID"
-             class="formInput"/>
-    </q-field>
-    <q-field>
-      <span class="text-bold">Enter card information:</span>
-      <stripe-card  @gotToken="updateStripe"></stripe-card>
-    </q-field>
-    <br><br>
-    <q-btn big @click="createPayment" outline>Create Payment Options!</q-btn>
   </div>
 </template>
 

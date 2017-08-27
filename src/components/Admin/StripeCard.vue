@@ -34,7 +34,7 @@
     },
     watch: {
       complete: function () {
-        createToken().then(data => {
+        createToken({currency: 'USD'}).then(data => {
           this.$emit('gotToken', data.token.id)
           console.log(data.token.id)
         })

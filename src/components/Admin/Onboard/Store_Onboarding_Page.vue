@@ -55,7 +55,7 @@
     QInput,
     QStepper
   } from 'quasar'
-  import { mapActions } from 'vuex'
+  import { mapActions, mapMutations } from 'vuex'
 
   //  import StepFour from '../Admin/StripeTest.vue'
   export default {
@@ -107,7 +107,13 @@
       },
       ...mapActions([
         'createStore'
+      ]),
+      ...mapMutations([
+        'reset_store'
       ])
+    },
+    created () {
+      this.reset_store()
     }
   }
 </script>

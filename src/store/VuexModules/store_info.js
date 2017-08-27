@@ -104,6 +104,95 @@ const state = {
     category_names: ['Grocery', 'Corner Store'],
     categories: []
   },
+  storeTemplate: {
+    email: '',
+    platform_categories: ['Grocery', 'Corner Store'],
+    working_hours: {
+      thursday: {
+        hours: {
+          to: 1200,
+          from: 900
+        },
+        open: true
+      },
+      monday: {
+        hours: {
+          to: 1200,
+          from: 900
+        },
+        open: true
+      },
+      tuesday: {
+        hours: {
+          to: 1200,
+          from: 900
+        },
+        open: true
+      },
+      friday: {
+        hours: {
+          to: 1200,
+          from: 900
+        },
+        open: true
+      },
+      wednesday: {
+        hours: {
+          to: 1200,
+          from: 900
+        },
+        open: true
+      },
+      sunday: {
+        hours: {
+          to: 1200,
+          from: 900
+        },
+        open: true
+      },
+      saturday: {
+        hours: {
+          to: 1200,
+          from: 900
+        },
+        open: true
+      }
+    },
+    name: '',
+    image: '',
+    delivery: {
+      delivery_distance: 2,
+      delivery_fee: 500,
+      delivery_minimum: 500,
+      minimum_time_to_delivery: 45,
+      maximum_time_to_delivery: 100,
+      service_offered: true
+    },
+    phone: '',
+    pickup: {
+      offered: false,
+      maximum_time_to_pickup: 90,
+      minimum_time_to_pickup: 30,
+      pickup_items: {
+        max: 80,
+        min: 20
+      }
+    },
+    tax_rate: 4.5,
+    address: {
+      street_number: '',
+      country: '',
+      route: '',
+      postal_code: '',
+      longitude: '',
+      latitude: '',
+      administrative_area_level_1: ''
+    },
+    short_description: '',
+    long_description: '',
+    category_names: ['Grocery', 'Corner Store'],
+    categories: []
+  },
   payment_details: {
     store_id: '',
     legal_entity: {
@@ -300,6 +389,9 @@ const mutations = {
   },
   update_store_selection (state, value) {
     state.selectedStore = value
+  },
+  reset_store (state) {
+    state.store = state.storeTemplate
   },
   update_full_store_field (state, field) {
     let keys = Object.keys(field),

@@ -10,7 +10,7 @@ const state = {
   },
   address_book: [],
   defaultAddress: {},
-  wallet: [],
+  wallet: {},
   completedCarts: []
 }
 

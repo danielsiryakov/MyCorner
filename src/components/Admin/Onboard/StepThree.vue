@@ -18,7 +18,7 @@
           <draggable v-model="categories" @end="categoriesReorder">
             <transition-group name="list-complete">
               <div separator v-for="(category, cindex) in categories" :key="category.name">
-                <q-item v-show="category.edit">
+                <q-item separator v-show="category.edit">
                   <q-field v-show="category.edit">
                     <q-input type="text"
                              v-show="category.edit"
