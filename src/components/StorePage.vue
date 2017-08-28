@@ -20,7 +20,7 @@
 		<div class="layout-view bg-light">
       <div class="layout-padding">
         <div class="row">
-          <div class="">
+          <div>
             <q-card class="bigger">
               <q-card-media overlay-position="bottom">
                 <!--<img v-if="store.image" class="dimmed" :src="s.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">-->
@@ -58,24 +58,44 @@
             </div>
           </q-tab-pane>
           <q-tab-pane name="Information" class="bg-white" v-if="store">
-            <h5 class="">Information about {{ store.name }}</h5>
-            <div class="group">
-              <div class="group">
-                <span class="text-bold">Phone:</span>
-                {{ formatPhone(store.phone) }}<br>
-              </div>
-              <div class="group" v-if="store.address">
-                <span class="text-bold" >Address:</span>
-                {{ store.address.line1 }}
-              </div>
-              <div class="group">
-                <span class="text-bold">Working Hours:</span>
-                <div class="group" v-for="(day, key) in store.working_hours" :key="key">
-                  <div>
-                    &nbsp &nbsp{{ capitalizeFirstLetter(key) }}: {{ formatTime(day.hours.from) }} - {{ formatTime( day.hours.to) }}
-                  </div>
+            <div class="workinghours workinginghourscontent section">
+             <h2>Workinging Hours</h2>
+              <span class="working-status">
+                <div class="group">
+                  <span class="text-bold">Phone:</span>
+                  {{ formatPhone(store.phone) }}<br>
                 </div>
-              </div>
+                <div class="group" v-if="store.address">
+                  <span class="text-bold">Address:</span>
+                  {{ store.address.line1 }}
+                </div>
+              </span>
+              <div style="text-align: center;">
+                <table class="q-table" style="display:inline-block;">
+                  <tbody v-for="(day, key) in store.working_hours" :key="key">
+                    <tr v-if="!checkCurrentDay(key)"
+                        :id="key"
+                        :title="capitalizeFirstLetter(key)">
+                      <td>{{ capitalizeFirstLetter(key) }}</td>
+                      <td>{{ formatTime(day.hours.from) }}</td>
+                      <td> - </td>
+                      <td>{{ formatTime(day.hours.to) }}</td>
+                    </tr>
+                    <tr v-if="checkCurrentDay(key) && !checkWorkingHours(day)"
+                        class="today" :id="key" :title="capitalizeFirstLetter(key)">
+                      <td>{{ capitalizeFirstLetter(key) }}</td><td></td>
+                      <td class="closed"> Closed </td>
+                    </tr>
+                    <tr v-if="checkCurrentDay(key) && checkWorkingHours(day.hours)"
+                        class="today" :id="key" :title="capitalizeFirstLetter(key)">
+                      <td>{{ capitalizeFirstLetter(key) }}</td>
+                      <td>{{ formatTime(day.hours.from) }}</td>
+                      <td> - </td>
+                      <td>{{ formatTime(day.hours.to) }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
             </div>
           </q-tab-pane>
         </q-tabs>
@@ -153,7 +173,24 @@
           store_id: this.store.store_id
         })
       },
-
+      checkCurrentDay (key) {
+        return [
+          'Sun',
+          'Mon',
+          'Tue',
+          'Wed',
+          'Thu',
+          'Fri',
+          'Sat'
+        ][new Date().getDay()] === this.capitalizeFirstLetter(key).substring(0, 3)
+      },
+      checkWorkingHours (day) {
+        var current = new Date().getHours() * 100 + new Date().getMinutes()
+        if (day.open) {
+          return day.hours.from < current && current < day.hours.to
+        }
+        return day.open
+      },
 //      showProductModal: function (Product) {
 //        this.ProductObject = Product
 //        this.showModal = true
@@ -275,5 +312,31 @@
     background-color: white !important;
     font-weight: bold !important;
   }
-
+  .workinghours {
+    font-family:Lucida Console;
+    font-size: 14px !important;
+    border-radius:4px;
+    margin:10px;
+    box-shadow: 0 0 2px black;
+    padding:0 2px 0 2px;
+    overflow: hidden;
+  }
+  .workinginghourscontent h2 {
+    text-align: center;
+  }
+  .closed {
+    color: red;
+  }
+  .today {
+    color: #8AC007;
+  }
+  .working-status {
+    display:block;
+    margin-top:1em;
+    margin-bottom:1em;
+    text-align:center;
+    border:dotted lightgrey 3px;
+    font-size: 13px !important;
+    text-align: center ! important;
+  }
 </style>
