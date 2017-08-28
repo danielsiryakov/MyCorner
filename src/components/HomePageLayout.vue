@@ -10,7 +10,7 @@
     <q-toolbar color="tertiary" class="text-white" slot="header">
       <q-toolbar-title>
         <router-link to="/"><img src="../assets/fulllogo.png" id="logo"></router-link>
-        <span slot="subtitle">Empowering Your Neighborhood</span>
+        <!--<span slot="subtitle">Empowering Your Neighborhood</span>-->
       </q-toolbar-title>
       <q-btn flat @click="$refs.layout.toggleRight()">
         <q-icon name="shopping_cart"/>

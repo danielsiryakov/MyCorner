@@ -45,7 +45,7 @@
         return selectOptions
       },
       fullStoreInfo: {
-        get () { return this.$store.state.storeInfo.dashboardStore }
+        get () { return this.$store.state.storeInfo.store }
 //        set (value) { this.$store.commit('update_full_store', value) }
       },
       selectedStore: {

@@ -33,7 +33,7 @@
 
     <q-modal  ref="checkout" class="bg-light maximized" content-classes="bg-light"	>
       <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.checkout.close()"/></h4>
-      <checkout  :cart="checkoutCart"></checkout>
+      <checkout v-if="checkoutCart !== ''" :cart="checkoutCart" @checkedOut="$refs.checkout.close()"></checkout>
     </q-modal>
 
     <q-modal ref="productModal" class="minimized" :content-css="{padding: '20px', maxWidth: '500px', maxHeight: '500px'}">

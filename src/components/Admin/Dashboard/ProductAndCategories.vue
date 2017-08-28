@@ -105,7 +105,7 @@
     },
     computed: {
       productData: {
-        get () { return this.$store.state.storeInfo.dashboardStore.categories }
+        get () { return this.$store.state.storeInfo.store.categories }
 //        set (value) { this.$store.commit('update_full_store', value) }
       }
     },

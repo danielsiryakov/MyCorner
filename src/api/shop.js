@@ -7,6 +7,7 @@ const UPDATECART = API_URL + 'cart/update/product/quantity'
 const USER_RETRIEVE = API_URL + 'user/retrieve'
 const STOREINFO = API_URL + 'store/info/retrieve/'
 const ACTIVE_CARTS = API_URL + 'carts/retrieve/active'
+const CART_REACTIVATE = API_URL + 'cart/re-activate/'
 const COMPLETED_CARTS = API_URL + 'carts/retrieve/completed'
 // const IMAGEUPLOAD = API_URL + 'assets/image/upload'
 const RETRIEVECARTS = API_URL + 'carts/retrieve/active'
@@ -28,6 +29,8 @@ const CATEGORY_PRODUCT_CREATE = API_URL + 'store/category/product/create/'
 const STORE_INFO_UPDATE = API_URL + 'store/info/update/'
 const PAYMENT_STORE_CREATE = API_URL + 'payment/store/create/account?stripe_src='
 const ORDER_CASH_PICKUP = API_URL + 'order/cash/pickup'
+const ORDER_CASH_DELIVERY = API_URL + 'order/cash/delivery'
+const ORDERS_RETRIEVE_ACTIVE = API_URL + 'orders/retrieve/active/all/'
 // import { Cookies } from 'quasar'
 import {
   Loading,
@@ -126,6 +129,9 @@ export default {
     }).catch(error => {
       console.log(error)
     })
+  },
+  reactivateCart (id) {
+    return axios.get(CART_REACTIVATE + id)
   },
   retrieveCompletedCarts (cb) {
     axios.get(COMPLETED_CARTS).then(response => {
@@ -269,8 +275,14 @@ export default {
   paymentStoreCreate (payload) {
     return axios.post(PAYMENT_STORE_CREATE + payload.token, JSON.stringify(payload))
   },
+  ordersRetrieveActive (id) {
+    return axios.get(ORDERS_RETRIEVE_ACTIVE + id)
+  },
   orderCashPickup (payload) {
     return axios.post(ORDER_CASH_PICKUP, JSON.stringify(payload))
+  },
+  orderCashDelivery (payload) {
+    return axios.post(ORDER_CASH_DELIVERY, JSON.stringify(payload))
   }
   //  buyProducts (products, cb, errorCb) {
 //    setTimeout(() => {

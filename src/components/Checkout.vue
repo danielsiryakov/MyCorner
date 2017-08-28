@@ -3,13 +3,26 @@
   <div class="layout-padding bg-light">
     <div class="row justify-center group" v-if="cart">
       <div class="col-lg-8">
-        <div v-if="orderPlaced == false">
+        <div v-if="!orderPlaced">
           <h4 class="text-bold">Review and place order</h4>
-
+          <q-tabs :refs="$refs" v-model="orderType" no-pane-border color="white" >
+            <q-tab default slot="title" name="Delivery" label="Delivery" class="text-tertiary text-bold"/>
+            <q-tab slot="title" name="Pick-Up" label="Pick-Up" class="text-tertiary text-bold" />
+          </q-tabs>
           <!--<h5 class="text-bold">Review name, address, payments to complete your purchase</h5>-->
           <br>
-          <span class="text-bold">Address:</span>
-          {{ user.defaultAddress.line1 }}<br><br>
+          <div v-if="orderType == 'Delivery'" class="">
+            <span class="text-bold">Address:</span>
+            <q-select
+              v-model="selectedAddress"
+              radio
+              class="bg-white"
+              :options="addressBookOptions"
+            />
+          </div>
+          <!--:display-value="this.searchAddress"-->
+
+          <!--{{ user.defaultAddress.line1 }}<br><br>-->
           <span class="text-bold">Order Details:</span>
           <q-list no-border>
             <q-item class="bg-white" v-for="p in cart.products" :key="p.product_id" v-if="p.quantity>0">
@@ -34,7 +47,7 @@
       </div>
     </div>
 
-    <div v-if="orderPlaced == true">
+    <div v-if="orderPlaced">
       <div class="bg-light">
         <h4 class="text-bold">Thank You For Your Order!</h4>
         <br>
@@ -48,34 +61,67 @@
 </template>
 
 <script>
+  import { QSelect } from 'quasar'
   import shop from '../api/shop'
   import { mapActions } from 'vuex'
   export default {
     data () {
       return {
+        isDelivery: true,
+        orderType: 'Delivery',
+        selectedAddress: '',
         orderPlaced: false
       }
     },
+    components: {
+      QSelect
+    },
     props: ['cart'],
     computed: {
+      searchAddress () {
+        if (this.$store.state.storeSearch.address2.formatted_address === 'Type Your Address') {
+          return this.defaultAddress.line1
+        }
+        else {
+          return this.$store.state.storeSearch.address2.formatted_address
+        }
+      },
       store () {
         return this.$store.state.storeSearch.currentStore
 //        return this.allStores.find((s) => s._id === this.id) || {}}
       },
       user () {
         return this.$store.state.userInfo
+      },
+      defaultAddress () {
+        return this.$store.state.userInfo.defaultAddress
+      },
+      addressBook: {
+        get () { return this.$store.state.userInfo.address_book }
+      },
+      addressBookOptions () {
+        let options = []
+        this.addressBook.forEach(address => {
+          options.push({
+            label: address.line1,
+            value: address.address_id
+          })
+        })
+        return options
       }
     },
     created () {
       if (this.cart.store_id) {
         this.getStore(this.cart.store_id)
+        this.getAddressBook()
       }
 //      this.getAllProducts(this.id)
     },
     methods: {
       ...mapActions([
         'getStore',
-        'getAllProducts'
+        'getAllProducts',
+        'getAddressBook'
       ]),
       formattedPrice (itemTotal) {
         return (itemTotal / 100).toLocaleString('en-US', {
@@ -84,16 +130,30 @@
         })
       },
       checkout () {
-        shop.orderCashPickup({
-          cart_id: this.cart.id,
-          store_id: this.cart.store_id,
-          instructions: ''
-        }).then(response => {
-          console.log('checkout successful')
-          console.log(response.data)
-        }).catch(error => {
-          console.log(error)
-        })
+        let payload = {}
+        payload.cart_id = this.cart.id
+        payload.store_id = this.cart.store_id
+        payload.instructions = ''
+        console.log(this.orderType)
+        if (this.orderType === 'Delivery') {
+          payload.address_id = this.selectedAddress
+          shop.orderCashDelivery(payload).then(response => {
+            console.log('checkout successful')
+            this.$emit('checkedOut')
+            console.log(response.data)
+          }).catch(error => {
+            console.log(error)
+          })
+        }
+        if (this.orderType === 'Pick-Up') {
+          shop.orderCashPickup(payload).then(response => {
+            console.log('checkout successful')
+            this.$emit('checkedOut')
+            console.log(response.data)
+          }).catch(error => {
+            console.log(error)
+          })
+        }
       }
     }
   }

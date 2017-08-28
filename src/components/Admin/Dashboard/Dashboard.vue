@@ -1,7 +1,7 @@
 <template>
   <q-layout
     ref="layoutD"
-    :left-breakpoint="800"
+    :left-breakpoint="760"
     :view="'hHr LpR lFr'"
     :reveal="true"
     class=""
@@ -18,7 +18,7 @@
 
 
     <q-scroll-area slot="left" class="group bg-light" style="width: 100%; height: 100%">
-      <q-side-link item to="/admin/products">
+      <q-side-link item to="/admin/orders">
         <q-item-side icon="shopping_cart"/>
         <q-item-main label="Orders"/>
       </q-side-link>
@@ -46,11 +46,11 @@
       float-label="Which Store To Display?"
       v-model="selectedStore"
       :options="storeSelect"
-      @change="getFullStoreInfo(selectedStore)"
+      @change="getSelectionInfo"
     />
 
     <transition name="slide-fade" mode="out-in">
-      <router-view v-if="selectedStore" class="layout-view"></router-view>
+      <router-view class="layout-view"></router-view>
     </transition>
 
   </q-layout>
@@ -70,8 +70,13 @@
     methods: {
       ...mapActions([
         'getFullStoreInfo',
-        'logout'
-      ])
+        'logout',
+        'getActiveOrders'
+      ]),
+      getSelectionInfo () {
+        this.getFullStoreInfo(this.selectedStore)
+        this.getActiveOrders()
+      }
     },
     computed: {
       storeID: function () {
@@ -89,13 +94,6 @@
             })
           })
         }
-
-//        for (var i = 0; i < keys.length; i++) {
-//          selectOptions.push({
-//            label: this.storeID[keys[i]],
-//            value: this.keys[i]
-//          })
-//        }
         return selectOptions
       },
       selectedStore: {

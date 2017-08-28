@@ -187,7 +187,9 @@
         return string.slice(0, -2) + ':' + string.slice(-2)
       },
       formatPhone (string) {
-        return string.slice(0, 3) + '-' + string.slice(3, 6) + '-' + string.slice(6, 10)
+        if (string) {
+          return string.slice(0, 3) + '-' + string.slice(3, 6) + '-' + string.slice(6, 10)
+        }
       }
     },
     watch: {

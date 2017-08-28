@@ -8,13 +8,7 @@ const IMAGEUPLOAD = shop.API_URL + 'assets/image/upload'
 const state = {
   selectedStore: '',
   dashboardStore: {},
-  user: {
-    user_id: '',
-    email: '',
-    username: '',
-    password: '',
-    store_categories: []
-  },
+  orders: [],
   store: {
     email: '',
     platform_categories: ['Grocery', 'Corner Store'],
@@ -263,9 +257,6 @@ const actions = {
   setName ({commit}, name) {
     commit('setname', name)
   },
-  updateUser ({commit}, field) {
-    commit('update_user', field)
-  },
   createStore ({ commit }) {
     let userID = Cookies.get('userID')
     let authtoken = Cookies.get('authtoken')
@@ -298,32 +289,27 @@ const actions = {
         commit('update_store', {categories: store})
       })
     })
+  },
+  getActiveOrders ({commit}) {
+    if (state.selectedStore !== '') {
+      shop.ordersRetrieveActive(state.selectedStore).then(response => {
+        commit('update_orders', response.data)
+      }).catch(error => {
+        console.log(error)
+      })
+    }
   }
 }
 
 const mutations = {
   createImage (state, file) {
     state.store.image = file
-    // var image = new Image()
-    // var reader = new FileReader()
-    // reader.onload = (e) => {
-    //   state.store.image = e.target.result
-    // }
-    // reader.readAsDataURL(file)
   },
   removeimage (state) {
     state.store.image = ''
   },
-  update_user (state, field) {
-    let keys = Object.keys(field),
-      key
-    for (let index = keys.length - 1; index > -1; index--) {
-      key = keys[index]
-
-      if (state.user.hasOwnProperty(key)) {
-        state.user[key] = field[key]
-      }
-    }
+  update_orders (state, orders) {
+    state.orders = orders
   },
   update_store (state, field) {
     let keys = Object.keys(field),
@@ -369,22 +355,10 @@ const mutations = {
       }
     }
   },
-  update_cc (state, field) {
-    let keys = Object.keys(field),
-      key
-    for (let index = keys.length - 1; index > -1; index--) {
-      key = keys[index]
-
-      if (state.payment.cc.hasOwnProperty(key)) {
-        state.payment.cc[key] = field[key]
-      }
-    }
-  },
   update_working_hours (state, workingHours) {
     state.store.working_hours = workingHours
   },
   update_full_store (state, store) {
-    state.dashboardStore = store
     state.store = store
   },
   update_store_selection (state, value) {
@@ -392,17 +366,6 @@ const mutations = {
   },
   reset_store (state) {
     state.store = state.storeTemplate
-  },
-  update_full_store_field (state, field) {
-    let keys = Object.keys(field),
-      key
-
-    for (let index = keys.length - 1; index > -1; index--) {
-      key = keys[index]
-      if (state.dashboardStore.hasOwnProperty(key)) {
-        state.dashboardStore[key] = field[key]
-      }
-    }
   }
 }
 

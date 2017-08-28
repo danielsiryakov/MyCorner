@@ -29,6 +29,15 @@ const actions = {
     await shop.retrieveCarts(carts => {
       commit('syncCarts', carts)
     })
+  },
+  reactivatePastCart ({dispatch}, id) {
+    console.log(id)
+    shop.reactivateCart(id).then(response => {
+      console.log(response)
+      dispatch('retriesActiveCarts')
+    }).catch(error => {
+      console.log(error)
+    })
   }
 }
 
