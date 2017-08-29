@@ -57,10 +57,10 @@
               </q-collapsible>
             </div>
           </q-tab-pane>
-          <q-tab-pane name="Information" class="bg-white" v-if="store">
-            <div class="workinghours workinginghourscontent section">
-             <h2>Workinging Hours</h2>
-              <span class="working-status">
+          <q-tab-pane name="Information" class="" v-if="store">
+            <div class="row justify-center">
+              <div class="col-lg-8" style="text-align: center;">
+                <h3>Information</h3>
                 <div class="group">
                   <span class="text-bold">Phone:</span>
                   {{ formatPhone(store.phone) }}<br>
@@ -69,33 +69,35 @@
                   <span class="text-bold">Address:</span>
                   {{ store.address.line1 }}
                 </div>
-              </span>
-              <div style="text-align: center;">
-                <table class="q-table" style="display:inline-block;">
-                  <tbody v-for="(day, key) in store.working_hours" :key="key">
-                    <tr v-if="!checkCurrentDay(key)"
-                        :id="key"
-                        :title="capitalizeFirstLetter(key)">
-                      <td>{{ capitalizeFirstLetter(key) }}</td>
-                      <td>{{ formatTime(day.hours.from) }}</td>
-                      <td> - </td>
-                      <td>{{ formatTime(day.hours.to) }}</td>
-                    </tr>
-                    <tr v-if="checkCurrentDay(key) && !checkWorkingHours(day)"
-                        class="today" :id="key" :title="capitalizeFirstLetter(key)">
-                      <td>{{ capitalizeFirstLetter(key) }}</td><td></td>
-                      <td class="closed"> Closed </td>
-                    </tr>
-                    <tr v-if="checkCurrentDay(key) && checkWorkingHours(day.hours)"
-                        class="today" :id="key" :title="capitalizeFirstLetter(key)">
-                      <td>{{ capitalizeFirstLetter(key) }}</td>
-                      <td>{{ formatTime(day.hours.from) }}</td>
-                      <td> - </td>
-                      <td>{{ formatTime(day.hours.to) }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-            </div>
+                <br>
+                <h5>Working Hours</h5>
+                <div style="text-align: center;" >
+                  <table class="q-table" style="display:inline-block;">
+                    <tbody v-for="(day, key) in store.working_hours" :key="key">
+                      <tr v-if="!checkCurrentDay(key)"
+                          :id="key"
+                          :title="capitalizeFirstLetter(key)">
+                        <td class="text-bold">{{ capitalizeFirstLetter(key) }}:</td>
+                        <td>{{ formatTime(day.hours.from) }}</td>
+                        <td> - </td>
+                        <td>{{ formatTime(day.hours.to) }}</td>
+                      </tr>
+                      <tr v-if="checkCurrentDay(key) && !checkWorkingHours(day)"
+                          class="today" :id="key" :title="capitalizeFirstLetter(key)">
+                        <td class="text-bold">{{ capitalizeFirstLetter(key) }}:</td><td></td>
+                        <td class="closed"> Closed </td>
+                      </tr>
+                      <tr v-if="checkCurrentDay(key) && checkWorkingHours(day)"
+                          class="today" :id="key" :title="capitalizeFirstLetter(key)">
+                        <td class="text-bold">{{ capitalizeFirstLetter(key) }}:</td>
+                        <td>{{ formatTime(day.hours.from) }}</td>
+                        <td> - </td>
+                        <td>{{ formatTime(day.hours.to) }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </q-tab-pane>
         </q-tabs>
@@ -117,7 +119,7 @@
   import CartPage from './CartPage.vue'
   import shop from '../api/shop'
   import {
-    Loading
+    Loading, date
   } from 'quasar'
   import { mapGetters, mapActions } from 'vuex'
   export default {
@@ -219,9 +221,12 @@
       capitalizeFirstLetter (string) {
         return string.charAt(0).toUpperCase() + string.slice(1)
       },
-      formatTime (string) {
-        string = string.toString()
-        return string.slice(0, -2) + ':' + string.slice(-2)
+      formatTime (time) {
+        let fTime = time / 100
+        let daytime = date.buildDate({ hours: Math.floor(fTime), minutes: (fTime - Math.floor(fTime)) * 100 })
+//        string = string.toString()
+//        return string.slice(0, -2) + ':' + string.slice(-2)
+        return date.formatDate(daytime, 'HH:mmA')
       },
       formatPhone (string) {
         if (string) {

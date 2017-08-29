@@ -94,7 +94,9 @@
         return this.$store.state.userInfo
       },
       defaultAddress () {
-        return this.$store.state.userInfo.defaultAddress
+        if (this.$store.state.userInfo.defaultAddress) {
+          return this.$store.state.userInfo.defaultAddress
+        }
       },
       addressBook: {
         get () { return this.$store.state.userInfo.address_book }
