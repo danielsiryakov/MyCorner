@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="21d65ece-150f-469c-b255-ae2799613de3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Checkout.vue" afterPath="$PROJECT_DIR$/src/components/Checkout.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/StorePage.vue" afterPath="$PROJECT_DIR$/src/components/StorePage.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Admin/Onboard/StepTwo.vue" afterPath="$PROJECT_DIR$/src/components/Admin/Onboard/StepTwo.vue" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -40,16 +38,45 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StorePage.vue" pinned="false" current-in-tab="true">
+      <file leaf-file-name="StorePage.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/StorePage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1092">
-              <caret line="74" column="37" lean-forward="true" selection-start-line="74" selection-start-column="37" selection-end-line="74" selection-end-column="37" />
+            <state relative-caret-position="0">
+              <caret line="212" column="18" lean-forward="true" selection-start-line="212" selection-start-column="18" selection-end-line="212" selection-end-column="18" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#0;n#q-tab-pane#1;n#q-tabs#0;n#div#0;n#div#0;n#q-layout#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#2;n#div#0;n#div#0;n#q-tab-pane#1;n#q-tabs#0;n#div#0;n#div#0;n#q-layout#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#table#0;n#div#2;n#div#0;n#div#0;n#q-tab-pane#1;n#q-tabs#0;n#div#0;n#div#0;n#q-layout#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="e#5976#6019#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StepTwo.vue" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/Admin/Onboard/StepTwo.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="129">
+              <caret line="317" column="10" lean-forward="true" selection-start-line="317" selection-start-column="10" selection-end-line="317" selection-end-column="10" />
+              <folding>
+                <element signature="e#4928#4959#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="store_info.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/store/VuexModules/store_info.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="273">
+              <caret line="18" column="17" lean-forward="true" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="17" />
+              <folding>
+                <element signature="e#2040#3682#0" expanded="false" />
+                <element signature="e#3703#4554#0" expanded="false" />
+                <element signature="e#6967#7200#0" expanded="false" />
+                <element signature="e#7231#7478#0" expanded="false" />
+                <element signature="e#7511#7758#0" expanded="false" />
+                <element signature="e#7793#8044#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -85,16 +112,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HomePage.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/HomePage.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="user_info.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/store/VuexModules/user_info.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -113,16 +130,6 @@
               <folding>
                 <element signature="e#2029#2074#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="store_search.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/store/VuexModules/store_search.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-317">
-              <caret line="18" column="8" lean-forward="true" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -198,7 +205,6 @@
         <option value="$PROJECT_DIR$/config/dev.env.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/components/Admin/Onboard/ProductAddModal.vue" />
-        <option value="$PROJECT_DIR$/src/components/Admin/Onboard/StepTwo.vue" />
         <option value="$PROJECT_DIR$/src/components/Admin/StripeCard.vue" />
         <option value="$PROJECT_DIR$/src/components/Admin/Dashboard/StorePayments.vue" />
         <option value="$PROJECT_DIR$/src/components/Admin/Onboard/StepThree.vue" />
@@ -227,6 +233,7 @@
         <option value="$PROJECT_DIR$/src/components/CartPage.vue" />
         <option value="$PROJECT_DIR$/src/components/Checkout.vue" />
         <option value="$PROJECT_DIR$/src/components/StorePage.vue" />
+        <option value="$PROJECT_DIR$/src/components/Admin/Onboard/StepTwo.vue" />
       </list>
     </option>
   </component>
@@ -249,7 +256,7 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="762" />
+    <option name="x" value="-6" />
     <option name="width" value="781" />
     <option name="height" value="831" />
   </component>
@@ -308,6 +315,14 @@
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="Admin" type="462c0819:PsiDirectoryNode" />
               <item name="Dashboard" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyCorner.Store" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyCorner.Store" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="Admin" type="462c0819:PsiDirectoryNode" />
+              <item name="Onboard" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MyCorner.Store" type="b2602c69:ProjectViewProjectNode" />
@@ -483,18 +498,18 @@
       <workItem from="1503245875202" duration="601000" />
       <workItem from="1503341969582" duration="82749000" />
       <workItem from="1503877519875" duration="6765000" />
-      <workItem from="1503900968476" duration="22100000" />
+      <workItem from="1503900968476" duration="24472000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="534542000" />
+    <option name="totallyTimeSpent" value="536914000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="762" y="0" width="781" height="831" extended-state="0" />
+    <frame x="-6" y="0" width="781" height="831" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3137255" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.09411765" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32924107" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -540,13 +555,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/components/Admin/Onboard/StepTwo.vue</url>
-          <line>68</line>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-      </breakpoints>
       <option name="time" value="31" />
     </breakpoint-manager>
     <watches-manager />
@@ -586,17 +594,6 @@
           <caret line="126" column="45" lean-forward="true" selection-start-line="126" selection-start-column="45" selection-end-line="126" selection-end-column="45" />
           <folding>
             <element signature="e#2780#2808#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Admin/Onboard/StepTwo.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="332" column="18" lean-forward="true" selection-start-line="332" selection-start-column="18" selection-end-line="332" selection-end-column="18" />
-          <folding>
-            <element signature="e#4928#4959#0" expanded="true" />
-            <element signature="e#5294#6677#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -722,8 +719,8 @@
         <state relative-caret-position="105">
           <caret line="29" column="6" lean-forward="true" selection-start-line="29" selection-start-column="6" selection-end-line="29" selection-end-column="6" />
           <folding>
-            <element signature="n#style#0;n#span#1;n#q-item#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#672#697#0" expanded="true" />
+            <element signature="n#style#0;n#span#1;n#q-item#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="e#672#697#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -798,22 +795,6 @@
           <caret line="40" column="7" lean-forward="true" selection-start-line="38" selection-start-column="6" selection-end-line="40" selection-end-column="7" />
           <folding>
             <element signature="e#748#781#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/store/VuexModules/store_info.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="292" column="17" lean-forward="false" selection-start-line="292" selection-start-column="2" selection-end-line="292" selection-end-column="17" />
-          <folding>
-            <element signature="e#379#2021#0" expanded="false" />
-            <element signature="e#2040#3682#0" expanded="false" />
-            <element signature="e#3703#4554#0" expanded="false" />
-            <element signature="e#6967#7200#0" expanded="false" />
-            <element signature="e#7231#7478#0" expanded="false" />
-            <element signature="e#7511#7758#0" expanded="false" />
-            <element signature="e#7793#8044#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -975,13 +956,38 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/StorePage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1092">
-          <caret line="74" column="37" lean-forward="true" selection-start-line="74" selection-start-column="37" selection-end-line="74" selection-end-column="37" />
+        <state relative-caret-position="0">
+          <caret line="212" column="18" lean-forward="true" selection-start-line="212" selection-start-column="18" selection-end-line="212" selection-end-column="18" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#0;n#q-tab-pane#1;n#q-tabs#0;n#div#0;n#div#0;n#q-layout#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#2;n#div#0;n#div#0;n#q-tab-pane#1;n#q-tabs#0;n#div#0;n#div#0;n#q-layout#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#table#0;n#div#2;n#div#0;n#div#0;n#q-tab-pane#1;n#q-tabs#0;n#div#0;n#div#0;n#q-layout#0;n#template#0;n#!!top" expanded="true" />
             <element signature="e#5976#6019#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/store/VuexModules/store_info.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="18" column="17" lean-forward="true" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="17" />
+          <folding>
+            <element signature="e#2040#3682#0" expanded="false" />
+            <element signature="e#3703#4554#0" expanded="false" />
+            <element signature="e#6967#7200#0" expanded="false" />
+            <element signature="e#7231#7478#0" expanded="false" />
+            <element signature="e#7511#7758#0" expanded="false" />
+            <element signature="e#7793#8044#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Admin/Onboard/StepTwo.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="129">
+          <caret line="317" column="10" lean-forward="true" selection-start-line="317" selection-start-column="10" selection-end-line="317" selection-end-column="10" />
+          <folding>
+            <element signature="e#4928#4959#0" expanded="true" />
           </folding>
         </state>
       </provider>

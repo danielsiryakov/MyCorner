@@ -142,64 +142,65 @@
     QField,
     QDatetimeRange,
     QKnob,
-    QSlider
+    QSlider,
+    date
   } from 'quasar'
   import { mapActions, mapGetters, mapMutations } from 'vuex'
   export default {
     data () {
       return {
         address2: '',
-        working_hours: {
-          monday: {
-            hours: {
-              from: '2017-06-29T09:00:00.000-04:00',
-              to: '2017-06-29T17:00:00.000-04:00'
-            },
-            open: true
-          },
-          tuesday: {
-            hours: {
-              from: '2017-06-29T09:00:00.000-04:00',
-              to: '2017-06-29T17:00:00.000-04:00'
-            },
-            open: true
-          },
-          wednesday: {
-            hours: {
-              from: '2017-06-29T09:00:00.000-04:00',
-              to: '2017-06-29T17:00:00.000-04:00'
-            },
-            open: true
-          },
-          thursday: {
-            hours: {
-              from: '2017-06-29T09:00:00.000-04:00',
-              to: '2017-06-29T17:00:00.000-04:00'
-            },
-            open: true
-          },
-          friday: {
-            hours: {
-              from: '2017-06-29T09:00:00.000-04:00',
-              to: '2017-06-29T17:00:00.000-04:00'
-            },
-            open: true
-          },
-          saturday: {
-            hours: {
-              from: '2017-06-29T09:00:00.000-04:00',
-              to: '2017-06-29T17:00:00.000-04:00'
-            },
-            open: true
-          },
-          sunday: {
-            hours: {
-              from: '2017-06-29T09:00:00.000-04:00',
-              to: '2017-06-29T17:00:00.000-04:00'
-            },
-            open: true
-          }
-        },
+//        working_hours: {
+//          monday: {
+//            hours: {
+//              from: '2017-06-29T09:00:00.000-04:00',
+//              to: '2017-06-29T17:00:00.000-04:00'
+//            },
+//            open: true
+//          },
+//          tuesday: {
+//            hours: {
+//              from: '2017-06-29T09:00:00.000-04:00',
+//              to: '2017-06-29T17:00:00.000-04:00'
+//            },
+//            open: true
+//          },
+//          wednesday: {
+//            hours: {
+//              from: '2017-06-29T09:00:00.000-04:00',
+//              to: '2017-06-29T17:00:00.000-04:00'
+//            },
+//            open: true
+//          },
+//          thursday: {
+//            hours: {
+//              from: '2017-06-29T09:00:00.000-04:00',
+//              to: '2017-06-29T17:00:00.000-04:00'
+//            },
+//            open: true
+//          },
+//          friday: {
+//            hours: {
+//              from: '2017-06-29T09:00:00.000-04:00',
+//              to: '2017-06-29T17:00:00.000-04:00'
+//            },
+//            open: true
+//          },
+//          saturday: {
+//            hours: {
+//              from: '2017-06-29T09:00:00.000-04:00',
+//              to: '2017-06-29T17:00:00.000-04:00'
+//            },
+//            open: true
+//          },
+//          sunday: {
+//            hours: {
+//              from: '2017-06-29T09:00:00.000-04:00',
+//              to: '2017-06-29T17:00:00.000-04:00'
+//            },
+//            open: true
+//          }
+//        },
         hovering: false,
         pickUpChecked: false,
         deliveryChecked: false,
@@ -291,6 +292,32 @@
       pickUpItems: {
         get () { return this.$store.state.storeInfo.store.pickup.pickup_items },
         set (value) { this.$store.commit('update_pickup', {pickup_items: value}) }
+      },
+      working_hours: {
+        get () {
+          let wh = this.$store.state.storeInfo.store.working_hours
+          let wh2 = {}
+          let fromH = ''
+          let toH = ''
+          Object.keys(wh).forEach(day => {
+            wh2[day] = wh[day]
+            wh2[day].open = wh[day].open
+            wh2[day].hours = wh[day].hours
+            wh2[day].hours.from = wh[day].hours.from
+            wh2[day].hours.to = wh[day].hours.to
+            if (typeof wh[day].hours.from === 'number') {
+              fromH = wh[day].hours.from / 100
+              wh2[day].hours.from = date.buildDate({ hours: Math.floor(fromH), minutes: (fromH - Math.floor(fromH)) * 100 })
+            }
+            if (typeof wh[day].hours.to === 'number') {
+              toH = wh[day].hours.to / 100
+              wh2[day].hours.to = date.buildDate({ hours: Math.floor(toH), minutes: (toH - Math.floor(toH)) * 100 })
+            }
+          })
+          return wh2
+        },
+//          return this.$store.state.storeInfo.store.working_hours },
+        set (value) { this.$store.commit('update_working_hours', value) }
       }
     }
   }
