@@ -1,6 +1,6 @@
 import shop from '../../api/shop'
 import router from '../../router'
-import Vue from 'vue'
+// import Vue from 'vue'
 const state = {
   all: [{}],
   address: {},
@@ -44,9 +44,7 @@ const mutations = {
     state.currentStore = id
   },
   setDefaultAddress (state, address) {
-    Vue.set(state.address, 'lon', address.longitude)
-    Vue.set(state.address, 'lat', address.latitude)
-    Vue.set(state.address, 'time', 900)
+    state.address = address
   },
   formattedAddress (state, address) {
     state.address2 = address

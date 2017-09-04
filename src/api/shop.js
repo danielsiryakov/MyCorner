@@ -30,7 +30,9 @@ const STORE_INFO_UPDATE = API_URL + 'store/info/update/'
 const PAYMENT_STORE_CREATE = API_URL + 'payment/store/create/account?stripe_src='
 const ORDER_CASH_PICKUP = API_URL + 'order/cash/pickup'
 const ORDER_CASH_DELIVERY = API_URL + 'order/cash/delivery'
+const ORDER_CC_PICKUP = API_URL + 'order/cc/pickup'
 const ORDERS_RETRIEVE_ACTIVE = API_URL + 'orders/retrieve/active/all/'
+const CART_ABANDOM = API_URL + 'cart/abandon/'
 // import { Cookies } from 'quasar'
 import {
   Loading,
@@ -55,13 +57,10 @@ export default {
   },
   getStores (address, cb) {
     Loading.show()
-    console.log(address)
-    console.log(address)
-    console.log(address.longitude)
     axios.get(SEARCH, {
       params: {
-        lon: address.lon,
-        lat: address.lat,
+        lon: address.longitude,
+        lat: address.latitude,
         time: 900
       }
     }).then(response => {
@@ -283,6 +282,12 @@ export default {
   },
   orderCashDelivery (payload) {
     return axios.post(ORDER_CASH_DELIVERY, JSON.stringify(payload))
+  },
+  orderCCPickup (payload) {
+    return axios.post(ORDER_CC_PICKUP, JSON.stringify(payload))
+  },
+  cartAbandon (id) {
+    return axios.get(CART_ABANDOM + id)
   }
   //  buyProducts (products, cb, errorCb) {
 //    setTimeout(() => {

@@ -19,18 +19,23 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
+  import shop from '../../api/shop'
   import { date, Dialog } from 'quasar'
   export default {
     data () {
       return {
-        targetOrder: ''
+        targetOrder: '',
+        activeCartId: ''
       }
     },
     computed: {
       completedCarts: {
         get () { return this.$store.state.userInfo.completedCarts }
-      }
+      },
+      ...mapGetters({
+        carts: 'cartProducts'
+      })
     },
     methods: {
       ...mapActions([
@@ -39,29 +44,72 @@
       formatTimeStamp (timeStamp) {
         return date.formatDate(timeStamp, 'MM/DD/YYYY HH:mmA')
       },
+      isCartActive (storeID) {
+        console.log('entered is active')
+        let isActive = false
+        this.carts.forEach(cart => {
+          if (cart.store_id === storeID) {
+            console.log(cart.store_id)
+            console.log(storeID)
+            this.activeCartId = cart.id
+            isActive = true
+            console.log('is active should be true ' + isActive)
+          }
+        })
+        console.log(isActive)
+        return isActive
+      },
       reorderItems (order) {
         this.targetOrder = order.id
-        Dialog.create({
-          title: 'The usual stuff you love',
-          message: 'Do you want to reorder from ' + order.store_name + '?',
-          buttons: [
-            {
-              color: 'negative',
-              label: 'Cancel',
-              handler () {
+        console.log('reorderItems: ' + order.store_id)
+        if (!this.isCartActive(order.store_id)) {
+          Dialog.create({
+            title: 'The usual stuff you love',
+            message: 'Do you want to reorder from ' + order.store_name + '?',
+            buttons: [
+              {
+                color: 'negative',
+                label: 'Cancel',
+                handler () {
+                }
+              },
+              {
+                color: 'primary',
+                label: 'Yes!',
+                handler: () => {
+                  console.log(this.targetOrder)
+                  this.reactivatePastCart(this.targetOrder)
+                  this.$emit('reordered')
+                }
               }
-            },
-            {
-              color: 'primary',
-              label: 'Yes!',
-              handler: () => {
-                console.log(this.targetOrder)
-                this.reactivatePastCart(this.targetOrder)
-                this.$emit('reordered')
+            ]
+          })
+        }
+        else {
+          Dialog.create({
+            title: 'The usual stuff you love',
+            message: 'This will replace your cart. Do you want to abandon your current cart?',
+            buttons: [
+              {
+                color: 'negative',
+                label: 'Cancel',
+                handler () {
+                }
+              },
+              {
+                color: 'primary',
+                label: 'Yes!',
+                handler: () => {
+                  console.log(this.targetOrder)
+                  shop.cartAbandon(this.activeCartId).then(() => {
+                    this.reactivatePastCart(this.targetOrder)
+                    this.$emit('reordered')
+                  })
+                }
               }
-            }
-          ]
-        })
+            ]
+          })
+        }
       }
     }
   }

@@ -330,10 +330,10 @@
     text-align: center;
   }
   .closed {
-    color: red;
+    color: #ff6d4b;
   }
   .today {
-    color: #8AC007;
+    color: #37c064;
   }
   .working-status {
     display:block;

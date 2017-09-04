@@ -20,6 +20,13 @@
               :options="addressBookOptions"
             />
           </div>
+          <br>
+          <q-select
+            v-model="selectedCC"
+            radio
+            class="bg-white"
+            :options="walletOptions"
+          />
           <!--:display-value="this.searchAddress"-->
 
           <!--{{ user.defaultAddress.line1 }}<br><br>-->
@@ -70,6 +77,7 @@
         isDelivery: true,
         orderType: 'Delivery',
         selectedAddress: '',
+        selectedCC: '',
         orderPlaced: false
       }
     },
@@ -93,6 +101,9 @@
       user () {
         return this.$store.state.userInfo
       },
+      wallet: {
+        get () { return this.$store.state.userInfo.wallet.sources }
+      },
       defaultAddress () {
         if (this.$store.state.userInfo.defaultAddress) {
           return this.$store.state.userInfo.defaultAddress
@@ -109,6 +120,18 @@
             value: address.address_id
           })
         })
+        return options
+      },
+      walletOptions () {
+        let options = []
+        if (Object.keys(this.wallet).length !== 0 && this.wallet.constructor === Object) {
+          this.wallet.data.forEach(card => {
+            options.push({
+              label: card.brand + ': ' + card.last4 + ' exp: ' + card.exp_month + '/' + card.exp_year,
+              value: card.id
+            })
+          })
+        }
         return options
       }
     },
@@ -148,7 +171,8 @@
           })
         }
         if (this.orderType === 'Pick-Up') {
-          shop.orderCashPickup(payload).then(response => {
+          payload.card_id = this.selectedCC
+          shop.orderCCPickup(payload).then(response => {
             console.log('checkout successful')
             this.$emit('checkedOut')
             console.log(response.data)
