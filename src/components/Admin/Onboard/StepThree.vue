@@ -17,7 +17,7 @@
         <q-list no-border>
           <draggable v-model="categories" @end="categoriesReorder">
             <transition-group name="list-complete">
-              <div separator v-for="(category, cindex) in categories" :key="category.name">
+              <div separator v-for="(category, cindex) in categories" :key="cindex">
                 <q-item separator v-show="category.edit">
                   <q-field v-show="category.edit">
                     <q-input type="text"
@@ -67,7 +67,7 @@ import shop from '../../../api/shop'
 export default {
   data () {
     return {
-//      categories: [],
+      categories2: [],
       current_category: 0,
       step: 1,
       active: 1,
@@ -118,6 +118,11 @@ export default {
         })
       }
       else {
+        this.categories.push({
+          name: this.new_category_name,
+          products: [],
+          edit: false
+        })
         this.$store.commit('update_store', {categories: this.categories})
         this.new_category_name = ''
       }
