@@ -27,6 +27,7 @@
                       <q-chip v-if="s.delivery.service_offered == true" small color="amber-9">Offers Delivery</q-chip>
                     </h4>
                     {{ Math.round(s.distance * 100) / 100 }} miles
+                    <small><span class="text-light text-bold float-right">{{ formattedPrice(s.delivery.delivery_minimum) }} min <big>&#x22C5</big> {{ formattedPrice(s.delivery.delivery_fee) }} fee</span></small>
                     <!--<q-rating slot="subtitle" v-model="stars" :max="5" />-->
                   </q-card-title>
                 </q-card-media>
@@ -58,7 +59,13 @@
       ]),
       ...mapMutations([
         'activeStore'
-      ])
+      ]),
+      formattedPrice (itemTotal) {
+        return (itemTotal / 100).toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        })
+      }
     },
     created () {
       // fetch the data when the view is created and the data is

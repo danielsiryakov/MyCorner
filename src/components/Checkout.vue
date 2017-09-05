@@ -7,7 +7,7 @@
           <h4 class="text-bold">Review and place order</h4>
           <q-tabs :refs="$refs" v-model="orderType" no-pane-border color="white" >
             <q-tab default slot="title" name="Delivery" label="Delivery" class="text-tertiary text-bold"/>
-            <q-tab slot="title" name="Pick-Up" label="Pick-Up" class="text-tertiary text-bold" />
+            <q-tab slot="title" name="PickUp" label="Pick-Up" class="text-tertiary text-bold" />
           </q-tabs>
           <!--<h5 class="text-bold">Review name, address, payments to complete your purchase</h5>-->
           <br>
@@ -19,8 +19,13 @@
               class="bg-white"
               :options="addressBookOptions"
             />
+            <q-field>
+              <span class="text-bold">Phone: *</span>
+              <q-input v-model="phone"></q-input>
+            </q-field>
           </div>
           <br>
+          <span class="text-bold">Payment:</span>
           <q-select
             v-model="selectedCC"
             radio
@@ -45,8 +50,8 @@
           <div class="group bg-white">
             <span class="text-bold">Item subtotal: </span> {{ formattedPrice(cart.totals.subtotal) }}<br>
             <span class="text-bold">Tax: </span>{{ formattedPrice(cart.totals.tax) }}<br>
-            <span class="text-bold">Delivery Fee: </span> {{ formattedPrice(cart.delivery_fee) }} <br><br>
-            <h5><span class="text-bold">Order Total: </span> {{ formattedPrice(cart.totals.total) }}</h5>
+            <span v-if="orderType == 'Delivery'" class="text-bold">Delivery Fee: </span> <span v-if="orderType == 'Delivery'" >{{ formattedPrice(cart.delivery_fee) }} </span><br><br>
+            <h5><span class="text-bold">Order Total: </span> {{ formattedPrice(cart.totals[orderType.toLocaleLowerCase()+'_total']) }}</h5>
           </div>
           <br>
           <q-btn color="primary" class="full-width" @click="checkout">Checkout</q-btn>
@@ -59,7 +64,7 @@
         <h4 class="text-bold">Thank You For Your Order!</h4>
         <br>
         <h5 class="text-bold">{{ cart.store_name }}</h5>
-        {{ store.address.line1 }}
+        {{ currentStore.address.line1 }}
       </div>
 
     </div>
@@ -68,12 +73,13 @@
 </template>
 
 <script>
-  import { QSelect } from 'quasar'
+  import { QSelect, Alert } from 'quasar'
   import shop from '../api/shop'
   import { mapActions } from 'vuex'
   export default {
     data () {
       return {
+        phone: '',
         isDelivery: true,
         orderType: 'Delivery',
         selectedAddress: '',
@@ -94,7 +100,7 @@
           return this.$store.state.storeSearch.address2.formatted_address
         }
       },
-      store () {
+      currentStore () {
         return this.$store.state.storeSearch.currentStore
 //        return this.allStores.find((s) => s._id === this.id) || {}}
       },
@@ -102,7 +108,7 @@
         return this.$store.state.userInfo
       },
       wallet: {
-        get () { return this.$store.state.userInfo.wallet.sources }
+        get () { return this.$store.state.userInfo.wallet }
       },
       defaultAddress () {
         if (this.$store.state.userInfo.defaultAddress) {
@@ -114,23 +120,50 @@
       },
       addressBookOptions () {
         let options = []
+        options.push({
+          label: this.searchAddress,
+          value: this.searchAddress
+        })
         this.addressBook.forEach(address => {
-          options.push({
-            label: address.line1,
-            value: address.address_id
-          })
+          if (address.line1 !== this.searchAddress) {
+            options.push({
+              label: address.line1,
+              value: address.line1
+            })
+          }
         })
         return options
       },
+      getFullAddress () {
+        console.log('get full address started')
+        if (this.searchAddress === this.selectedAddress) {
+          console.log('search address matches' + this.$store.state.storeSearch.address)
+          let returnAddress = this.$store.state.storeSearch.address
+          returnAddress.line1 = this.$store.state.storeSearch.address2.formatted_address
+          return returnAddress
+        }
+        else {
+          this.addressBook.forEach(address => {
+            if (this.selectedAddress === address.line1) {
+              return address
+            }
+          })
+        }
+      },
       walletOptions () {
         let options = []
-        if (Object.keys(this.wallet).length !== 0 && this.wallet.constructor === Object) {
-          this.wallet.data.forEach(card => {
-            options.push({
-              label: card.brand + ': ' + card.last4 + ' exp: ' + card.exp_month + '/' + card.exp_year,
-              value: card.id
+        options.push({label: 'Cash', value: 'cash'})
+        this.selectedCC = 'cash'
+        if (this.cart.flags.cc_accepted) {
+          if (Object.keys(this.wallet).length !== 0 && this.wallet.constructor === Object) {
+            this.selectedCC = this.wallet.default_source
+            this.wallet.sources.data.forEach(card => {
+              options.push({
+                label: card.brand + ': ' + card.last4 + ' exp: ' + card.exp_month + '/' + card.exp_year,
+                value: card.id
+              })
             })
-          })
+          }
         }
         return options
       }
@@ -140,6 +173,11 @@
         this.getStore(this.cart.store_id)
         this.getAddressBook()
       }
+      this.selectedCC = 'Cash'
+      if (this.cart.flags.cc_accepted) {
+        this.selectedCC = this.wallet.default_source
+      }
+      this.selectedAddress = this.searchAddress
 //      this.getAllProducts(this.id)
     },
     methods: {
@@ -159,26 +197,51 @@
         payload.cart_id = this.cart.id
         payload.store_id = this.cart.store_id
         payload.instructions = ''
-        console.log(this.orderType)
         if (this.orderType === 'Delivery') {
-          payload.address_id = this.selectedAddress
+          let address = this.getFullAddress
+          address.phone = this.phone
+          payload.address = address
           shop.orderCashDelivery(payload).then(response => {
             console.log('checkout successful')
             this.$emit('checkedOut')
             console.log(response.data)
           }).catch(error => {
+            const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+//            const alert = Alert.create({html: 'Oh no something unexpected happened :/ Checkout Failed', color: 'red-7'})
             console.log(error)
+            setTimeout(alert.dismiss, 5000)
           })
         }
-        if (this.orderType === 'Pick-Up') {
-          payload.card_id = this.selectedCC
-          shop.orderCCPickup(payload).then(response => {
-            console.log('checkout successful')
-            this.$emit('checkedOut')
-            console.log(response.data)
-          }).catch(error => {
-            console.log(error)
-          })
+        if (this.orderType === 'PickUp') {
+          if (this.selectedCC !== 'cash') {
+            payload.card_id = this.selectedCC
+            shop.orderCCPickup(payload).then(response => {
+              console.log('checkout successful')
+              this.$emit('checkedOut')
+              console.log(response.data)
+            }).catch(error => {
+              console.log(error)
+              console.log(error.response.data)
+//            const alert = Alert.create({html: 'Oh no something unexpected happened :/ Checkout Failed', color: 'red-7'})
+              const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+              console.log(error)
+              setTimeout(alert.dismiss, 5000)
+            })
+          }
+          else {
+            shop.orderCashPickup(payload).then(response => {
+              console.log('checkout successful')
+              this.$emit('checkedOut')
+              console.log(response.data)
+            }).catch(error => {
+              console.log(error)
+              console.log(error.response.data)
+//            const alert = Alert.create({html: 'Oh no something unexpected happened :/ Checkout Failed', color: 'red-7'})
+              const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+              console.log(error)
+              setTimeout(alert.dismiss, 5000)
+            })
+          }
         }
       }
     }

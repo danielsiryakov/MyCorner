@@ -30,7 +30,10 @@
                   <h4 class="text-bold">{{ store.name }}
                     <q-chip v-if="deliveryOffered == true" color="amber-9">Offers Delivery</q-chip>
                   </h4>
-                  <q-rating @change="submitReview" color="amber-4" slot="subtitle" v-model="stars" :max="5" />
+                  <div>
+                    <q-rating @change="submitReview" color="amber-4" slot="subtitle" v-model="stars" :max="5" />
+                    <small><span class="text-light text-bold float-right">{{ formattedPrice(store.delivery.delivery_minimum) }} min <big>&#x22C5</big> {{ formattedPrice(store.delivery.delivery_fee) }} fee</span></small>
+                  </div>
                 </q-card-title>
               </q-card-media>
             </q-card>
@@ -168,6 +171,12 @@
         'getStore',
         'getAllProducts'
       ]),
+      formattedPrice (itemTotal) {
+        return (itemTotal / 100).toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        })
+      },
       submitReview () {
         shop.addStoreReview({
           comment: '',

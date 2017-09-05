@@ -50,6 +50,7 @@
                   <address-book v-if="currentPage == 'AddressBook'"></address-book>
                   <past-orders v-if="currentPage == 'PastOrders'" @reordered="$refs.pages.close()"></past-orders>
                   <wallet v-if="currentPage == 'Wallet'"></wallet>
+                  <track-your-order v-if="currentPage == 'TrackYourOrder'"></track-your-order>
                 </q-list>
               </div>
             </div>
@@ -66,13 +67,15 @@
   import PastOrders from './PastOrders.vue'
   import Review from '../Review.vue'
   import Wallet from './Wallet.vue'
+  import TrackYourOrder from './TrackYourOrder.vue'
   export default {
     components: {
       Wallet,
       AddressEdit,
       AddressBook,
       PastOrders,
-      Review
+      Review,
+      TrackYourOrder
     },
     computed: {
       ...mapGetters([

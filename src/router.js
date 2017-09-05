@@ -19,6 +19,7 @@ import store from './store/index'
 Vue.use(VueRouter)
 
 const Router = new VueRouter({
+  mode: 'history',
   routes: [
     {path: '/',
       component: load('HomePageLayout'),

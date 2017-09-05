@@ -31,8 +31,12 @@ const PAYMENT_STORE_CREATE = API_URL + 'payment/store/create/account?stripe_src=
 const ORDER_CASH_PICKUP = API_URL + 'order/cash/pickup'
 const ORDER_CASH_DELIVERY = API_URL + 'order/cash/delivery'
 const ORDER_CC_PICKUP = API_URL + 'order/cc/pickup'
-const ORDERS_RETRIEVE_ACTIVE = API_URL + 'orders/retrieve/active/all/'
+const ORDER_CC_DELIVERY = API_URL + 'order/cc/delivery'
+const ORDERS_RETRIEVE_ACTIVE = API_URL + 'store/orders/retrieve/active/all/'
 const CART_ABANDOM = API_URL + 'cart/abandon/'
+const ORDER_STATUS_UPDATE = API_URL + 'order/status/update'
+const USER_ORDERS_ACTIVE = API_URL + 'user/orders/active/retrieve'
+const HELPER_ORDER_STATUS_PARH = API_URL + 'helper/order/status/path'
 // import { Cookies } from 'quasar'
 import {
   Loading,
@@ -286,8 +290,20 @@ export default {
   orderCCPickup (payload) {
     return axios.post(ORDER_CC_PICKUP, JSON.stringify(payload))
   },
+  orderCCDelivery (payload) {
+    return axios.post(ORDER_CC_DELIVERY, JSON.stringify(payload))
+  },
   cartAbandon (id) {
     return axios.get(CART_ABANDOM + id)
+  },
+  userOrderRetrieve () {
+    return axios.get(USER_ORDERS_ACTIVE)
+  },
+  orderStatusUpdate (payload) {
+    return axios.post(ORDER_STATUS_UPDATE, JSON.stringify(payload))
+  },
+  helperOrderStatusPath () {
+    return axios.get(HELPER_ORDER_STATUS_PARH)
   }
   //  buyProducts (products, cb, errorCb) {
 //    setTimeout(() => {

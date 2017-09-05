@@ -9,7 +9,7 @@
           <small>{{ formatTimeStamp(order.last_updated) }}</small>
         </q-item-side>
         <q-item-main></q-item-main>
-        <q-item-side>${{ order.totals.total/100 }}</q-item-side>
+        <q-item-side>{{ formattedPrice(order.totals.total) }}</q-item-side>
       </q-item>
     </div>
     <div v-if="completedCarts.length === 0">
@@ -43,6 +43,12 @@
       ]),
       formatTimeStamp (timeStamp) {
         return date.formatDate(timeStamp, 'MM/DD/YYYY HH:mmA')
+      },
+      formattedPrice (itemTotal) {
+        return (itemTotal / 100).toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        })
       },
       isCartActive (storeID) {
         console.log('entered is active')

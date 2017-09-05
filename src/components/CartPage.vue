@@ -75,7 +75,8 @@
     methods: {
       ...mapActions([
         'checkout',
-        'addToCart'
+        'addToCart',
+        'getStore'
       ]),
       formattedPrice (itemTotal) {
         return (itemTotal / 100).toLocaleString('en-US', {
@@ -111,6 +112,7 @@
       },
       checkout (cart) {
         this.checkoutCart = cart
+        this.getStore(cart.store_id)
         this.$refs.checkout.open()
       }
     },
