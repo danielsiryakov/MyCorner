@@ -7,6 +7,7 @@
           separator
           @search="search"
           @selected="selected"
+          :max-results="100"
         />
       </q-search>
       <br>

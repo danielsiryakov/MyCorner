@@ -61,7 +61,7 @@
           <div class="group" v-for="(day_hours,day) in working_hours" :key="day">
             <span class="text-tertiary text-bold">{{ capitalizeFirstLetter(day) }}:</span><br>
             <q-datetime-range @change="update_working_hours(working_hours)"
-                              color="primary"
+                              color="tertiary"
                               inverted
                               v-model="day_hours.hours"
                               type="time"
@@ -87,6 +87,7 @@
         <span class="text-bold"># of pickup items:</span><br><br>
         <q-range class="text-tertiary "
                  v-model="pickUpItems"
+                 color=""
                  :min="1"
                  :max="100"
                  label-always
@@ -258,8 +259,8 @@
         set (value) { this.$store.commit('update_store', {address: value}) }
       },
       description: {
-        get () { return this.$store.state.storeInfo.store.short_description },
-        set (value) { this.$store.commit('update_store', {short_description: value}) }
+        get () { return this.$store.state.storeInfo.store.long_description },
+        set (value) { this.$store.commit('update_store', {long_description: value}) }
       },
       phoneNumber: {
         get () { return this.$store.state.storeInfo.store.phone },

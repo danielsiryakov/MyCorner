@@ -32,14 +32,6 @@
           <cleave class="formInput" v-model="birthday" placeholder="mm/dd/yyyy" :options="{date: true, datePattern: ['m', 'd', 'Y']}"></cleave>
         </q-field>
 
-        <!--<q-field>-->
-          <!--<span class="">SSN:</span>-->
-          <!--<input v-model="legal_entity.personal_id"-->
-                 <!--type="text"-->
-                 <!--placeholder="Enter your personal tax id number"-->
-                 <!--class="formInput"/>-->
-        <!--</q-field>-->
-
         <q-field>
           <span class="">Last 4 digits of your SSN:</span>
           <input v-model="legal_entity.last_4_ssn"
@@ -49,7 +41,7 @@
         </q-field>
 
         <q-field>
-          <span class="text-bold">Legal Business Name:</span>
+          <span class="">Legal Business Name:</span>
           <input v-model="legal_entity.legal_business_name"
                  type="text"
                  placeholder="Enter Legal Business Name"
@@ -57,7 +49,7 @@
         </q-field>
 
         <q-field>
-          <span class="text-bold">Address:</span>
+          <span class="">Address:</span>
           <vue-google-autocomplete
             id="map"
             ref="addressSearch"
@@ -69,21 +61,20 @@
           />
         </q-field>
         <q-field>
-          <span class="text-bold">Employer Identification Number (EIN):</span>
+          <span class="">Employer Identification Number (EIN):</span>
           <input v-model="legal_entity.business_tax_id"
                  type="text"
                  placeholder="Enter 9 digit Employer Identification Number"
                  class="formInput"/>
         </q-field>
         <q-field>
-          <span class="text-bold">Enter card information:</span>
+          <span class="">Enter card information:</span>
           <stripe-card  @gotToken="updateStripe"></stripe-card>
         </q-field>
         <br><br>
-        <q-btn big @click="createPayment" outline>Create Payment Options!</q-btn>
+        <q-btn color="tertiary" :disabled="enablePayments" big @click="createPayment" outline>Create Payment Options!</q-btn>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -101,6 +92,7 @@
     },
     data () {
       return {
+        enablePayments: true,
         token: '',
         birthday: '',
         legal_entity: {
@@ -142,6 +134,7 @@
       updateStripe (value) {
         console.log(value)
         this.token = value
+        this.enablePayments = false
       },
       createPayment () {
         let payload = {}

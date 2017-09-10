@@ -20,17 +20,17 @@
                 <h5 class="text-tertiary text-bold">Add Categories and Products</h5>
                 <step-three></step-three>
                 <q-stepper-navigation>
-                  <q-btn color="primary" @click="$refs.stepper.next()">Continue</q-btn>
-                  <q-btn color="secondary" flat @click="$refs.stepper.previous()">Back</q-btn>
-                </q-stepper-navigation>
-              </q-step>
-              <q-step name="third" title="Add Payment Info.">
-                <step-four></step-four>
-                <q-stepper-navigation>
                   <q-btn color="primary" @click="createStore">Submit</q-btn>
                   <q-btn color="tertiary" flat @click="$refs.stepper.previous()">Back</q-btn>
                 </q-stepper-navigation>
               </q-step>
+              <!--<q-step name="third" title="Add Payment Info.">-->
+                <!--<step-four></step-four>-->
+                <!--<q-stepper-navigation>-->
+                  <!--<q-btn color="primary" @click="createStore">Submit</q-btn>-->
+                  <!--<q-btn color="tertiary" flat @click="$refs.stepper.previous()">Back</q-btn>-->
+                <!--</q-stepper-navigation>-->
+              <!--</q-step>-->
             </q-stepper>
           </div>
         </div>

@@ -13,52 +13,52 @@ const state = {
     email: '',
     platform_categories: ['Grocery', 'Corner Store'],
     working_hours: {
-      thursday: {
+      sunday: {
         hours: {
-          to: 1200,
-          from: 900
+          to: 1800,
+          from: 800
         },
         open: true
       },
       monday: {
         hours: {
-          to: 1200,
-          from: 900
+          to: 1800,
+          from: 800
         },
         open: true
       },
       tuesday: {
         hours: {
-          to: 1200,
-          from: 900
-        },
-        open: true
-      },
-      friday: {
-        hours: {
-          to: 1200,
-          from: 900
+          to: 1800,
+          from: 800
         },
         open: true
       },
       wednesday: {
         hours: {
-          to: 1200,
-          from: 900
+          to: 1800,
+          from: 800
         },
         open: true
       },
-      sunday: {
+      thursday: {
         hours: {
-          to: 1200,
-          from: 900
+          to: 1800,
+          from: 800
+        },
+        open: true
+      },
+      friday: {
+        hours: {
+          to: 1800,
+          from: 800
         },
         open: true
       },
       saturday: {
         hours: {
-          to: 1200,
-          from: 900
+          to: 1800,
+          from: 800
         },
         open: true
       }
@@ -75,7 +75,7 @@ const state = {
     },
     phone: '',
     pickup: {
-      offered: false,
+      offered: true,
       maximum_time_to_pickup: 90,
       minimum_time_to_pickup: 30,
       pickup_items: {
@@ -102,52 +102,52 @@ const state = {
     email: '',
     platform_categories: ['Grocery', 'Corner Store'],
     working_hours: {
-      thursday: {
+      sunday: {
         hours: {
-          to: 1200,
-          from: 900
+          to: 1800,
+          from: 800
         },
         open: true
       },
       monday: {
         hours: {
-          to: 1200,
-          from: 900
+          to: 1800,
+          from: 800
         },
         open: true
       },
       tuesday: {
         hours: {
-          to: 1200,
-          from: 900
-        },
-        open: true
-      },
-      friday: {
-        hours: {
-          to: 1200,
-          from: 900
+          to: 1800,
+          from: 800
         },
         open: true
       },
       wednesday: {
         hours: {
-          to: 1200,
-          from: 900
+          to: 1800,
+          from: 800
         },
         open: true
       },
-      sunday: {
+      thursday: {
         hours: {
-          to: 1200,
-          from: 900
+          to: 1800,
+          from: 800
+        },
+        open: true
+      },
+      friday: {
+        hours: {
+          to: 1800,
+          from: 800
         },
         open: true
       },
       saturday: {
         hours: {
-          to: 1200,
-          from: 900
+          to: 1800,
+          from: 800
         },
         open: true
       }
@@ -164,7 +164,7 @@ const state = {
     },
     phone: '',
     pickup: {
-      offered: false,
+      offered: true,
       maximum_time_to_pickup: 90,
       minimum_time_to_pickup: 30,
       pickup_items: {

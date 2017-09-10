@@ -38,7 +38,7 @@
         <q-item-side icon="attach_money"/>
         <q-item-main label="Payments"/>
       </q-side-link>
-
+      <br>
       <q-btn class="full-width" color="primary" outline @click="logout">Log out</q-btn>    </q-scroll-area>
 
     <q-select
