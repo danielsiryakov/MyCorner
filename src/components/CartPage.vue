@@ -26,7 +26,7 @@
           <br>
             <span class="text-bold" style="padding-left: 20px;">Subtotal:</span>
             <span>{{ formattedPrice(cart.totals.subtotal) }}</span><br><br>
-            <q-btn  color="primary" :disabled="false" @click="checkout(cart)" class="full-width">Checkout</q-btn>
+            <q-btn  color="primary" :disabled="checkoutAvailable(cart)" @click="checkout(cart)" class="full-width">Checkout</q-btn>
         </q-collapsible>
       </q-list>
     </div>
@@ -78,6 +78,16 @@
         'addToCart',
         'getStore'
       ]),
+      checkoutAvailable (cart) {
+        let isAvailable = true
+        if (cart.flags.is_valid_delivery === true || cart.flags.is_valid_pickup === true) {
+          isAvailable = false
+          console.log(cart.flags.is_valid_delivery)
+          console.log(cart.flags.is_valid_pickup)
+          console.log(isAvailable)
+        }
+        return isAvailable
+      },
       formattedPrice (itemTotal) {
         return (itemTotal / 100).toLocaleString('en-US', {
           style: 'currency',

@@ -40,7 +40,8 @@ const HELPER_ORDER_STATUS_PARH = API_URL + 'helper/order/status/path'
 // import { Cookies } from 'quasar'
 import {
   Loading,
-  Cookies
+  Cookies,
+  Alert
 } from 'quasar'
 axios.defaults.headers.common['authtoken'] = Cookies.get('authtoken')
 axios.defaults.headers.common['userID'] = Cookies.get('userID')
@@ -57,6 +58,8 @@ export default {
       cb(response.data)
     }).catch(error => {
       console.log(error)
+      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+      setTimeout(alert.dismiss, 5000)
     })
   },
   getStores (address, cb) {
@@ -72,6 +75,8 @@ export default {
       cb(response.data)
     }).catch(function (error) {
       console.log(error)
+      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+      setTimeout(alert.dismiss, 5000)
       Loading.hide()
     })
   },
@@ -94,6 +99,8 @@ export default {
     }).catch(function (error) {
       Loading.hide()
       console.log(error)
+      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+      setTimeout(alert.dismiss, 5000)
     })
   },
   userInfo (cb) {
@@ -101,6 +108,8 @@ export default {
       cb(response.data)
     }).catch(function (error) {
       console.log(error)
+      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+      setTimeout(alert.dismiss, 5000)
     })
   },
   storeInfo (id, cb) {
@@ -109,6 +118,8 @@ export default {
       // console.log(response)
     }).catch(error => {
       console.log(error)
+      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+      setTimeout(alert.dismiss, 5000)
     })
   },
   updateCart (product, cb, errorCb) {
@@ -124,6 +135,8 @@ export default {
     }).catch(function (error) {
       errorCb(error)
       console.log(error)
+      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+      setTimeout(alert.dismiss, 5000)
     })
   },
   retrieveCarts (cb) {
@@ -131,6 +144,8 @@ export default {
       cb(response.data)
     }).catch(error => {
       console.log(error)
+      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+      setTimeout(alert.dismiss, 5000)
     })
   },
   reactivateCart (id) {
@@ -141,6 +156,8 @@ export default {
       cb(response.data)
     }).catch(error => {
       console.log(error)
+      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+      setTimeout(alert.dismiss, 5000)
     })
   },
   storeInfoFull (id, cb) {
@@ -149,6 +166,8 @@ export default {
       // console.log(response)
     }).catch(error => {
       console.log(error)
+      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+      setTimeout(alert.dismiss, 5000)
     })
   },
   storeCategoriesRetrieve (id, cb) {
@@ -157,6 +176,8 @@ export default {
       // console.log(response)
     }).catch(error => {
       console.log(error)
+      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+      setTimeout(alert.dismiss, 5000)
     })
   },
   retrieveAddressBook (cb) {
@@ -165,6 +186,8 @@ export default {
       // console.log(response)
     }).catch(error => {
       console.log(error)
+      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+      setTimeout(alert.dismiss, 5000)
     })
   },
   retrieveAddressBookDefualt (cb) {
@@ -181,6 +204,8 @@ export default {
       // console.log(response)
     }).catch(error => {
       console.log(error)
+      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+      setTimeout(alert.dismiss, 5000)
     })
   },
   removeAddressByID (id) {
@@ -192,6 +217,8 @@ export default {
       // console.log(response)
     }).catch(error => {
       console.log(error)
+      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+      setTimeout(alert.dismiss, 5000)
     })
   },
   userWalletAdd (id) {
@@ -202,6 +229,8 @@ export default {
       cb(response.data)
     }).catch(error => {
       console.log(error)
+      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+      setTimeout(alert.dismiss, 5000)
     })
   },
   addPlatformReview (review) {

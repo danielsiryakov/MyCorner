@@ -20,7 +20,6 @@
 		<div class="layout-view bg-light">
       <div class="layout-padding">
         <div class="row">
-          <div>
             <q-card class="bigger">
               <q-card-media overlay-position="bottom">
                 <!--<img v-if="store.image" class="dimmed" :src="s.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">-->
@@ -37,7 +36,6 @@
                 </q-card-title>
               </q-card-media>
             </q-card>
-          </div>
         </div>
         <q-tabs class="" no-pane-border inverted>
           <q-tab default slot="title" name="Products" label="Products" class="text-bold text-tertiary"/>
@@ -45,12 +43,13 @@
           <!-- Targets -->
           <q-tab-pane name="Products">
             <div class="row">
-              <q-collapsible separator class="full-width" opened :label="cat.name" v-for="(cat, index) in allProducts" :key="index" v-if="cat.products.length !== 0">
+              <q-collapsible separator class="full-width group" :opened="false" :label="cat.name" v-for="(cat, index) in allProducts" :key="index" v-if="cat.products.length !== 0">
                 <q-card inline flat style="width: 30vh; height: 30vh" class="col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
-                  <q-card-media overlay-position="bottom" style="padding: 20px">
-                    <img :src="p.image" >
+                <!--<q-card inline flat style="width: 30vh; height: 30vh" class="bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">-->
+                  <q-card-media overlay-position="bottom">
+                    <img :src="p.image">
                     <q-card-title class="text-condensed" slot="overlay">
-                      {{p.title.substring(0,30)}}...<br>
+                      <small>{{p.title.substring(0,30)}}</small><br>
                       <!--{{getProductCartQuantity(id, p.id).quantity}}-->
                       <span class="text-bold">${{p.price_cents / 100}}</span>
                       <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
@@ -235,7 +234,7 @@
         let daytime = date.buildDate({ hours: Math.floor(fTime), minutes: (fTime - Math.floor(fTime)) * 100 })
 //        string = string.toString()
 //        return string.slice(0, -2) + ':' + string.slice(-2)
-        return date.formatDate(daytime, 'HH:mmA')
+        return date.formatDate(daytime, 'HH:mm')
       },
       formatPhone (string) {
         if (string) {
@@ -264,6 +263,10 @@
     font-weight: 400;
     /*letter-spacing: normal;*/
      line-height: 1.5rem;
+  }
+  .q-collapsible-sub-item {
+    /* padding: 8px 16px; */
+    padding: 0px !important;
   }
   container{
     padding-top: 10px;

@@ -6,8 +6,8 @@
         <div v-if="!orderPlaced">
           <h4 class="text-bold">Review and place order</h4>
           <q-tabs :refs="$refs" v-model="orderType" no-pane-border color="white" >
-            <q-tab default slot="title" name="Delivery" label="Delivery" class="text-tertiary text-bold"/>
-            <q-tab slot="title" name="PickUp" label="Pick-Up" class="text-tertiary text-bold" />
+            <q-tab v-if="cart.flags.is_valid_delivery" default slot="title" name="Delivery" label="Delivery" class="text-tertiary text-bold"/>
+            <q-tab v-if="cart.flags.is_valid_pickup" slot="title" name="PickUp" label="Pick-Up" class="text-tertiary text-bold" />
           </q-tabs>
           <!--<h5 class="text-bold">Review name, address, payments to complete your purchase</h5>-->
           <br>
@@ -81,7 +81,7 @@
       return {
         phone: '',
         isDelivery: true,
-        orderType: 'Delivery',
+        orderType: 'PickUp',
         selectedAddress: '',
         selectedCC: '',
         orderPlaced: false
@@ -201,16 +201,30 @@
           let address = this.getFullAddress
           address.phone = this.phone
           payload.address = address
-          shop.orderCashDelivery(payload).then(response => {
-            console.log('checkout successful')
-            this.$emit('checkedOut')
-            console.log(response.data)
-          }).catch(error => {
-            const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+          if (this.selectedCC !== 'cash') {
+            shop.orderCCDelivery(payload).then(response => {
+              console.log('checkout successful')
+              this.$emit('checkedOut')
+              console.log(response.data)
+            }).catch(error => {
+              const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
 //            const alert = Alert.create({html: 'Oh no something unexpected happened :/ Checkout Failed', color: 'red-7'})
-            console.log(error)
-            setTimeout(alert.dismiss, 5000)
-          })
+              console.log(error)
+              setTimeout(alert.dismiss, 5000)
+            })
+          }
+          else {
+            shop.orderCashDelivery(payload).then(response => {
+              console.log('checkout successful')
+              this.$emit('checkedOut')
+              console.log(response.data)
+            }).catch(error => {
+              const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+//            const alert = Alert.create({html: 'Oh no something unexpected happened :/ Checkout Failed', color: 'red-7'})
+              console.log(error)
+              setTimeout(alert.dismiss, 5000)
+            })
+          }
         }
         if (this.orderType === 'PickUp') {
           if (this.selectedCC !== 'cash') {
