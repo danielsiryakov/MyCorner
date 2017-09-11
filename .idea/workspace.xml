@@ -2,16 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="21d65ece-150f-469c-b255-ae2799613de3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/api/shop.js" afterPath="$PROJECT_DIR$/src/api/shop.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Admin/Dashboard/Dashboard.vue" afterPath="$PROJECT_DIR$/src/components/Admin/Dashboard/Dashboard.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Admin/Dashboard/StorePayments.vue" afterPath="$PROJECT_DIR$/src/components/Admin/Dashboard/StorePayments.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Admin/Onboard/ProductAddModal.vue" afterPath="$PROJECT_DIR$/src/components/Admin/Onboard/ProductAddModal.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Admin/Onboard/StepTwo.vue" afterPath="$PROJECT_DIR$/src/components/Admin/Onboard/StepTwo.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Admin/Onboard/Store_Onboarding_Page.vue" afterPath="$PROJECT_DIR$/src/components/Admin/Onboard/Store_Onboarding_Page.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/CartPage.vue" afterPath="$PROJECT_DIR$/src/components/CartPage.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Checkout.vue" afterPath="$PROJECT_DIR$/src/components/Checkout.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/StorePage.vue" afterPath="$PROJECT_DIR$/src/components/StorePage.vue" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/store/VuexModules/store_info.js" afterPath="$PROJECT_DIR$/src/store/VuexModules/store_info.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -48,13 +38,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="shop.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="shop.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/api/shop.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2256">
+            <state relative-caret-position="2106">
               <caret line="333" column="13" lean-forward="true" selection-start-line="333" selection-start-column="13" selection-end-line="333" selection-end-column="13" />
               <folding>
                 <element signature="e#2387#2441#0" expanded="true" />
+                <element signature="e#8249#8412#0" expanded="false" />
+                <element signature="e#8440#8633#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -96,16 +88,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="store_info.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="store_info.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/store/VuexModules/store_info.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="96" column="20" lean-forward="false" selection-start-line="96" selection-start-column="4" selection-end-line="96" selection-end-column="20" />
+            <state relative-caret-position="315">
+              <caret line="292" column="8" lean-forward="true" selection-start-line="292" selection-start-column="8" selection-end-line="292" selection-end-column="8" />
               <folding>
-                <element signature="e#3701#4552#0" expanded="false" />
-                <element signature="e#6965#7198#0" expanded="false" />
-                <element signature="e#7509#7756#0" expanded="false" />
-                <element signature="e#7791#8042#0" expanded="false" />
+                <element signature="e#0#33#0" expanded="true" />
+                <element signature="e#3708#4559#0" expanded="false" />
+                <element signature="e#7254#7487#0" expanded="false" />
+                <element signature="e#7798#8045#0" expanded="false" />
+                <element signature="e#8080#8331#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -126,8 +119,8 @@
       <file leaf-file-name="Dashboard.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Admin/Dashboard/Dashboard.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="232">
-              <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+            <state relative-caret-position="1">
+              <caret line="62" column="13" lean-forward="false" selection-start-line="62" selection-start-column="13" selection-end-line="62" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -234,7 +227,6 @@
         <option value="$PROJECT_DIR$/src/components/Admin/Onboard/StepThree.vue" />
         <option value="$PROJECT_DIR$/src/components/Admin/Onboard/ProductAddModal.vue" />
         <option value="$PROJECT_DIR$/../../insta_petco_imgs.json" />
-        <option value="$PROJECT_DIR$/src/store/VuexModules/store_info.js" />
         <option value="$PROJECT_DIR$/src/components/Admin/Onboard/Store_Onboarding_Page.vue" />
         <option value="$PROJECT_DIR$/src/components/Admin/Onboard/StepTwo.vue" />
         <option value="$PROJECT_DIR$/src/components/Admin/Dashboard/Dashboard.vue" />
@@ -243,6 +235,7 @@
         <option value="$PROJECT_DIR$/src/components/Checkout.vue" />
         <option value="$PROJECT_DIR$/src/components/Admin/Dashboard/StorePayments.vue" />
         <option value="$PROJECT_DIR$/src/api/shop.js" />
+        <option value="$PROJECT_DIR$/src/store/VuexModules/store_info.js" />
       </list>
     </option>
   </component>
@@ -520,12 +513,12 @@
       <workItem from="1503341969582" duration="82749000" />
       <workItem from="1503877519875" duration="6765000" />
       <workItem from="1503900968476" duration="59328000" />
-      <workItem from="1504799822115" duration="10802000" />
+      <workItem from="1504799822115" duration="11218000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="582572000" />
+    <option name="totallyTimeSpent" value="582988000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="762" y="0" width="781" height="831" extended-state="0" />
@@ -917,19 +910,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/store/VuexModules/store_info.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="96" column="20" lean-forward="false" selection-start-line="96" selection-start-column="4" selection-end-line="96" selection-end-column="20" />
-          <folding>
-            <element signature="e#3701#4552#0" expanded="false" />
-            <element signature="e#6965#7198#0" expanded="false" />
-            <element signature="e#7509#7756#0" expanded="false" />
-            <element signature="e#7791#8042#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Admin/Onboard/Store_Onboarding_Page.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="273">
@@ -953,14 +933,6 @@
           <folding>
             <element signature="e#4955#4986#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Admin/Dashboard/Dashboard.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1006,10 +978,34 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/api/shop.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2256">
+        <state relative-caret-position="2106">
           <caret line="333" column="13" lean-forward="true" selection-start-line="333" selection-start-column="13" selection-end-line="333" selection-end-column="13" />
           <folding>
             <element signature="e#2387#2441#0" expanded="true" />
+            <element signature="e#8249#8412#0" expanded="false" />
+            <element signature="e#8440#8633#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Admin/Dashboard/Dashboard.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1">
+          <caret line="62" column="13" lean-forward="false" selection-start-line="62" selection-start-column="13" selection-end-line="62" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/store/VuexModules/store_info.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="292" column="8" lean-forward="true" selection-start-line="292" selection-start-column="8" selection-end-line="292" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#33#0" expanded="true" />
+            <element signature="e#3708#4559#0" expanded="false" />
+            <element signature="e#7254#7487#0" expanded="false" />
+            <element signature="e#7798#8045#0" expanded="false" />
+            <element signature="e#8080#8331#0" expanded="false" />
           </folding>
         </state>
       </provider>

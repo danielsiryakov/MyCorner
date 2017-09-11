@@ -1,7 +1,7 @@
 import shop from '../../api/shop'
 import axios from 'axios'
 import router from '../../router'
-import { Cookies, Loading } from 'quasar'
+import { Cookies, Loading, Alert } from 'quasar'
 // const API_URL = 'http://mycorner.store:8080/api/'
 const CREATE_STORE = shop.API_URL + 'store/create'
 const IMAGEUPLOAD = shop.API_URL + 'assets/image/upload'
@@ -287,6 +287,9 @@ const actions = {
       commit('update_full_store', store)
       shop.storeCategoriesRetrieve(id, store => {
         commit('update_store', {categories: store})
+      }).catch(error => {
+        const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+        setTimeout(alert.dismiss, 5000)
       })
     })
   },
@@ -296,6 +299,8 @@ const actions = {
         commit('update_orders', response.data)
       }).catch(error => {
         console.log(error)
+        const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+        setTimeout(alert.dismiss, 5000)
       })
     }
   }
