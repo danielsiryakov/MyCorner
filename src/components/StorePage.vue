@@ -44,10 +44,10 @@
           <q-tab-pane name="Products">
             <div class="row">
               <q-collapsible separator class="full-width group" :opened="false" :label="cat.name" v-for="(cat, index) in allProducts" :key="index" v-if="cat.products.length !== 0">
-                <q-card inline flat style="width: 30vh; height: 30vh" class="col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
+                <q-card inline flat style="width: 22vh; height: 25vh" class="col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
                 <!--<q-card inline flat style="width: 30vh; height: 30vh" class="bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">-->
                   <q-card-media overlay-position="bottom">
-                    <img :src="p.image">
+                    <img :src="p.image" style="padding: 20px">
                     <q-card-title class="text-condensed" slot="overlay">
                       <small>{{p.title.substring(0,30)}}</small><br>
                       <!--{{getProductCartQuantity(id, p.id).quantity}}-->

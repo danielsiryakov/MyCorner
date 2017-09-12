@@ -19,14 +19,37 @@
         <q-input v-model="new_product.price_cents" type="number" prefix="$" float-label="Product Price"
                  :value = "new_product.price_cents" clearable/>
       </q-field>
+
       <q-field v-if="create_product_modal_view">
         <q-input v-model="new_product.description" type="text" float-label="Product Description"
                  :value = "new_product.description" clearable/>
       </q-field>
-      <div v-if="new_product.image">
-        <img :src="new_product.image" alt="" height="200px" width="200px">
-        <br>
+      <div class="col-12">
+        <q-field>
+          <div v-if="!new_product.image">
+            <div class="dropzone-area"
+                 drag-over="handleDragOver"
+                 @dragenter="this.hovering=true"
+                 @dragleave="this.hovering=false"
+                 :class="{'hovered': this.hovering}">
+              <div class="dropzone-text">
+                <span class="dropzone-title">
+                  Drop an image of your store here or click to select
+                </span>
+              </div>
+              <input type="file" @change="onFileChange">
+            </div>
+          </div>
+          <div class="dropzone-preview" v-if="new_product.image">
+            <img :src="new_product.image" alt="" height="200px" width="200px">
+            <q-btn @click="removeImage" flat color="tertiary">Remove</q-btn>
+          </div>
+        </q-field>
       </div>
+      <!--<div v-if="new_product.image">-->
+        <!--<img :src="new_product.image" alt="" height="200px" width="200px">-->
+        <!--<br>-->
+      <!--</div>-->
       <br>
         <div class="item-content">
           <q-btn color="primary" @click="add_product()">Add Product</q-btn>
@@ -40,7 +63,7 @@
       <div v-if="current_category.products.length==0">No products added :/ Please add some products!</div>
       <div v-if="!current_category.products.length==0">Edit, remove, drag, drop and finalize products.</div>
       <q-list highlight no-pane>
-        <draggable v-model="current_category.products">
+        <draggable v-model="current_category.products" @end="reorderProducts">
           <transition-group>
             <q-item separator class=" group" v-for="(product, p_index) in current_category.products" :key="p_index">
               <!--<q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>-->
@@ -63,16 +86,36 @@
   </div>
 </template>
 <script>
-  import {Toast} from 'quasar'
+  import {Toast, Loading} from 'quasar'
   import axios from 'axios'
   import draggable from 'vuedraggable'
   import shop from '../../../api/shop'
+  const IMAGEUPLOAD = shop.API_URL + 'assets/image/upload'
   export default {
     props: ['current_category'],
     components: {
       draggable
     },
     methods: {
+      onFileChange (e) {
+        var files = e.target.files || e.dataTransfer.files
+        if (!files.length) return
+        var reader = new FileReader()
+        reader.onload = (e) => {
+          Loading.show()
+          axios.post(IMAGEUPLOAD, JSON.stringify({
+            image: e.target.result,
+            display_title: 'image'
+          })).then(response => {
+            this.new_product.image = response.data.link
+            this.new_product.asset_id = response.data.asset_id
+            Loading.hide()
+          }).catch(error => {
+            console.log(error)
+          })
+        }
+        reader.readAsDataURL(files[0])
+      },
       search: function (terms, done) {
         axios.get('http://mycorner.store:8080/api/assets/image/search/' + terms, {
         }).then(function (response) {
@@ -90,11 +133,6 @@
       productAddedToast () {
         Toast.create('New Product Added')
       },
-      onFileChange (e) {
-        var files = e.target.files || e.dataTransfer.files
-        if (!files.length) return
-        this.createImage(files[0])
-      },
       createImage (file) {
         var reader = new FileReader()
         reader.onload = (e) => {
@@ -103,7 +141,7 @@
         reader.readAsDataURL(file)
       },
       removeImage: function (e) {
-        this.new_product.images = []
+        this.new_product.image = ''
       },
       reset_temp_product: function () {
         this.new_product = {
@@ -162,10 +200,27 @@
       },
       removeProduct: function (pindex) {
         this.current_category.products.splice(pindex, 1)
+      },
+      reorderProducts () {
+        let productIDs = []
+        for (var i = 0; i < this.current_category.products.length; i++) {
+          productIDs.push(this.current_category.products[i].asset_id)
+        }
+        if (this.$route.path === '/admin/products') {
+          shop.storeProductsReorder({
+            category_id: this.current_category.category_id,
+            store_id: this.current_category.store_id,
+            product_ids: productIDs
+          }).then(() => this.rerender())
+        }
+      },
+      editProduct (pindex) {
+        this.current_category.products.splice(pindex, 1)
       }
     },
     data () {
       return {
+        hovering: false,
         terms: '',
         newProduct: true,
         checked: false,
@@ -202,5 +257,74 @@
 
   .list-complete-enter, .list-complete-leave-active {
     opacity: 0;
+  }
+  .dropzone-area {
+    width: 100% !important;
+    height: 100px !important;
+    position: relative;
+    border: 2px dashed #CBCBCB;
+  &.hovered {
+     border: 2px dashed #2E94C4;
+  .dropzone-title {
+    color: #1975A0;
+  }
+  }
+  }
+
+  .dropzone-area input {
+    position: absolute;
+    cursor: pointer;
+    top: 0px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+
+  .dropzone-text {
+    position: absolute;
+    top: 50%;
+    text-align: center;
+    transform: translate(0, -50%);
+    width: 100%;
+  span {
+    display: block;
+    font-family: Arial, Helvetica;
+    line-height: 1.9;
+  }
+  }
+
+  .dropzone-title {
+    font-size: 13px;
+    color: #787878;
+    letter-spacing: 0.4px;
+  }
+  .dropzone-info {
+    font-size: 13px;
+    font-size: 0.8125rem;
+    color: #A8A8A8;
+    letter-spacing: 0.4px;
+  }
+
+  .dropzone-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: none;
+  }
+
+  .dropzone-preview {
+    width: 80% !important;
+    position: relative;
+  &:hover .dropzone-button {
+     display: block;
+   }
+  img {
+    display: block;
+    height: auto;
+    max-width: 100%;
+  }
   }
 </style>

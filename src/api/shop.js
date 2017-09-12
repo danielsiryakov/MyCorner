@@ -1,5 +1,5 @@
 import axios from 'axios'
-const API_URL = 'http://mycorner.store:8080/api/'
+const API_URL = 'https://mycorner.store/api/'
 const SEARCH = API_URL + 'store/search'
 const RESEND = API_URL + 'user/confirmation/resend'
 const PRODUCTS = API_URL + 'store/categories/retrieve/'
@@ -37,6 +37,7 @@ const CART_ABANDOM = API_URL + 'cart/abandon/'
 const ORDER_STATUS_UPDATE = API_URL + 'order/status/update'
 const USER_ORDERS_ACTIVE = API_URL + 'user/orders/active/retrieve'
 const HELPER_ORDER_STATUS_PARH = API_URL + 'helper/order/status/path'
+const STORE_CATEGORY_PRODUCTS_REORDER = API_URL + 'store/category/products/reorder/'
 // import { Cookies } from 'quasar'
 import {
   Loading,
@@ -306,6 +307,9 @@ export default {
   },
   paymentStoreCreate (payload) {
     return axios.post(PAYMENT_STORE_CREATE + payload.token, JSON.stringify(payload))
+  },
+  storeProductsReorder (payload) {
+    return axios.post(STORE_CATEGORY_PRODUCTS_REORDER + payload.store_id, JSON.stringify(payload))
   },
   ordersRetrieveActive (id) {
     return axios.get(ORDERS_RETRIEVE_ACTIVE + id)
