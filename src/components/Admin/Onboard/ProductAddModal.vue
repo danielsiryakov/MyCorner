@@ -117,7 +117,7 @@
         reader.readAsDataURL(files[0])
       },
       search: function (terms, done) {
-        axios.get('http://mycorner.store:8080/api/assets/image/search/' + terms, {
+        axios.get(shop.API_URL + 'assets/image/search/' + terms, {
         }).then(function (response) {
           console.log(response.data)
           done(response.data)

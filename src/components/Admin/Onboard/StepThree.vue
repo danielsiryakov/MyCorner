@@ -34,7 +34,7 @@
                   <q-item-main class="text-bold">{{ category.name }}</q-item-main>
                   <q-item-side class="group">
                     <q-btn small icon="mode_edit" outline @click="prepCategoryUpdateState(cindex)">Edit</q-btn>
-                    <q-btn small icon="add_box" outline color="primary" class="text-primary" @click="$refs.basicModal.open(); current_category = cindex">
+                    <q-btn small icon="add_box" outline color="primary" class="text-primary" @click="$refs.basicModal.open(); openProducts(cindex)">
                       <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                         Add Products in Category
                       </q-tooltip>
@@ -52,7 +52,7 @@
       <q-modal ref="basicModal" v-if="categories.length > 0" :content-css="{padding: '20px', minWidth: '50vw'}">
         <modal :current_category="categories[current_category]"></modal>
         <br><br>
-        <q-btn color="primary" @click="$refs.basicModal.close(); updateCategory()">Close</q-btn>
+        <q-btn color="primary" @click="$refs.basicModal.close(); updateCategory(current_category)">Close</q-btn>
       </q-modal>
     </div>
   </div>
@@ -131,6 +131,10 @@ export default {
       this.categories[cindex].edit = true
       this.old_category_name = this.categories[cindex].name
       this.rerender()
+    },
+    openProducts (cindex) {
+      this.current_category = cindex
+      this.old_category_name = this.categories[cindex].name
     },
     updateCategory (cindex) {
       this.categories[cindex].name = this.old_category_name
