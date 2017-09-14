@@ -83,6 +83,9 @@ export default {
         Loading.hide()
       })
     }
+    else {
+      Loading.hide()
+    }
   },
   getActiveCarts (cb) {
     axios.get(ACTIVE_CARTS).then(response => {
