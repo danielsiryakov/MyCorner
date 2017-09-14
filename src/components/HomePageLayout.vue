@@ -60,7 +60,7 @@
 <script>
   import VueGoogleAutocomplete from 'vue-google-autocomplete'
   import axios from 'axios'
-  const API_URL = 'http://mycorner.store:8080/api/'
+  const API_URL = this.$shop.API_URL
   const ADDRESS_BOOK_ADD = API_URL + 'user/address_book/add'
   import Review from './Review.vue'
   import { mapGetters, mapActions, mapMutations } from 'vuex'
