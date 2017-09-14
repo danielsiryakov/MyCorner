@@ -1,5 +1,5 @@
 module.exports = {
-  NODE_ENV: '"production"'
+  NODE_ENV: '"production"',
 
   // this is ok for now but we should make these
   // buld variables and use these configs as defaults
