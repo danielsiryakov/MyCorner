@@ -2,7 +2,6 @@ import shop from '../../api/shop'
 import axios from 'axios'
 import router from '../../router'
 import { Cookies, Loading, Alert } from 'quasar'
-// const API_URL = 'http://mycorner.store:8080/api/'
 const CREATE_STORE = shop.API_URL + 'store/create'
 const IMAGEUPLOAD = shop.API_URL + 'assets/image/upload'
 const state = {

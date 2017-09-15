@@ -1,5 +1,11 @@
 import axios from 'axios'
-const API_URL = 'https://mycorner.store/api/'
+import {
+  Loading,
+  Cookies,
+  Alert
+} from 'quasar'
+
+const API_URL = process.env.API_SCHEMA + '://' + process.env.API_BASE_URL + '/api/'
 const SEARCH = API_URL + 'store/search'
 const RESEND = API_URL + 'user/confirmation/resend'
 const PRODUCTS = API_URL + 'store/categories/retrieve/'
@@ -9,7 +15,8 @@ const STOREINFO = API_URL + 'store/info/retrieve/'
 const ACTIVE_CARTS = API_URL + 'carts/retrieve/active'
 const CART_REACTIVATE = API_URL + 'cart/re-activate/'
 const COMPLETED_CARTS = API_URL + 'carts/retrieve/completed'
-// const IMAGEUPLOAD = API_URL + 'assets/image/upload'
+const ASSET_IMAGE_UPLOAD = API_URL + 'assets/image/upload'
+const ASSET_IMAGE_SEARCH = API_URL + 'assets/image/search/'
 const RETRIEVECARTS = API_URL + 'carts/retrieve/active'
 const STORE_RETRIEVE_FULL = API_URL + 'store/retrieve/full/'
 const STORE_CATEGORIES_RETRIEVE = API_URL + 'store/categories/retrieve/'
@@ -38,20 +45,14 @@ const ORDER_STATUS_UPDATE = API_URL + 'order/status/update'
 const USER_ORDERS_ACTIVE = API_URL + 'user/orders/active/retrieve'
 const HELPER_ORDER_STATUS_PARH = API_URL + 'helper/order/status/path'
 const STORE_CATEGORY_PRODUCTS_REORDER = API_URL + 'store/category/products/reorder/'
-// import { Cookies } from 'quasar'
-import {
-  Loading,
-  Cookies,
-  Alert
-} from 'quasar'
+
 axios.defaults.headers.common['authtoken'] = Cookies.get('authtoken')
 axios.defaults.headers.common['userID'] = Cookies.get('userID')
 
-// const SIGNUP_URL = API_URL + 'user/create'
-// const USER_RETRIEVE = API_URL + 'user/retrieve'
-
 export default {
   API_URL,
+  ASSET_IMAGE_UPLOAD,
+  ASSET_IMAGE_SEARCH,
   getProducts (id, cb) {
     Loading.show()
     axios.get(PRODUCTS + id).then(response => {
@@ -65,21 +66,26 @@ export default {
   },
   getStores (address, cb) {
     Loading.show()
-    axios.get(SEARCH, {
-      params: {
-        lon: address.longitude,
-        lat: address.latitude,
-        time: 900
-      }
-    }).then(response => {
+    if (address.longitude && address.latitude) {
+      axios.get(SEARCH, {
+        params: {
+          lon: address.longitude,
+          lat: address.latitude,
+          time: 900
+        }
+      }).then(response => {
+        Loading.hide()
+        cb(response.data)
+      }).catch(function (error) {
+        console.log(error)
+        const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+        setTimeout(alert.dismiss, 5000)
+        Loading.hide()
+      })
+    }
+    else {
       Loading.hide()
-      cb(response.data)
-    }).catch(function (error) {
-      console.log(error)
-      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
-      setTimeout(alert.dismiss, 5000)
-      Loading.hide()
-    })
+    }
   },
   getActiveCarts (cb) {
     axios.get(ACTIVE_CARTS).then(response => {

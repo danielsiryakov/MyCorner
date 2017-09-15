@@ -34,7 +34,7 @@
                  :class="{'hovered': this.hovering}">
               <div class="dropzone-text">
                 <span class="dropzone-title">
-                  Drop an image of your store here or click to select
+                  Drag and drop an image of your item here or click to select one from your device
                 </span>
               </div>
               <input type="file" @change="onFileChange">
@@ -86,11 +86,13 @@
   </div>
 </template>
 <script>
-  import {Toast, Loading} from 'quasar'
+  import {
+    Toast,
+    Alert
+  } from 'quasar'
   import axios from 'axios'
   import draggable from 'vuedraggable'
   import shop from '../../../api/shop'
-  const IMAGEUPLOAD = shop.API_URL + 'assets/image/upload'
   export default {
     props: ['current_category'],
     components: {
@@ -98,26 +100,26 @@
     },
     methods: {
       onFileChange (e) {
+        var reader = new FileReader()
         var files = e.target.files || e.dataTransfer.files
         if (!files.length) return
-        var reader = new FileReader()
-        reader.onload = (e) => {
-          Loading.show()
-          axios.post(IMAGEUPLOAD, JSON.stringify({
-            image: e.target.result,
-            display_title: 'image'
-          })).then(response => {
-            this.new_product.image = response.data.link
-            this.new_product.asset_id = response.data.asset_id
-            Loading.hide()
-          }).catch(error => {
-            console.log(error)
-          })
+        console.log(files)
+        if (files.length !== 1) {
+          setTimeout(Alert.create({
+            html: 'Please include an image for your new item.',
+            color: 'red-7'
+          }).dismiss, 5000)
+          return
         }
+        reader.onload = (e) => {
+          this.new_product.image = e.target.result
+          this.new_asset = e.target.result
+        }
+        console.log(e.target.files)
         reader.readAsDataURL(files[0])
       },
       search: function (terms, done) {
-        axios.get('http://mycorner.store:8080/api/assets/image/search/' + terms, {
+        axios.get(shop.ASSET_IMAGE_SEARCH + terms, {
         }).then(function (response) {
           console.log(response.data)
           done(response.data)
@@ -137,6 +139,7 @@
         var reader = new FileReader()
         reader.onload = (e) => {
           this.new_product.images.push(e.target.result)
+          this.new_asset = e.target.result
         }
         reader.readAsDataURL(file)
       },
@@ -150,6 +153,7 @@
           category: '', // ? just one or list of cats it falls in (tempted to say list)
           checked: false,
           asset_id: '',
+          new_asset: '',
           add_to_category: false,
           long_description: '',
           short_description: '',
@@ -159,43 +163,64 @@
         }
         this.create_product_modal_view = true
       },
+      add_ready_product: function () {
+        shop.categoryProductCreate({
+          image: this.new_product.image,
+          asset_id: this.new_product.asset_id,
+          store_id: this.current_category.store_id,
+          price_cents: this.new_product.price_cents * 100,
+          category_id: this.current_category.category_id,
+          description: this.new_product.description,
+          title: this.new_product.title,
+          display_price: this.new_product.price_cents
+        }).then(response => {
+          this.productAddedToast()
+          this.current_category.products.push(response.data)
+          this.reset_temp_product()
+        }).catch(error => {
+          setTimeout(Alert.create({
+            html: error.response.data.message,
+            color: 'red-7'
+          }).dismiss, 5000)
+        })
+      },
       add_product: function () {
-        this.productAddedToast()
         this.create_product_modal_view = true
         // ajax call to verify and queue storing
-        this.current_category.products.push({
-          image: this.new_product.image,
-          title: this.new_product.title,
-          asset_id: this.new_product.asset_id,
-          description: this.new_product.description,
-          price_cents: this.new_product.price_cents * 100
-        })
-        if (this.$route.path === '/admin/products') {
-          shop.categoryProductCreate({
-            image: this.new_product.image,
-            asset_id: this.new_product.asset_id,
-            enabled: true,
-            store_id: this.current_category.store_id,
-            price_cents: this.new_product.price_cents * 100,
-            category_id: this.current_category.category_id,
-            description: this.new_product.description,
-            title: this.new_product.title,
-            display_price: this.new_product.price_cents
+        if (!this.new_product.title || !this.new_product.price_cents) {
+          setTimeout(Alert.create({
+            html: 'An image, title, and price is required to create an item',
+            color: 'red-7'
+          }).dismiss, 5000)
+          return
+        }
+        if (!this.new_product.asset_id) {
+          if (!this.new_asset) {
+            setTimeout(Alert.create({
+              html: 'Please include an image for your new item.',
+              color: 'red-7'
+            }).dismiss, 5000)
+            return
+          }
+          axios.post(shop.ASSET_IMAGE_UPLOAD, JSON.stringify({
+            image: this.new_asset,
+            display_title: this.new_product.title
+          })).then(response => {
+            this.new_product.image = response.data.link
+            this.new_product.asset_id = response.data.asset_id
+            if (this.$route.path === '/admin/products') {
+              this.add_ready_product()
+            }
+          }).catch(error => {
+            setTimeout(Alert.create({
+              html: error.response.data.message,
+              color: 'red-7'
+            }).dismiss, 5000)
+            console.log(error)
           })
         }
-        // reset product template
-        this.new_product = {
-          title: '',
-          images: '', // leaving at top level for now (which means variants cant have imgs)
-          category: '', // ? just one or list of cats it falls in (tempted to say list)
-          add_to_category: false,
-          checked: false,
-          long_description: '',
-          short_description: '',
-          dislplay_price: '', // different for variants but top level for product list
-          asset_id: '',
-          description: '',
-          price_cents: '' // different for variants but top level for product list
+        else {
+          this.add_ready_product()
         }
       },
       removeProduct: function (pindex) {
@@ -204,7 +229,7 @@
       reorderProducts () {
         let productIDs = []
         for (var i = 0; i < this.current_category.products.length; i++) {
-          productIDs.push(this.current_category.products[i].asset_id)
+          productIDs.push(this.current_category.products[i].product_id)
         }
         if (this.$route.path === '/admin/products') {
           shop.storeProductsReorder({
@@ -227,6 +252,7 @@
         create_product_modal_view: true,
         temp_category_prods: [],
         asset_id: '',
+        new_asset: '',
         new_product: {
           title: '',
           image: '', // leaving at top level for now (which means variants cant have imgs)
