@@ -19,7 +19,7 @@ import store from './store/index'
 Vue.use(VueRouter)
 
 const Router = new VueRouter({
-  // mode: 'history',
+  mode: 'history',
   routes: [
     {path: '/',
       component: load('HomePageLayout'),
@@ -28,11 +28,11 @@ const Router = new VueRouter({
         {path: '/home', meta: { Auth: true, name: 'home' }, component: load('HomePage')},
         {path: '/store_search', meta: { Auth: true }, component: StoresListPage},
         {path: '/cart', meta: { Auth: true }, component: load('CartPage')},
-        {path: '/user/:id', meta: { Auth: true }, name: 'profile', component: load('UserProfile/Profile'), props: true}
+        {path: '/user/by_id/:id', meta: { Auth: true }, name: 'profile', component: load('UserProfile/Profile'), props: true}
       ]
     },
-    {path: '/store/:id', meta: { Auth: true }, name: 'store', component: load('StorePage'), props: true},
-    {path: '/product/:id', meta: { Auth: true }, component: load('ProductPage')},
+    {path: '/store/by_id/:id', meta: { Auth: true }, name: 'store', component: load('StorePage'), props: true},
+    {path: '/product/by_id/:id', meta: { Auth: true }, component: load('ProductPage')},
     {path: '/store-sign-up', meta: { Auth: true }, component: load('Admin/Onboard/Store_Onboarding_Page')},
     {path: '/admin',
       component: load('Admin/Dashboard/Dashboard'),
