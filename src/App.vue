@@ -1,7 +1,7 @@
 <template>
   <div id="q-app" @load="hideLoader()">
     <router-view></router-view>
-    <q-ajax-bar position="top" color="green-7"/>
+    <q-ajax-bar position="top" color="amber-9"/>
   </div>
 </template>
 

@@ -16,40 +16,80 @@
     <q-scroll-area slot="right" class="bg-light" style="width: 100%; height: 100%">
       <cart-page class=""></cart-page>
     </q-scroll-area>
-
 		<div class="layout-view bg-light">
       <div class="layout-padding">
         <div class="row">
-            <q-card class="bigger">
-              <q-card-media overlay-position="bottom">
-                <!--<img v-if="store.image" class="dimmed" :src="s.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">-->
-                <img v-if="!store.image" class="dimmed" src="../assets/fulllogo.png" alt="" style="object-fit: contain;  width: 100vw; height: 40vh;">
-                <img class="dimmed" v-if="store.image" :src="store.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">
-                <q-card-title slot="overlay">
-                  <h4 class="text-bold">{{ store.name }}
-                    <q-chip v-if="deliveryOffered == true" color="amber-9">Offers Delivery</q-chip>
-                  </h4>
-                  <div>
-                    <q-rating @change="submitReview" color="amber-4" slot="subtitle" v-model="stars" :max="5" />
-                    <small><span class="text-light text-bold float-right">{{ formattedPrice(store.delivery.delivery_minimum) }} min <big>&#x22C5</big> {{ formattedPrice(store.delivery.delivery_fee) }} fee</span></small>
-                  </div>
-                </q-card-title>
-              </q-card-media>
-            </q-card>
+          <q-card class="bigger">
+            <q-card-media overlay-position="bottom">
+              <!--<img v-if="store.image" class="dimmed" :src="s.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">-->
+              <img v-if="!store.image" class="dimmed" src="../assets/fulllogo.png" alt="" style="object-fit: contain;  width: 100vw; height: 40vh;">
+              <img class="dimmed" v-if="store.image" :src="store.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">
+              <q-card-title slot="overlay">
+                <h4 class="text-bold">{{ store.name }}
+                  <q-chip v-if="deliveryOffered == true" color="amber-9">Offers Delivery</q-chip>
+                </h4>
+                <div>
+                  <q-rating @change="submitReview" color="amber-4" slot="subtitle" v-model="stars" :max="5" />
+                  <small><span v-if="store.delivery" class="text-light text-bold float-right">{{ formattedPrice(store.delivery.delivery_minimum) }} min <big>&#x22C5</big> {{ formattedPrice(store.delivery.delivery_fee) }} fee</span></small>
+                </div>
+              </q-card-title>
+            </q-card-media>
+          </q-card>
         </div>
         <q-tabs class="" no-pane-border inverted>
           <q-tab default slot="title" name="Products" label="Products" class="text-bold text-tertiary"/>
           <q-tab slot="title" name="Information" label="Information" class="text-bold text-tertiary"/>
           <!-- Targets -->
           <q-tab-pane name="Products">
-            <div class="row">
+            <q-search clearable inverted :debounce="0" placeholder="Search for products in store!" v-model="search"></q-search>
+            <div class="row bg-white" v-if="search !== ''">
+              <q-item class="lt-md"
+                      v-for="(p, index) in filteredProducts"
+                      :key="index" @click="open(p)">
+                <q-item-side :image="p.image" style="padding-right: 10px;">
+                  <!--<img :src="p.image" style="width: 100px; height: 100px">-->
+                </q-item-side>
+                <q-item-main style="padding: 5px;" v-if="p.title.length >= 30" class="">{{p.title.substring(0,30)}}...</q-item-main><br>
+                <q-item-main style="padding: 5px;" v-if="p.title.length < 30" class="">{{p.title}}</q-item-main><br>
+                <q-item-side>
+                  <span class="text-bold">${{p.price_cents / 100}}</span>
+                </q-item-side>
+              </q-item>
+              <q-card inline flat style="width: 35vh; height: 35vh"
+                      class="gt-sm bg-white"
+                      v-for="p in filteredProducts"
+                       :key="p.product_id" @click="open(p)">
+                <!--<q-card inline flat style="width: 30vh; height: 30vh" class="bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">-->
+                <q-card-media overlay-position="bottom">
+                  <img :src="p.image" style="padding: 25px">
+                  <q-card-title class="text-condensed" slot="overlay">
+                    <small class="">{{p.title.substring(0,30)}}</small><br>
+                    <!--{{getProductCartQuantity(id, p.id).quantity}}-->
+                    <span class="text-bold">${{p.price_cents / 100}}</span>
+                    <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
+                  </q-card-title>
+                </q-card-media>
+              </q-card>
+            </div>
+            <div class="row" v-if="search == ''">
               <q-collapsible separator class="full-width group" :opened="false" :label="cat.name" v-for="(cat, index) in allProducts" :key="index" v-if="cat.products.length !== 0">
-                <q-card inline flat style="width: 35vh; height: 35vh" class="col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
+                <!--{{ filter(cat.products) }}-->
+                <q-item class="lt-md bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
+                  <q-item-side :image="p.image" style="padding-right: 10px;">
+                    <!--<img :src="p.image" style="width: 100px; height: 100px">-->
+                  </q-item-side>
+                  <q-item-main v-if="p.title.length >= 30" class="">{{p.title.substring(0,30)}}...</q-item-main><br>
+                  <q-item-main v-if="p.title.length < 30" class="">{{p.title}}</q-item-main><br>
+                  <q-item-side>
+                    <span class="text-bold">${{p.price_cents / 100}}</span>
+                  </q-item-side>
+                </q-item>
+                <q-card inline flat style="width: 35vh; height: 35vh" class="gt-sm col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
                 <!--<q-card inline flat style="width: 30vh; height: 30vh" class="bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">-->
                   <q-card-media overlay-position="bottom">
-                    <img :src="p.image" style="padding: 20px">
+                    <img :src="p.image" style="padding: 25px">
                     <q-card-title class="text-condensed" slot="overlay">
-                      <small>{{p.title.substring(0,30)}}</small><br>
+                      <small class="">{{p.title.substring(0,30)}}</small><br>
                       <!--{{getProductCartQuantity(id, p.id).quantity}}-->
                       <span class="text-bold">${{p.price_cents / 100}}</span>
                       <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
@@ -60,20 +100,20 @@
             </div>
           </q-tab-pane>
           <q-tab-pane name="Information" class="" v-if="store">
-            <div class="row justify-center">
-              <div class="col-lg-8" style="text-align: center;">
-                <h3>Information</h3>
-                <div class="group">
+            <div class="row">
+              <div class="col-lg-8" >
+                <h3 class="bg-white" style="padding: 10px;">Information</h3>
+                <div class="group bg-white" style="padding: 10px;">
                   <span class="text-bold">Phone:</span>
                   {{ formatPhone(store.phone) }}<br>
                 </div>
-                <div class="group" v-if="store.address">
+                <div class="group bg-white" style="padding: 10px;" v-if="store.address">
                   <span class="text-bold">Address:</span>
                   {{ store.address.line1 }}
                 </div>
                 <br>
-                <h5>Working Hours</h5>
-                <div style="text-align: center;" >
+                <h5 class="bg-white" style="padding: 10px;">Working Hours</h5>
+                <div class="bg-white">
                   <table class="q-table" style="display:inline-block;">
                     <tbody v-for="(day, key) in store.working_hours" :key="key">
                       <tr v-if="!checkCurrentDay(key)"
@@ -121,13 +161,14 @@
   import CartPage from './CartPage.vue'
   import shop from '../api/shop'
   import {
-    Loading, date
+    Loading, date, filter
   } from 'quasar'
   import { mapGetters, mapActions } from 'vuex'
   export default {
     props: ['id'],
     data () {
       return {
+        search: '',
         ProductObject: {},
         cartProducts: [],
         stars: 4,
@@ -150,6 +191,17 @@
         return this.$store.state.storeSearch.currentStore
 //        return this.allStores.find((s) => s._id === this.id) || {}
       },
+      filteredProducts () {
+        let filteredProducts = []
+        for (var i = 0; i < this.allProducts.length; i++) {
+          filteredProducts = filteredProducts.concat(this.allProducts[i].products)
+        }
+//        return allProducts
+        var self = this
+        return filteredProducts.filter(function (cust) {
+          return cust.title.toLowerCase().indexOf(self.search.toLowerCase()) >= 0
+        })
+      },
       deliveryOffered () {
         if (this.store.hasOwnProperty('delivery')) {
           return this.$store.state.storeSearch.currentStore.delivery.service_offered
@@ -170,6 +222,9 @@
         'getStore',
         'getAllProducts'
       ]),
+      filter (products) {
+        return (filter('S', {field: 'title', list: products}))
+      },
       formattedPrice (itemTotal) {
         return (itemTotal / 100).toLocaleString('en-US', {
           style: 'currency',

@@ -151,8 +151,6 @@ export default {
       cb(response.data)
     }).catch(error => {
       console.log(error)
-      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
-      setTimeout(alert.dismiss, 5000)
     })
   },
   reactivateCart (id) {
@@ -163,8 +161,6 @@ export default {
       cb(response.data)
     }).catch(error => {
       console.log(error)
-      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
-      setTimeout(alert.dismiss, 5000)
     })
   },
   storeInfoFull (id, cb) {
@@ -211,8 +207,6 @@ export default {
       // console.log(response)
     }).catch(error => {
       console.log(error)
-      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
-      setTimeout(alert.dismiss, 5000)
     })
   },
   removeAddressByID (id) {
@@ -224,8 +218,6 @@ export default {
       // console.log(response)
     }).catch(error => {
       console.log(error)
-      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
-      setTimeout(alert.dismiss, 5000)
     })
   },
   userWalletAdd (id) {

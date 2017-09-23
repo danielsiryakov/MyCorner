@@ -4,6 +4,6 @@ var
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  API_SCHEMA: '"http"',
-  API_BASE_URL: '"0.0.0.0:8001"'
+  API_SCHEMA: '"https"',
+  API_BASE_URL: '"mycorner.store"'
 })
