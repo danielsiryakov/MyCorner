@@ -6,7 +6,7 @@ function load (component) {
 }
 
 // import CartPage from './components/CartPage'
-// import IntroPage from './components/IntroPage.vue'
+// import IntroPage from './components/LogInSignUp/IntroPage.vue'
 // import HomePage from './components/HomePage'
 // import ProductPage from './components/ProductPage'
 import StoresListPage from './components/List_Of_Stores'
