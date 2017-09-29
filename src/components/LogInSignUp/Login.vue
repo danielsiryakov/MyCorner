@@ -82,8 +82,7 @@
           }
         }).then(response => {
           this.loading = false
-          console.log(response.data.is_store_owner)
-          console.log(response)
+          this.$emit('closeModal')
           Cookies.set('userID', response.data.login.userID, {
             path: '/',
             expires: 10
@@ -135,6 +134,7 @@
       },
       resetSettings () {
         this.resetClicked = false
+        console.log('modal closed')
       }
     }
   }
