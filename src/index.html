@@ -8,8 +8,6 @@
 
     <title>MyCorner</title>
     <link rel="icon" href="./statics/iconDark.ico">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdecODsc1iL1Xva9wSNlu-Sw-rWUpoioE&libraries=places"></script>
-
     <style>
       .spinner {
         width: 100%;
@@ -35,12 +33,19 @@
         to {transform: rotate(360deg);}
       }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+      if (this.location.pathname == '/' || this.location.pathname === '/login') {
+        var imgEle = document.createElement("img");
+        imgEle.src = "/img/CornerShop.5129bcd.png";
+      }
+    </script>
   </head>
   <body>
     <div id="q-app" class="spinner"></div>
     <!-- built files will be auto injected -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://checkout.stripe.com/checkout.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdecODsc1iL1Xva9wSNlu-Sw-rWUpoioE&libraries=places"></script>
   </body>
 </html>

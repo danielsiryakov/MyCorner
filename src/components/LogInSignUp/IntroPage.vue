@@ -43,7 +43,7 @@
   import {
     QTabs, QRouteTab, QBtn, QIcon
   } from 'quasar'
-  import { mapActions, mapState } from 'vuex'
+  import { mapState } from 'vuex'
   export default {
     data () {
       return {
@@ -63,15 +63,9 @@
       userAuth: 'authenticated'
     }),
     methods: {
-      ...mapActions([
-        'authBasedRoute'
-      ]),
       modalClosed () {
         console.log('modal closed')
       }
-    },
-    beforeMount () {
-      this.authBasedRoute()
     }
   }
 </script>
