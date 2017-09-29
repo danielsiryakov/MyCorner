@@ -4,7 +4,7 @@
       <div class="sm-width-1of1 md-width-1of1 bg-width-5of5 lg-width-3of5">
         <img src="../../assets/fulllogo.png" style="max-height: 8%; max-width: 80%">
 
-        <q-modal ref="logInSignUp" transition="fade" :content-css="{maxWidth: '500px'}">
+        <q-modal ref="logInSignUp"  transition="fade" :content-css="{maxWidth: '500px'}">
           <h4><q-icon class="text-primary float-left" style="padding-left: 20px" @click="$refs.logInSignUp.close()" name="close"/></h4>
           <br><br>
           <div class="">
@@ -12,7 +12,7 @@
               <q-tab slot="title" name="login" label="log in"/>
               <q-tab slot="title" name="signup" label="Sign Up" />
 
-              <q-tab-pane name="login"><login></login></q-tab-pane>
+              <q-tab-pane name="login"><login @closeModal="$refs.logInSignUp.close()"></login></q-tab-pane>
               <q-tab-pane  name="signup"><sign-up v-if="!signedup" v-on:submit="signedup = true"></sign-up>
                 <div v-if="signedup" style="padding: 20px;">
                   <h4>we sent you a confirmation email!</h4><br>
@@ -22,8 +22,6 @@
                 </div>
               </q-tab-pane>
             </q-tabs>
-
-
           </div>
         </q-modal>
           <div class="row justify-center group" id="footer" style="padding: 20px;">
@@ -63,7 +61,12 @@
     },
     computed: mapState({
       userAuth: 'authenticated'
-    })
+    }),
+    methods: {
+      modalClosed () {
+        console.log('modal closed')
+      }
+    }
   }
 </script>
 
