@@ -146,7 +146,14 @@
         <br>
       </div>
 
-      <q-modal ref="productModal" class="minimized" :content-css="{padding: '20px', maxWidth: '500px', maxHeight: '500px'}">
+      <q-modal ref="StoreReview" class="" :content-css="{padding: '20px', maxWidth: '800px', maxHeight: '800px'}">
+        <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.StoreReview.close()"/></h4>
+        <h4>Review {{store.name}}</h4>
+        <store-review :store_id="store.store_id" :stars="stars" @submittedReview="$refs.StoreReview.close()"></store-review>
+        <!--<address-edit :address="selectedAddress"></address-edit>-->
+      </q-modal>
+
+      <q-modal ref="productModal" class="" :content-css="{padding: '20px', maxWidth: '500px', maxHeight: '700px'}">
         <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.productModal.close()"/></h4>
         <!--<i class="text-negative" @click="$refs.productModal.close()">close</i>-->
         <product-page :product="ProductObject" :quantityProp="cartQuantity" v-on:added="close"></product-page>
@@ -159,7 +166,8 @@
   import ProductPage from './ProductPage.vue'
   import layoutStore from '../store/otherJS/layout-store'
   import CartPage from './CartPage.vue'
-  import shop from '../api/shop'
+  import StoreReview from './StoreReview.vue'
+//  import shop from '../api/shop'
   import {
     Loading, date, filter
   } from 'quasar'
@@ -178,7 +186,8 @@
     },
     components: {
       ProductPage,
-      CartPage
+      CartPage,
+      StoreReview
     },
     computed: {
       ...mapGetters([
@@ -232,11 +241,7 @@
         })
       },
       submitReview () {
-        shop.addStoreReview({
-          comment: '',
-          score: this.stars,
-          store_id: this.store.store_id
-        })
+        this.$refs.StoreReview.open()
       },
       checkCurrentDay (key) {
         return [
@@ -308,7 +313,7 @@
   }
 </script>
 
-<style scoped>
+<style>
   /*StorePage.vue css*/
   .item:not(.two-lines):not(.three-lines):not(.multiple-lines) > .item-content > div:not(.stacked-label):not(.floating-label):not([class^='q-']) {
     font-size: 35px !important;
@@ -401,6 +406,9 @@
   }
   .today {
     color: #37c064;
+  }
+  .q-collapsible-sub-item {
+   padding: 0px !important;
   }
   .working-status {
     display:block;

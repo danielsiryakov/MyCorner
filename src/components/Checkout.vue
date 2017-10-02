@@ -184,7 +184,8 @@
       ...mapActions([
         'getStore',
         'getAllProducts',
-        'getAddressBook'
+        'getAddressBook',
+        'retriesActiveCarts'
       ]),
       formattedPrice (itemTotal) {
         return (itemTotal / 100).toLocaleString('en-US', {
@@ -257,6 +258,7 @@
             })
           }
         }
+        this.retriesActiveCarts()
       }
     }
   }

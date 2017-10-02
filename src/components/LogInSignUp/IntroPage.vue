@@ -34,6 +34,7 @@
           </div>
       </div>
     </div>
+    <a href="https://www.trevormitchellartist.com/">Image courtesy of Trevor Mitchell</a>
   </div>
 </template>
 

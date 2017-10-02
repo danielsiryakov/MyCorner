@@ -9,7 +9,7 @@
       <q-list multiline no-border inset-separator	sparse highlight
               v-if="hasNonEmptyCart"
               v-for="(cart, key) in carts" :key="key">
-        <q-collapsible opened icon="shopping_cart" :label="formattedTitle(cart.store_name)" v-if="cart.totals.subtotal" class="" inset>
+        <q-collapsible opened icon="shopping_cart" :label="formattedTitle(cart.store_name)" v-if="cart.totals.subtotal" class="cartItems" inset>
           <q-side-link class="text-tertiary" style="border: 1px solid" item :to="{name: 'store', params: {id: cart.store_id}}" exact>
             <q-icon name="keyboard_arrow_left"></q-icon>Shop for more items!
           </q-side-link>
@@ -33,7 +33,7 @@
 
     <q-modal  ref="checkout" class="bg-light maximized" content-classes="bg-light"	>
       <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.checkout.close()"/></h4>
-      <checkout v-if="checkoutCart !== ''" :cart="checkoutCart" @checkedOut="$refs.checkout.close()"></checkout>
+      <checkout v-if="checkoutCart !== ''" :cart="checkoutCart" @checkedOut="checkedout"></checkout>
     </q-modal>
 
     <q-modal ref="productModal" class="minimized" :content-css="{padding: '20px', maxWidth: '500px', maxHeight: '500px'}">
@@ -76,8 +76,13 @@
       ...mapActions([
         'checkout',
         'addToCart',
-        'getStore'
+        'getStore',
+        'retriesActiveCarts'
       ]),
+      checkedout () {
+        this.retriesActiveCarts()
+        this.$refs.checkout.close()
+      },
       checkoutAvailable (cart) {
         let isAvailable = true
         if (cart.flags.is_valid_delivery === true || cart.flags.is_valid_pickup === true) {
@@ -137,4 +142,7 @@
 </script>
 
 <style>
+  .cartItems {
+     padding: 8px 16px;
+  }
 </style>

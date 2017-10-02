@@ -28,6 +28,7 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
   import axios from 'axios'
   import {Cookies, LocalStorage} from 'quasar'
   import StripeCheckout from 'stripe-checkout'
@@ -54,6 +55,9 @@
       }
     },
     methods: {
+      ...mapActions([
+        'getWallet'
+      ]),
       addCreditCard () {
         this.addcard = true
       },
@@ -92,6 +96,7 @@
         })
 //          shop.userWalletAdd(token)
         shop.userWalletRetrieve()
+        this.getWallet()
         this.addcard = false
       }
     }

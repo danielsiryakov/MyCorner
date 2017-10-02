@@ -50,7 +50,7 @@
                   <address-book v-if="currentPage == 'AddressBook'"></address-book>
                   <past-orders v-if="currentPage == 'PastOrders'" @reordered="$refs.pages.close()"></past-orders>
                   <wallet v-if="currentPage == 'Wallet'"></wallet>
-                  <track-your-order v-if="currentPage == 'TrackYourOrder'"></track-your-order>
+                  <track-your-order :currentOrders="currentOrders" v-if="currentPage == 'TrackYourOrder'"></track-your-order>
                 </q-list>
               </div>
             </div>
@@ -68,6 +68,7 @@
   import Review from '../Review.vue'
   import Wallet from './Wallet.vue'
   import TrackYourOrder from './TrackYourOrder.vue'
+  import shop from '../../api/shop'
   export default {
     components: {
       Wallet,
@@ -96,6 +97,8 @@
       ]),
       openPageModal (page) {
         this.currentPage = page.ref
+        if (this.currentPage === 'TrackYourOrder') { this.getActiveOrders() }
+        if (this.currentPage === 'PastOrders') { this.getCompletedCarts() }
         this.currentLabel = page.label
         this.$refs.pages.open()
       },
@@ -108,6 +111,11 @@
             console.log('re-render end')
           })
         })
+      },
+      getActiveOrders () {
+        shop.userOrderRetrieve().then(response => {
+          this.currentOrders = response.data
+        })
       }
     },
     created () {
@@ -117,6 +125,7 @@
     },
     data () {
       return {
+        currentOrders: [],
         currentPage: '',
         currentLabel: '',
         show: true,
