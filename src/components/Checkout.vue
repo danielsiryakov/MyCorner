@@ -19,11 +19,11 @@
               class="bg-white"
               :options="addressBookOptions"
             />
-            <q-field>
-              <span class="text-bold">Phone: *</span>
-              <q-input v-model="phone"></q-input>
-            </q-field>
           </div>
+          <q-field>
+            <span class="text-bold">Phone: *</span>
+            <q-input class="bg-white" v-model="phone"></q-input>
+          </q-field>
           <br>
           <span class="text-bold">Payment:</span>
           <q-select

@@ -49,6 +49,12 @@ const Router = new VueRouter({
       meta: { Auth: false },
       component: load('LogInSignUp/IntroPage')
     },
+    {
+      path: '/termsofuse',
+      name: 'termsofuse',
+      meta: { Auth: false },
+      component: load('LogInSignUp/TermsOfService')
+    },
     {path: '*', component: load('Error404')}]
 })
 // var jwt = Cookies.get('authtoken')

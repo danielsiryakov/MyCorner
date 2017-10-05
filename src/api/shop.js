@@ -2,9 +2,10 @@ import axios from 'axios'
 import {
   Loading,
   Cookies,
+  LocalStorage,
   Alert
 } from 'quasar'
-
+import router from '../router'
 const API_URL = process.env.API_SCHEMA + '://' + process.env.API_BASE_URL + '/api/'
 const SEARCH = API_URL + 'store/search'
 const RESEND = API_URL + 'user/confirmation/resend'
@@ -115,6 +116,13 @@ export default {
       cb(response.data)
     }).catch(function (error) {
       console.log(error)
+      if (error.response.status === 403) {
+        Cookies.remove('userID')
+        Cookies.remove('authtoken')
+        LocalStorage.remove('authtoken')
+        this.$store.commit('authenticationFalse')
+        router.replace('/login')
+      }
       const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
       setTimeout(alert.dismiss, 5000)
     })
