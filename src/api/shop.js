@@ -93,6 +93,13 @@ export default {
       cb(response.data)
     }).catch(error => {
       console.log(error)
+      if (error.response.status === 403) {
+        Cookies.remove('userID')
+        Cookies.remove('authtoken')
+        LocalStorage.remove('authtoken')
+        this.$store.commit('authenticationFalse')
+        router.push('/login')
+      }
     })
   },
   resendPassword (creds) {
@@ -121,7 +128,7 @@ export default {
         Cookies.remove('authtoken')
         LocalStorage.remove('authtoken')
         this.$store.commit('authenticationFalse')
-        router.replace('/login')
+        router.push('/login')
       }
       const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
       setTimeout(alert.dismiss, 5000)

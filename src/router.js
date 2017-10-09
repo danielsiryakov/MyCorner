@@ -19,7 +19,7 @@ import store from './store/index'
 Vue.use(VueRouter)
 
 const Router = new VueRouter({
-  // mode: 'history',
+  mode: 'history',
   routes: [
     {path: '/',
       component: load('HomePageLayout'),
@@ -54,6 +54,12 @@ const Router = new VueRouter({
       name: 'termsofuse',
       meta: { Auth: false },
       component: load('LogInSignUp/TermsOfService')
+    },
+    {
+      path: '/privacy',
+      name: 'privacy',
+      meta: { Auth: false },
+      component: load('LogInSignUp/Privacy')
     },
     {path: '*', component: load('Error404')}]
 })

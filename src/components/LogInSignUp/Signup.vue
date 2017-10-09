@@ -15,7 +15,8 @@
     <br>
     <q-input v-model="email" type="email" stack-label="Enter Your Email" clearable name="email"/>
     <q-input v-model="password" type="password" stack-label="Enter Your password" clearable @keyup.enter="submit"/>
-    <small>By signing up, you agree to MyCorner's <span class="text-blue" @click="$refs.termsofservice.open()">terms of use</span></small>
+    <small>By signing up, you agree to MyCorner's <span class="text-blue" @click="$refs.termsofservice.open()">terms of use</span> and
+      <span class="text-blue" @click="$refs.privacy.open()">privacy policy</span></small>
     <br><br>
     <q-btn loader color="primary" @click="submit">Sign Up</q-btn>
     <img class="float-right" src="../../assets/basket.png" alt="" width="150px" height="150px">
@@ -23,6 +24,11 @@
       <h4><q-icon name="close" class="text-primary absolute-top-right" @click="$refs.termsofservice.close()"/></h4>
       <br>
       <terms-of-service></terms-of-service>
+    </q-modal>
+    <q-modal class="maximized" ref="privacy">
+      <h4><q-icon name="close" class="text-primary absolute-top-right" @click="$refs.privacy.close()"/></h4>
+      <br>
+      <privacy></privacy>
     </q-modal>
   </div>
 </template>
@@ -33,6 +39,7 @@
     QInput, QBtn, Cookies
   } from 'quasar'
   import TermsOfService from './TermsOfService.vue'
+  import Privacy from './Privacy.vue'
   export default {
     data () {
       return {
@@ -43,7 +50,7 @@
       }
     },
     components: {
-      QInput, QBtn, TermsOfService
+      QInput, QBtn, TermsOfService, Privacy
     },
     methods: {
       ...mapActions([
