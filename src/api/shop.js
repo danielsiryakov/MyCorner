@@ -46,6 +46,7 @@ const ORDER_STATUS_UPDATE = API_URL + 'order/status/update'
 const USER_ORDERS_ACTIVE = API_URL + 'user/orders/active/retrieve'
 const HELPER_ORDER_STATUS_PARH = API_URL + 'helper/order/status/path'
 const STORE_CATEGORY_PRODUCTS_REORDER = API_URL + 'store/category/products/reorder/'
+const STORE_CART_RETRIEVE = API_URL + 'store/cart/retrieve/'
 
 axios.defaults.headers.common['authtoken'] = Cookies.get('authtoken')
 axios.defaults.headers.common['userID'] = Cookies.get('userID')
@@ -326,6 +327,9 @@ export default {
   },
   ordersRetrieveActive (id) {
     return axios.get(ORDERS_RETRIEVE_ACTIVE + id)
+  },
+  storeCartRetrieve (id) {
+    return axios.get(STORE_CART_RETRIEVE + id)
   },
   orderCashPickup (payload) {
     return axios.post(ORDER_CASH_PICKUP, JSON.stringify(payload))

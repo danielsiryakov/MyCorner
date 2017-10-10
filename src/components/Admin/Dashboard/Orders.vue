@@ -3,7 +3,7 @@
   <div class="layout-padding">
     <!-- your content -->
     <q-list v-if="orders.length > 0">
-      <q-item v-for="(order, key) in orders" :key="key" class="group">
+      <q-item separator v-for="(order, key) in orders" :key="key" class="group" @click="getOrderDetails(order)">
         <q-item-side>
           <span class="text-bold">Type: {{ order.order_type }}</span><br>
           <span class="text-bold">Payment:</span> {{order.payment_method}}<br>
@@ -18,17 +18,33 @@
         </q-item-side>
       </q-item>
     </q-list>
+    <q-modal ref="orderDetails" class="" :content-css="{padding: '20px', maxWidth: '800px', maxHeight: '800px'}">
+      <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.orderDetails.close()"/></h4>
+      <h4 class="text-bold text-tertiary">Order Details:</h4>
+      <q-item class="bg-white" v-for="p in orderDetails" :key="p.asset_id"
+        v-if="p.quantity > 0">
+        {{ p.quantity }}x
+        <q-item-side :image="p.image" style="padding-right: 10px;">
+          <!--<img :src="p.image" style="width: 100px; height: 100px">-->
+        </q-item-side>
+        <!--<q-item-main v-if="p.title.length >= 30" class="">{{p.title.substring(0,30)}}...</q-item-main><br>-->
+        <q-item-main class="">{{p.title}}</q-item-main><br>
+
+      </q-item>
+    </q-modal>
   </div>
 </template>
 
 <script>
-  import { date } from 'quasar'
+  import { date, Loading } from 'quasar'
   import shop from '../../../api/shop'
   import { mapActions } from 'vuex'
+  import axios from 'axios'
   export default {
     data () {
       return {
-        orderPath: ''
+        orderPath: '',
+        orderDetails: []
       }
     },
     created () {
@@ -47,6 +63,18 @@
       ...mapActions([
         'getActiveOrders'
       ]),
+      getOrderDetails (order) {
+        this.orderDetails = []
+        Loading.show({
+          delay: 200 // milliseconds
+        })
+        axios.defaults.headers.common['storeID'] = order.store_id
+        shop.storeCartRetrieve(order.cart_id).then(response => {
+          Loading.hide()
+          this.orderDetails = response.data.products
+          this.$refs.orderDetails.open()
+        })
+      },
       formatTimeStamp (timeStamp) {
         return date.formatDate(timeStamp, 'MM/DD/YYYY HH:mmA')
       },
