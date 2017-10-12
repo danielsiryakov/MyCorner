@@ -198,6 +198,7 @@
         payload.cart_id = this.cart.id
         payload.store_id = this.cart.store_id
         payload.instructions = ''
+        payload.phone = this.phone
         if (this.orderType === 'Delivery') {
           let address = this.getFullAddress
           address.phone = this.phone
