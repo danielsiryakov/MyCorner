@@ -65,7 +65,7 @@
                   <q-card-title class="text-condensed" slot="overlay">
                     <small class="">{{p.title.substring(0,30)}}</small><br>
                     <!--{{getProductCartQuantity(id, p.id).quantity}}-->
-                    <span class="text-bold">${{p.price_cents / 100}}</span>
+                    <span class="text-bold ">${{p.price_cents / 100}}</span>
                     <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
                   </q-card-title>
                 </q-card-media>

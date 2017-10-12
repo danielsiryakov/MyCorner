@@ -36,14 +36,14 @@
 </template>
 
 <script>
-  import { date, Loading } from 'quasar'
+  import { date, Loading, Alert } from 'quasar'
   import shop from '../../../api/shop'
   import { mapActions } from 'vuex'
   import axios from 'axios'
   export default {
     data () {
       return {
-        orderPath: '',
+        orderPath: [],
         orderDetails: []
       }
     },
@@ -73,6 +73,10 @@
           Loading.hide()
           this.orderDetails = response.data.products
           this.$refs.orderDetails.open()
+        }).catch(error => {
+          Loading.hide()
+          const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+          setTimeout(alert.dismiss, 5000)
         })
       },
       formatTimeStamp (timeStamp) {
