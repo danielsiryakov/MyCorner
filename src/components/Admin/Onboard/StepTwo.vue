@@ -3,18 +3,28 @@
   <div class="layout-padding">
     <div class="row sm-gutter">
       <div class="col-12">
-        <q-field icon="business">
-          <q-input v-model="name" type="text" float-label="Enter Business Name" :value = "name" clearable/>
+        <q-field :error="$v.name.$error" error-label="Business name is required" icon="business">
+          <q-input v-model="name" type="text"
+                   float-label="Enter Business Name"
+                   :value = "name"
+                   clearable
+                   @blur="$v.name.$touch"
+                   />
         </q-field>
-        <q-field icon="mail">
-          <q-input v-model="email" type="email" float-label="Enter Email for Notifications" :value = "email" clearable/>
+        <q-field :error="$v.email.$error" error-label="Valid email is required" icon="mail">
+          <q-input v-model="email"
+                   type="email"
+                   float-label="Enter Email for Notifications"
+                   :value = "email"
+                   clearable
+                   @blur="$v.email.$touch"/>
         </q-field>
       </div>
       <div class="col-12">
         <q-field icon="location_on">
           <vue-google-autocomplete
             id="map"
-            placeholder="Please type your address"
+            :placeholder="addressPlaceholder"
             v-on:placechanged="getAddressData"
             country="usa"
             :enableGeolocation="true"
@@ -24,9 +34,12 @@
         </q-field>
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <q-field icon="phone" >
-          <q-input v-model="phoneNumber" type="tel" float-label="Enter Business Phone #"
-                   clearable/>
+        <q-field :error="$v.phoneNumber.$error" error-label="Valid phone number is required"  icon="phone" >
+          <q-input v-model="phoneNumber"
+                   type="tel"
+                   float-label="Enter Business Phone #"
+                   clearable
+                   @blur="$v.phoneNumber.$touch"/>
         </q-field>
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -135,6 +148,7 @@
 <script>
 //  import {required, email, minLength} from 'vuelidate/lib/validators'
   import Cleave from 'vue-cleave'
+  import { required, email } from 'vuelidate/lib/validators'
   import VueGoogleAutocomplete from 'vue-google-autocomplete'
   import {
     QBtn,
@@ -151,57 +165,6 @@
     data () {
       return {
         address2: '',
-//        working_hours: {
-//          monday: {
-//            hours: {
-//              from: '2017-06-29T09:00:00.000-04:00',
-//              to: '2017-06-29T17:00:00.000-04:00'
-//            },
-//            open: true
-//          },
-//          tuesday: {
-//            hours: {
-//              from: '2017-06-29T09:00:00.000-04:00',
-//              to: '2017-06-29T17:00:00.000-04:00'
-//            },
-//            open: true
-//          },
-//          wednesday: {
-//            hours: {
-//              from: '2017-06-29T09:00:00.000-04:00',
-//              to: '2017-06-29T17:00:00.000-04:00'
-//            },
-//            open: true
-//          },
-//          thursday: {
-//            hours: {
-//              from: '2017-06-29T09:00:00.000-04:00',
-//              to: '2017-06-29T17:00:00.000-04:00'
-//            },
-//            open: true
-//          },
-//          friday: {
-//            hours: {
-//              from: '2017-06-29T09:00:00.000-04:00',
-//              to: '2017-06-29T17:00:00.000-04:00'
-//            },
-//            open: true
-//          },
-//          saturday: {
-//            hours: {
-//              from: '2017-06-29T09:00:00.000-04:00',
-//              to: '2017-06-29T17:00:00.000-04:00'
-//            },
-//            open: true
-//          },
-//          sunday: {
-//            hours: {
-//              from: '2017-06-29T09:00:00.000-04:00',
-//              to: '2017-06-29T17:00:00.000-04:00'
-//            },
-//            open: true
-//          }
-//        },
         hovering: false,
         pickUpChecked: false,
         deliveryChecked: false,
@@ -209,6 +172,18 @@
           phone: true,
           phoneRegionCode: 'US'
         }
+      }
+    },
+    validations: {
+      name: {
+        required
+      },
+      email: {
+        required,
+        email
+      },
+      phoneNumber: {
+        required
       }
     },
     components: {
@@ -246,6 +221,14 @@
       ...mapGetters({
         storeImage: 'storeImage'
       }),
+      addressPlaceholder () {
+        if (this.address.line1) {
+          return this.address.line1
+        }
+        else {
+          return 'Please type in your address'
+        }
+      },
       name: {
         get () { return this.$store.state.storeInfo.store.name },
         set (value) { this.$store.commit('update_store', {name: value}) }

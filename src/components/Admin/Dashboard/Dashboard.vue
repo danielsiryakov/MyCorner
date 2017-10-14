@@ -11,7 +11,7 @@
         <q-icon name="menu"/>
       </q-btn>
       <q-toolbar-title>
-        <router-link to="/"><img src="../../../assets/fulllogo.png" id="logo"></router-link>
+        <router-link to="/admin"><img src="../../../assets/fulllogo.png" id="logo"></router-link>
         <span slot="subtitle">Empowering Your Neighborhood</span>
       </q-toolbar-title>
     </q-toolbar>

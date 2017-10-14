@@ -277,6 +277,8 @@ const actions = {
       router.push('/')
       console.log(response)
     }).catch(function (error) {
+      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+      setTimeout(alert.dismiss, 7000)
       console.log(error)
     })
   },

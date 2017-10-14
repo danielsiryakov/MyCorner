@@ -220,7 +220,15 @@
           })
         }
         else {
-          this.add_ready_product()
+          if (this.$route.path === '/admin/products') {
+            this.add_ready_product()
+          }
+          else {
+            this.new_product.price_cents = this.new_product.price_cents * 100
+            this.current_category.products.push(this.new_product)
+            this.productAddedToast()
+            this.reset_temp_product()
+          }
         }
       },
       removeProduct: function (pindex) {

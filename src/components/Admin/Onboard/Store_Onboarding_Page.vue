@@ -1,7 +1,7 @@
 <template>
   <q-layout>
     <q-toolbar color="tertiary" class="text-white">
-      <q-btn v-go-back="'/admin'" icon="arrow_back"/>
+      <q-btn v-go-back="'/admin'" @click="reset_store" icon="arrow_back"/>
       <q-toolbar-title>Sign Up</q-toolbar-title>
     </q-toolbar>
     <div class="layout-view">
@@ -20,7 +20,7 @@
                 <h5 class="text-tertiary text-bold">Add Categories and Products</h5>
                 <step-three></step-three>
                 <q-stepper-navigation>
-                  <q-btn color="primary" @click="createStore">Submit</q-btn>
+                  <q-btn color="primary" @click="createStore">Create Your Store!</q-btn>
                   <q-btn color="tertiary" flat @click="$refs.stepper.previous()">Back</q-btn>
                 </q-stepper-navigation>
               </q-step>

@@ -18,11 +18,13 @@ const actions = {
   async getUserInfo ({dispatch, commit}) {
     shop.userInfo(info => {
       commit('setUserInfo', info)
+      shop.retrieveAddressBookDefualt(addressBook => {
+        commit('setDefaultAddress', addressBook)
+      })
+      dispatch('getAddressBook')
+      dispatch('retriesActiveCarts')
+      dispatch('getWallet')
     })
-    shop.retrieveAddressBookDefualt(addressBook => {
-      commit('setDefaultAddress', addressBook)
-    })
-    dispatch('getAddressBook')
   },
   getAddressBook ({commit}) {
     shop.retrieveAddressBook(addressBook => {

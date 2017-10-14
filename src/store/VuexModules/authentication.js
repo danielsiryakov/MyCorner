@@ -29,7 +29,7 @@ const actions = {
       })
       axios.defaults.headers.common['authtoken'] = response.data.login.authtoken
       axios.defaults.headers.common['userID'] = response.data.login.userID
-      LocalStorage.set('authtoken', response.data.login.authtoken)
+      // LocalStorage.set('authtoken', response.data.login.authtoken)
       commit('authenticationTrue')
       router.push('/')
     }).catch(error => {
@@ -67,8 +67,10 @@ const mutations = {
   authenticationFalse (state) {
     state.authenticated = false
   },
-  checkAuth (state) {
-    if (Cookies.has('authtoken') || LocalStorage.has('authtoken')) {
+  checkAuth: function (state) {
+    let hasCookies = Cookies.has('authtoken')
+    console.log('has cookies: ' + hasCookies)
+    if (hasCookies) {
       state.authenticated = true
     }
     else {

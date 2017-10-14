@@ -67,7 +67,9 @@ const Router = new VueRouter({
 //
 Router.beforeEach((to, from, next) => {
   store.commit('checkAuth')
+  // if (to.path === '/login') { store.commit('authenticationFalse') }
   if (to.meta.Auth && !store.state.auth.authenticated) {
+    console.log('authentication is: ' + store.state.auth.authenticated)
     next({path: '/login', replace: true})
   }
   else {

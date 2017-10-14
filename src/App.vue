@@ -21,9 +21,6 @@
 //        isAuthenticated =
         if (this.$store.state.auth.authenticated === true) {
           this.getUserInfo()
-          this.getAddressBook()
-          this.retriesActiveCarts()
-          this.getWallet()
         }
       }
     },
