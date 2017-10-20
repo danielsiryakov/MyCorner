@@ -55,7 +55,7 @@
                   <span class="text-bold">${{p.price_cents / 100}}</span>
                 </q-item-side>
               </q-item>
-              <q-card inline flat style="width: 35vh; height: 35vh"
+              <q-card inline flat style="width: 30vh; height: 30vh"
                       class="gt-sm bg-white"
                       v-for="p in filteredProducts"
                        :key="p.product_id" @click="open(p)">
@@ -84,7 +84,7 @@
                     <span class="text-bold">${{p.price_cents / 100}}</span>
                   </q-item-side>
                 </q-item>
-                <q-card inline flat style="width: 35vh; height: 35vh" class="gt-sm col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
+                <q-card inline flat style="width: 30vh; height: 30vh" class="gt-sm col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
                 <!--<q-card inline flat style="width: 30vh; height: 30vh" class="bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">-->
                   <q-card-media overlay-position="bottom">
                     <img :src="p.image" style="padding: 25px">
@@ -99,10 +99,10 @@
               </q-collapsible>
             </div>
           </q-tab-pane>
-          <q-tab-pane name="Information" class="" v-if="store">
+          <q-tab-pane name="Information" class="bg-white" v-if="store">
             <div class="row">
               <div class="col-lg-8" >
-                <h3 class="bg-white" style="padding: 10px;">Information</h3>
+                <h3 class="" style="padding: 10px;">Information</h3>
                 <div class="group bg-white" style="padding: 10px;">
                   <span class="text-bold">Phone:</span>
                   {{ formatPhone(store.phone) }}<br>
@@ -112,8 +112,8 @@
                   {{ store.address.line1 }}
                 </div>
                 <br>
-                <h5 class="bg-white" style="padding: 10px;">Working Hours</h5>
-                <div class="bg-white">
+                <h5 class="" style="padding: 10px;">Working Hours</h5>
+                <div class="">
                   <table class="q-table" style="display:inline-block;">
                     <tbody v-for="(day, key) in store.working_hours" :key="key">
                       <tr v-if="!checkCurrentDay(key)"
