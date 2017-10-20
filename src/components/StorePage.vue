@@ -153,7 +153,7 @@
         <!--<address-edit :address="selectedAddress"></address-edit>-->
       </q-modal>
 
-      <q-modal ref="productModal" class="" :content-css="{padding: '20px', maxWidth: '500px', maxHeight: '700px'}">
+      <q-modal ref="productModal" class="" :content-css="{padding: '20px', maxWidth: '500px', maxHeight: '800px'}">
         <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.productModal.close()"/></h4>
         <!--<i class="text-negative" @click="$refs.productModal.close()">close</i>-->
         <product-page :product="ProductObject" :quantityProp="cartQuantity" v-on:added="close"></product-page>

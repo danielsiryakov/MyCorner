@@ -29,7 +29,6 @@
         </q-item-side>
         <!--<q-item-main v-if="p.title.length >= 30" class="">{{p.title.substring(0,30)}}...</q-item-main><br>-->
         <q-item-main class="">{{p.title}}</q-item-main><br>
-
       </q-item>
     </q-modal>
   </div>
