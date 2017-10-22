@@ -4,12 +4,14 @@
     <!-- your content -->
     <div v-if="completedCarts.length > 0">
       <!--@click="reorderItems(order)-->
-      <q-item v-for="(order, key) in completedCarts" :key="key">
+      <q-item separator v-for="(order, key) in completedCarts" :key="key">
         <q-item-side @click="getOrderDetails(order)">
           <span class="text-bold">{{ order.store_name }}</span><br>
           <small>{{ formatTimeStamp(order.last_updated) }}</small>
+          <br>
+          {{ formattedPrice(order.totals.total) }}
         </q-item-side>
-        <q-item-main @click="getOrderDetails(order)">{{ formattedPrice(order.totals.total) }}</q-item-main>
+        <!--<q-item-main @click="getOrderDetails(order)"></q-item-main>-->
         <q-item-side>
         <q-btn @click="reorderItems(order)">Reorder</q-btn></q-item-side>
       </q-item>

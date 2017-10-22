@@ -49,7 +49,8 @@
         </q-list>
         <span class="text-italic">Tip: drag and drop to change category order </span><br>
       </div>
-      <q-modal ref="basicModal" v-if="categories.length > 0" :content-css="{padding: '20px', minWidth: '50vw'}">
+      <q-modal ref="basicModal" v-if="categories.length > 0" class="maximized" :content-css="{padding: '20px', minWidth: '50vw'}">
+        <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.basicModal.close(); updateCategory(current_category)"/></h4>
         <modal :current_category="categories[current_category]"></modal>
         <br><br>
         <q-btn color="primary" @click="$refs.basicModal.close(); updateCategory(current_category)">Close</q-btn>

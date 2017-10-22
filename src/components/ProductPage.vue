@@ -4,7 +4,7 @@
     <h5 class="text-bold text-tertiary">{{ product.title }}</h5>
     <br>
     <div class="row justify-center">
-      <img :src="product.image" style="width: 150px; height: 150px">
+      <img :src="product.image" style="width: 30vh; height: 30vh">
     </div>
     <div class="row justify-center">
       <h5 class="text-grey"><small>{{mutation.quantity}}x &nbsp</small></h5>

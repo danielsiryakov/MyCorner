@@ -32,6 +32,7 @@ const REVIEW_PLATFORM_ADD = API_URL + 'review/platform/add'
 const REVIEW_STORE_ADD = API_URL + 'review/store/add'
 const CATEGORY_CREATE = API_URL + 'store/category/create/'
 const CATEGORY_UPDATE = API_URL + 'store/category/update/'
+const CATEGORY_PRODUCT_UPDATE = API_URL + 'store/category/product/update/'
 const CATEGORY_REORDER = API_URL + 'store/categories/reorder/'
 const CATEGORY_PRODUCT_CREATE = API_URL + 'store/category/product/create/'
 const STORE_INFO_UPDATE = API_URL + 'store/info/update/'
@@ -324,6 +325,9 @@ export default {
   },
   storeProductsReorder (payload) {
     return axios.post(STORE_CATEGORY_PRODUCTS_REORDER + payload.store_id, JSON.stringify(payload))
+  },
+  categoryProductUpdate (payload) {
+    return axios.post(CATEGORY_PRODUCT_UPDATE + payload.store_id, JSON.stringify(payload))
   },
   ordersRetrieveActive (id) {
     return axios.get(ORDERS_RETRIEVE_ACTIVE + id)

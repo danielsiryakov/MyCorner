@@ -99,15 +99,15 @@
               </q-collapsible>
             </div>
           </q-tab-pane>
-          <q-tab-pane name="Information" class="bg-white" v-if="store">
-            <div class="row">
-              <div class="col-lg-8" >
-                <h3 class="" style="padding: 10px;">Information</h3>
-                <div class="group bg-white" style="padding: 10px;">
+          <q-tab-pane name="Information" class="" v-if="store">
+            <q-card class="row justify-center bg-light layout-padding">
+              <div class="col-lg-8" align="center">
+                <!--<h3 class="" style="padding: 10px;">Information</h3>-->
+                <div class="group " style="padding: 10px;">
                   <span class="text-bold">Phone:</span>
                   {{ formatPhone(store.phone) }}<br>
                 </div>
-                <div class="group bg-white" style="padding: 10px;" v-if="store.address">
+                <div class="group " style="padding: 10px;" v-if="store.address">
                   <span class="text-bold">Address:</span>
                   {{ store.address.line1 }}
                 </div>
@@ -140,7 +140,7 @@
                   </table>
                 </div>
               </div>
-            </div>
+            </q-card>
           </q-tab-pane>
         </q-tabs>
         <br>

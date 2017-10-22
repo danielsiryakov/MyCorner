@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div>
+  <div class="row justify-center">
+    <div class="md-10">
       <h4 class="text-dark text-bold">Enter Products for {{current_category.name}}</h4>
       <q-search inverted placeholder="Search for Products to Add!" v-model="terms" v-if="create_product_modal_view">
         <q-autocomplete
@@ -56,7 +56,7 @@
           <q-btn outline class="negative float-right" @click="reset_temp_product()">Reset Product</q-btn>
         </div>
       <br>
-    </div>
+
       <!--Category products-->
     <h5 class="text-dark text-bold">{{current_category.name}} Products</h5>
     <div v-if="current_category.products">
@@ -75,13 +75,17 @@
                 $ {{product.price_cents / 100}}<br>
                 {{product.description}}
               </q-item-main>
-              <q-item-side>
+              <q-item-side class="group">
+                <q-btn outline
+                       v-back-to-top
+                       @click="editProduct(product)">Edit Product </q-btn>
                 <q-icon class="text-negative" @click="removeProduct(p_index)" name="delete"/>
               </q-item-side>
             </q-item>
           </transition-group>
         </draggable>
       </q-list>
+    </div>
     </div>
   </div>
 </template>
@@ -127,6 +131,16 @@
           done([error])
         })
       },
+      editProduct (product) {
+        this.productEdit = true
+        this.new_product.title = product.title
+        this.new_product.image = product.image
+        this.new_product.category = product.category // ? just one or list of cats it falls in (tempted to say list)
+        this.new_product.asset_id = product.asset_id
+        this.new_product.dislplay_price = product.display_price // different for variants but top level for product list
+        this.new_product.description = product.description
+        this.new_product.price_cents = product.price_cents / 100
+      },
       selected (item) {
         this.new_product.title = item.label
         this.new_product.image = item.image
@@ -134,6 +148,7 @@
       },
       productAddedToast () {
         Toast.create('New Product Added')
+        this.productEdit = false
       },
       createImage (file) {
         var reader = new FileReader()
@@ -147,6 +162,7 @@
         this.new_product.image = ''
       },
       reset_temp_product: function () {
+        this.productEdit = false
         this.new_product = {
           title: '',
           image: '', // leaving at top level for now (which means variants cant have imgs)
@@ -164,25 +180,48 @@
         this.create_product_modal_view = true
       },
       add_ready_product: function () {
-        shop.categoryProductCreate({
-          image: this.new_product.image,
-          asset_id: this.new_product.asset_id,
-          store_id: this.current_category.store_id,
-          price_cents: this.new_product.price_cents * 100,
-          category_id: this.current_category.category_id,
-          description: this.new_product.description,
-          title: this.new_product.title,
-          display_price: this.new_product.price_cents
-        }).then(response => {
-          this.productAddedToast()
-          this.current_category.products.push(response.data)
-          this.reset_temp_product()
-        }).catch(error => {
-          setTimeout(Alert.create({
-            html: error.response.data.message,
-            color: 'red-7'
-          }).dismiss, 5000)
-        })
+        if (!this.productEdit) {
+          shop.categoryProductCreate({
+            image: this.new_product.image,
+            asset_id: this.new_product.asset_id,
+            store_id: this.current_category.store_id,
+            price_cents: this.new_product.price_cents * 100,
+            category_id: this.current_category.category_id,
+            description: this.new_product.description,
+            title: this.new_product.title,
+            display_price: this.new_product.price_cents
+          }).then(response => {
+            this.productAddedToast()
+            this.current_category.products.push(response.data)
+            this.reset_temp_product()
+          }).catch(error => {
+            setTimeout(Alert.create({
+              html: error.response.data.message,
+              color: 'red-7'
+            }).dismiss, 5000)
+          })
+        }
+        else {
+          shop.categoryProductUpdate({
+            image: this.new_product.image,
+            asset_id: this.new_product.asset_id,
+            store_id: this.current_category.store_id,
+            price_cents: this.new_product.price_cents * 100,
+            category_id: this.current_category.category_id,
+            description: this.new_product.description,
+            title: this.new_product.title,
+            display_price: this.new_product.price_cents
+          }).then(response => {
+            this.productAddedToast()
+            this.current_category.products.push(response.data)
+            this.reset_temp_product()
+          }).catch(error => {
+            setTimeout(Alert.create({
+              html: error.response.data.message,
+              color: 'red-7'
+            }).dismiss, 5000)
+          })
+        }
       },
       add_product: function () {
         this.create_product_modal_view = true
@@ -246,13 +285,11 @@
             product_ids: productIDs
           }).then(() => this.rerender())
         }
-      },
-      editProduct (pindex) {
-        this.current_category.products.splice(pindex, 1)
       }
     },
     data () {
       return {
+        productEdit: false,
         hovering: false,
         terms: '',
         newProduct: true,
