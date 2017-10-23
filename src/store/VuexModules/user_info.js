@@ -3,7 +3,7 @@ const state = {
   info: {
     confirmed: false,
     email: '',
-    user_id: '',
+    user_id: '111',
     user_roles: {
       Access: {}
     }
