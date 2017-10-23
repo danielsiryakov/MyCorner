@@ -26,7 +26,7 @@
         </div>
         <div class="">
         <div class="row no-wrap desktop-only" style="padding: 0px;">
-          <q-card class="round-border bg-light" align="center" style="padding: 20px;">
+          <q-card class="round-border light-dimmed" align="center" style="padding: 20px;">
             <h4 class="float-left text-bold text-primary">1.</h4><br>
             <h5 class="text-tertiary text-bold">Search for stores on your corner!</h5>
             <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="200px">
@@ -138,11 +138,11 @@
     background: inherit;
     position: absolute;
     overflow: hidden;
-    top: 50%;
+    top: 0%;
     left: 50%;
     margin-left: -175px;
     margin-top: -120%;
-    border-radius: 8px;
+    border-radius:15px;
   }
   .blur-container:before{
     width: 400px;
