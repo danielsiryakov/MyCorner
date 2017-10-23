@@ -2,7 +2,7 @@
   <div class="layout-view" id="corner">
     <div class="flex window-height">
       <div class="sm-width-1of1 md-width-1of1 bg-width-5of5 lg-width-3of5">
-        <img src="../../assets/fulllogo.png" style="padding: 20px;height: 100px">
+        <img class="fixed-top-left" src="../../assets/fulllogo.png" style="padding: 20px;height: 100px">
 
         <div class="row centered justify-center group" id="footer" style="padding: 20px;">
           <div class="col-lg-8">
