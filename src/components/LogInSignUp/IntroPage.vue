@@ -2,14 +2,14 @@
   <div class="layout-view" id="corner">
     <div class="flex window-height">
       <div class="sm-width-1of1 md-width-1of1 bg-width-5of5 lg-width-3of5">
-        <img src="../../assets/fulllogo.png" style="padding: 20px;max-height: 8%; max-width: 20%">
+        <img src="../../assets/fulllogo.png" style="padding: 20px;height: 100px">
 
-        <div class="row justify-center group" id="footer" style="padding: 20px;">
+        <div class="row centered justify-center group" id="footer" style="padding: 20px;">
           <div class="col-lg-8">
-            <div class="blur-container">
+            <div class="blur-container mobile-only">
               <q-carousel arrows dots class="bgimgico mobile-only text-white">
                 <div slot="slide" class="" align="center">
-                  <h5 class="text-blur text-bold"><q-icon class="text-bold" color="amber-9" name="arrow_upward"/>Search for stores on your corner!</h5>
+                  <h5 class="text-blur text-bold">Search for stores around your corner!</h5>
                   <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="200px">
                 </div>
                 <div slot="slide" class="" align="center">
@@ -24,22 +24,24 @@
             </div>
           </div>
         </div>
-        <div class="row no-wrap desktop-only" style="padding: 20px;">
-          <q-card class="bg-white" align="center" style="padding: 20px;">
-            <h4 class="float-left text-bold text-primary">1</h4><br>
-            <h5 class="text-tertiary text-bold"><q-icon class="text-bold" color="amber-9" name="arrow_upward"/>Search for stores on your corner!</h5>
+        <div class="">
+        <div class="row no-wrap desktop-only" style="padding: 0px;">
+          <q-card class="round-border bg-light" align="center" style="padding: 20px;">
+            <h4 class="float-left text-bold text-primary">1.</h4><br>
+            <h5 class="text-tertiary text-bold">Search for stores on your corner!</h5>
             <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="200px">
           </q-card>
-          <q-card class="bg-white" align="center" style="padding: 20px;">
-            <h4 class="float-left text-bold text-primary">2</h4><br>
+          <q-card class="round-border bg-white" align="center" style="padding: 20px;">
+            <h4 class="float-left text-bold text-primary">2.</h4><br>
             <h5 class="text-tertiary text-bold">Add your favorite items to your cart!</h5>
             <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping" height="200px">
           </q-card>
-          <q-card class="bg-white" align="center" style="padding: 20px;">
-            <h4 class="float-left text-bold text-primary">3</h4><br>
+          <q-card class="round-border bg-white" align="center" style="padding: 20px;">
+            <h4 class="float-left text-bold text-primary">3.</h4><br>
             <h5 class="text-tertiary text-bold">Have it delivered straight to your home!</h5>
             <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" height="200px">
           </q-card>
+        </div>
         </div>
         <q-modal ref="logInSignUp"  transition="fade" :content-css="{maxWidth: '500px'}">
           <h4><q-icon class="text-primary float-left" style="padding-left: 20px" @click="$refs.logInSignUp.close()" name="close"/></h4>
@@ -125,6 +127,11 @@
     bottom: 0;
     width: 100%;
   }
+  #middle {
+    position: fixed;
+    bottom: 50px;
+    width: 100%;
+  }
   .blur-container{
     width: 350px;
     height: 400px;
@@ -145,7 +152,7 @@
     bottom: 0;
     right: 0;
     background: inherit;
-    box-shadow: inset 0 0 0 200px rgba(0,0,0,0.40);
+    box-shadow: inset 0 0 0 200px rgba(0, 0, 0, 0.62);
     filter: blur(10px);
   }
   .bimgico{
@@ -165,5 +172,7 @@
     font-weight: bold;
     color: rgba(255,255,255, 1);
   }
-
+  round-border {
+    border-radius: 20px !important;
+  }
 </style>
