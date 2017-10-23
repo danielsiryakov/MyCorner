@@ -25,20 +25,21 @@
           </div>
         </div>
         <div class="">
+        <br><br>
         <div class="row no-wrap desktop-only" style="padding: 0px;">
-          <q-card class="round-border bg-light" align="center" style="padding: 20px;">
+          <q-card class="round-border" align="center" style="padding: 20px; box-shadow: inset 0 0 0 200px rgba(0, 0, 0, 0.52)">
             <h4 class="float-left text-bold text-primary">1.</h4><br>
-            <h5 class="text-tertiary text-bold">Search for stores on your corner!</h5>
+            <h5 class="text-white text-bold">Search for stores on your corner!</h5>
             <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="200px">
           </q-card>
-          <q-card class="round-border bg-white" align="center" style="padding: 20px;">
+          <q-card class="round-border" align="center" style="padding: 20px; box-shadow: inset 0 0 0 200px rgba(0, 0, 0, 0.52)">
             <h4 class="float-left text-bold text-primary">2.</h4><br>
-            <h5 class="text-tertiary text-bold">Add your favorite items to your cart!</h5>
+            <h5 class="text-white text-bold">Add your favorite items to your cart!</h5>
             <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping" height="200px">
           </q-card>
-          <q-card class="round-border bg-white" align="center" style="padding: 20px;">
+          <q-card class="round-border" align="center" style="padding: 20px; box-shadow: inset 0 0 0 200px rgba(0, 0, 0, 0.52)">
             <h4 class="float-left text-bold text-primary">3.</h4><br>
-            <h5 class="text-tertiary text-bold">Have it delivered straight to your home!</h5>
+            <h5 class="text-white text-bold">Have it delivered straight to your home!</h5>
             <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" height="200px">
           </q-card>
         </div>
