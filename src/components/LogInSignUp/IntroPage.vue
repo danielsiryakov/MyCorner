@@ -1,8 +1,9 @@
 <template>
-  <div class="layout-view" id="corner">
-    <div class="flex window-height">
+  <div class="layout-view">
+    <section class="flex window-height" id="corner">
       <div class="sm-width-1of1 md-width-1of1 bg-width-5of5 lg-width-3of5">
-        <img class="fixed-top-left" src="../../assets/fulllogo.png" style="padding: 20px;height: 100px">
+        <img src="../../assets/fulllogo.png" class="mobile-only" style="padding: 20px;height: 100px">
+        <img src="../../assets/fulllogo.png" class="glow_logo_desktop desktop-only">
 
         <div class="row centered justify-center group" id="footer" style="padding: 20px;">
           <div class="col-lg-8">
@@ -10,38 +11,19 @@
               <q-carousel arrows dots class="bgimgico mobile-only text-white">
                 <div slot="slide" class="" align="center">
                   <h5 class="text-blur text-bold">Search for stores around your corner!</h5>
-                  <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="200px">
+                  <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="135px">
                 </div>
                 <div slot="slide" class="" align="center">
                   <h5 class="text-blur text-bold">Add your favorite items to your cart!</h5>
-                  <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping" height="200px">
+                  <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping" height="135px">
                 </div>
                 <div slot="slide" class="" align="center">
                   <h5 class="text-blur text-bold">Have it delivered straight to your home!</h5>
-                  <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" height="200px">
+                  <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" height="135px">
                 </div>
               </q-carousel>
             </div>
           </div>
-        </div>
-        <div class="">
-        <div class="row no-wrap desktop-only" style="padding: 0px;">
-          <q-card class="round-border light-dimmed" align="center" style="padding: 20px;">
-            <h4 class="float-left text-bold text-primary">1.</h4><br>
-            <h5 class="text-tertiary text-bold">Search for stores on your corner!</h5>
-            <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="200px">
-          </q-card>
-          <q-card class="round-border bg-white" align="center" style="padding: 20px;">
-            <h4 class="float-left text-bold text-primary">2.</h4><br>
-            <h5 class="text-tertiary text-bold">Add your favorite items to your cart!</h5>
-            <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping" height="200px">
-          </q-card>
-          <q-card class="round-border bg-white" align="center" style="padding: 20px;">
-            <h4 class="float-left text-bold text-primary">3.</h4><br>
-            <h5 class="text-tertiary text-bold">Have it delivered straight to your home!</h5>
-            <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" height="200px">
-          </q-card>
-        </div>
         </div>
         <q-modal ref="logInSignUp"  transition="fade" :content-css="{maxWidth: '500px'}">
           <h4><q-icon class="text-primary float-left" style="padding-left: 20px" @click="$refs.logInSignUp.close()" name="close"/></h4>
@@ -63,17 +45,37 @@
             </q-tabs>
           </div>
         </q-modal>
-          <div class="row justify-center group" id="footer" style="padding: 20px;">
-            <div class="col-lg-8">
-              <div class="row justify-center group">
-                <q-btn big color="primary" outline class="bg-light col-5" @click="formTab='login', $refs.logInSignUp.open()">Login</q-btn>
-                <q-btn big color="primary"  outline class="bg-light  col-5" @click="formTab='signup', $refs.logInSignUp.open()">Sign Up</q-btn>
-              </div>
+        <div class="row justify-center group" id="footer" style="padding-bottom: 20px;">
+          <div class="col-lg-8">
+            <div class="row justify-center group">
+              <q-btn big color="primary" outline class="bg-light col-5" @click="formTab='login', $refs.logInSignUp.open()">Login</q-btn>
+              <q-btn big color="primary"  outline class="bg-light  col-5" @click="formTab='signup', $refs.logInSignUp.open()">Sign Up</q-btn>
             </div>
           </div>
+        </div>
       </div>
-    </div>
-    <a href="https://www.trevormitchellartist.com/">Image courtesy of Trevor Mitchell</a>
+      <a class="bottom_left" href="https://www.trevormitchellartist.com/">Image courtesy of Trevor Mitchell</a>
+    </section>
+    <section class="window-height row no-wrap desktop-only" id="what-we-do" style="padding-top: 5%; padding-bottom: 5%;">
+      <q-card class="round-border" align="center" style="padding-left: 30px;">
+        <br><br><br><br><br><br>
+        <h4 class="float-left text-bold text-primary">1.</h4><br>
+        <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="200px">
+        <h5 class="text-tertiary text-bold">Search for stores on your corner!</h5>
+      </q-card>
+      <q-card class="round-border" align="center" style="padding-left: 30px;">
+        <br><br><br><br><br><br>
+        <h4 class="float-left text-bold text-primary">2.</h4><br>
+        <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping" height="200px">
+        <h5 class="text-tertiary text-bold">Add your favorite items to your cart!</h5>
+      </q-card>
+      <q-card class="round-border" align="center" style="padding-left: 30px;">
+        <br><br><br><br><br><br>
+        <h4 class="float-left text-bold text-primary">3.</h4><br>
+        <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" height="200px">
+        <h5 class="text-tertiary text-bold">Have it delivered straight to your home!</h5>
+      </q-card>
+    </section>
   </div>
 </template>
 
@@ -113,36 +115,58 @@
 <style lang="scss">
   #corner {
     background-image: url("../../assets/CornerShop.png");
+    height: 50%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
   }
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s
+  .landing_pg_sections {
+    padding: 100px 0;
+    height: 100%;
   }
-  .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
-    opacity: 0
+  .bottom_left {
+    position:absolute;
+    bottom: 0;
+    left:0;
+  }
+  .glow_logo_desktop {
+    width: 30%;
+    height: 18%;
+    padding: 20px;
+    background-color: rgba(0, 10, 0, 0.67);
+    box-shadow:
+      0 0 60px 30px rgba(0, 10, 0, 0.27),
+      0 0 100px 60px rgba(0, 10, 0, 0.17),
+      0 0 140px 90px rgba(0, 10, 0, 0.47);
+  }
+  .glow_logo_mobile {
+    width: 40%;
+    height: 12%;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    box-shadow:
+      0 0 60px 30px rgba(0, 0, 0, 0.3),
+      0 0 100px 60px rgba(0, 0, 0, 0.2),
+      0 0 140px 90px rgba(0, 0, 0, 0.5);
   }
   #footer {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     width: 100%;
   }
-  #middle {
-    position: fixed;
-    bottom: 50px;
-    width: 100%;
-  }
   .blur-container{
-    width: 350px;
-    height: 400px;
+    width: 280px;
+    height: 330px;
     background: inherit;
     position: absolute;
     overflow: hidden;
-    top: 0%;
-    left: 50%;
+    top: 61%;
+    left: 59%;
     margin-left: -175px;
-    margin-top: -120%;
-    border-radius:15px;
+    margin-top: -112%;
+    border-radius: 8px;
   }
   .blur-container:before{
     width: 400px;
@@ -173,6 +197,6 @@
     color: rgba(255,255,255, 1);
   }
   round-border {
-    border-radius: 20px !important;
+    border-radius: 200px !important;
   }
 </style>
