@@ -10,15 +10,15 @@
               <q-carousel arrows dots class="bgimgico mobile-only text-white">
                 <div slot="slide" class="" align="center">
                   <h5 class="text-blur text-bold">Search for stores around your corner!</h5>
-                  <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="200px">
+                  <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="135px">
                 </div>
                 <div slot="slide" class="" align="center">
                   <h5 class="text-blur text-bold">Add your favorite items to your cart!</h5>
-                  <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping" height="200px">
+                  <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping" height="135px">
                 </div>
                 <div slot="slide" class="" align="center">
                   <h5 class="text-blur text-bold">Have it delivered straight to your home!</h5>
-                  <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" height="200px">
+                  <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" height="135px">
                 </div>
               </q-carousel>
             </div>
@@ -134,15 +134,15 @@
     width: 100%;
   }
   .blur-container{
-    width: 350px;
-    height: 400px;
+    width: 280px;
+    height: 330px;
     background: inherit;
     position: absolute;
     overflow: hidden;
-    top: 50%;
-    left: 50%;
+    top: 61%;
+    left: 59%;
     margin-left: -175px;
-    margin-top: -120%;
+    margin-top: -112%;
     border-radius: 8px;
   }
   .blur-container:before{
