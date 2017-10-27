@@ -48,8 +48,8 @@
         <div class="row justify-center group" id="footer" style="padding-bottom: 20px;">
           <div class="col-lg-8">
             <div class="row justify-center group">
-              <q-btn big color="primary" outline class="bg-light col-5" @click="formTab='login', $refs.logInSignUp.open()">Login</q-btn>
-              <q-btn big color="primary"  outline class="bg-light  col-5" @click="formTab='signup', $refs.logInSignUp.open()">Sign Up</q-btn>
+              <q-btn big color="tertiary" class="col-5" @click="formTab='login', $refs.logInSignUp.open()">Login</q-btn>
+              <q-btn big color="tertiary" class="  col-5" @click="formTab='signup', $refs.logInSignUp.open()">Sign Up</q-btn>
             </div>
           </div>
         </div>
@@ -83,32 +83,12 @@
         </div>
       </q-card>
     </section>
-    <section class="layout-padding window-height bg-light row no-wrap desktop-only" id="partner-with-us" style="padding-top: 5%; padding-bottom: 5%;">
-      <h2 class="text-primary">Are you a local store?</h2>
-      <q-card class="round-border bg-light" align="center" style="padding: 20px; width: 25vw">
-        <!--<br><br><br><br><br><br>-->
-        <div align="center"  style="padding: 20px">
-          <h4 class="float-left text-bold text-primary">1.</h4><br>
-          <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="200px">
-          <h5 class="text-tertiary text-bold">Search for stores on your corner!</h5>
-        </div>
-      </q-card>
-      <q-card class="round-border bg-white" align="center" style="padding: 20px; width: 25vw;">
-        <!--<br><br><br><br><br><br>-->
-        <div align="center"  style="padding: 20px">
-          <h4 class="float-left text-bold text-primary">2.</h4><br>
-          <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping" height="200px">
-          <h5 class="text-tertiary text-bold">Add your favorite items to your cart!</h5>
-        </div>
-      </q-card>
-      <q-card class="round-border bg-white" align="center" style="padding: 20px; width: 25vw;">
-        <!--<br><br><br><br><br><br>-->
-        <div align="center"  style="padding: 20px">
-          <h4 class="float-left text-bold text-primary">3.</h4><br>
-          <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" height="200px">
-          <h5 class="text-tertiary text-bold">Have it delivered straight to your home!</h5>
-        </div>
-      </q-card>
+    <section class="layout-padding window-height bg-light row no-wrap desktop-only" id="partners" style="padding-top: 5%; padding-bottom: 5%;">
+      <div>
+        <h2 class="text-primary">Are you a local store?</h2>
+        <h5 class="text-tertiary">Managing your online store has never been easier! MyCorner allows you to easily upload your products online, manage your inventory, update store information and process customer orders.</h5>
+      </div>
+      <img src="../../assets/img/screenshotDesktop.png" alt="MyCorner.Store" style="max-width: 1000px">
     </section>
   </div>
 </template>
