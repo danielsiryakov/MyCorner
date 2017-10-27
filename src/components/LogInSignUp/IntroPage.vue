@@ -3,7 +3,7 @@
     <section class="flex window-height" id="corner">
       <div class="sm-width-1of1 md-width-1of1 bg-width-5of5 lg-width-3of5">
         <img src="../../assets/fulllogo.png" class="mobile-only" style="padding: 20px;height: 100px">
-        <img src="../../assets/fulllogo.png" class="glow_logo_desktop desktop-only">
+        <img src="../../assets/fulllogo.png" class=" desktop-only" style="width: 30vw">
 
         <div class="row centered justify-center group" id="footer" style="padding: 20px;">
           <div class="col-lg-8">
@@ -56,24 +56,58 @@
       </div>
       <a class="bottom_left" href="https://www.trevormitchellartist.com/">Image courtesy of Trevor Mitchell</a>
     </section>
-    <section class="window-height row no-wrap desktop-only" id="what-we-do" style="padding-top: 5%; padding-bottom: 5%;">
-      <q-card class="round-border" align="center" style="padding-left: 30px;">
-        <br><br><br><br><br><br>
-        <h4 class="float-left text-bold text-primary">1.</h4><br>
-        <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="200px">
-        <h5 class="text-tertiary text-bold">Search for stores on your corner!</h5>
+    <section class="layout-padding window-height bg-tertiary row no-wrap desktop-only" id="what-we-do" style="padding-top: 5%; padding-bottom: 5%;">
+     <h2 class="text-white">How to use MyCorner?</h2>
+      <q-card class="round-border bg-light" align="center" style="padding: 20px; width: 25vw">
+        <!--<br><br><br><br><br><br>-->
+        <div align="center"  style="padding: 20px">
+          <h4 class="float-left text-bold text-primary">1.</h4><br>
+          <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="200px">
+          <h5 class="text-tertiary text-bold">Search for stores on your corner!</h5>
+        </div>
+        </q-card>
+      <q-card class="round-border bg-white" align="center" style="padding: 20px; width: 25vw;">
+        <!--<br><br><br><br><br><br>-->
+        <div align="center"  style="padding: 20px">
+          <h4 class="float-left text-bold text-primary">2.</h4><br>
+          <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping" height="200px">
+          <h5 class="text-tertiary text-bold">Add your favorite items to your cart!</h5>
+        </div>
       </q-card>
-      <q-card class="round-border" align="center" style="padding-left: 30px;">
-        <br><br><br><br><br><br>
-        <h4 class="float-left text-bold text-primary">2.</h4><br>
-        <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping" height="200px">
-        <h5 class="text-tertiary text-bold">Add your favorite items to your cart!</h5>
+      <q-card class="round-border bg-white" align="center" style="padding: 20px; width: 25vw;">
+        <!--<br><br><br><br><br><br>-->
+        <div align="center"  style="padding: 20px">
+          <h4 class="float-left text-bold text-primary">3.</h4><br>
+          <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" height="200px">
+          <h5 class="text-tertiary text-bold">Have it delivered straight to your home!</h5>
+        </div>
       </q-card>
-      <q-card class="round-border" align="center" style="padding-left: 30px;">
-        <br><br><br><br><br><br>
-        <h4 class="float-left text-bold text-primary">3.</h4><br>
-        <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" height="200px">
-        <h5 class="text-tertiary text-bold">Have it delivered straight to your home!</h5>
+    </section>
+    <section class="layout-padding window-height bg-light row no-wrap desktop-only" id="partner-with-us" style="padding-top: 5%; padding-bottom: 5%;">
+      <h2 class="text-primary">Are you a local store?</h2>
+      <q-card class="round-border bg-light" align="center" style="padding: 20px; width: 25vw">
+        <!--<br><br><br><br><br><br>-->
+        <div align="center"  style="padding: 20px">
+          <h4 class="float-left text-bold text-primary">1.</h4><br>
+          <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="200px">
+          <h5 class="text-tertiary text-bold">Search for stores on your corner!</h5>
+        </div>
+      </q-card>
+      <q-card class="round-border bg-white" align="center" style="padding: 20px; width: 25vw;">
+        <!--<br><br><br><br><br><br>-->
+        <div align="center"  style="padding: 20px">
+          <h4 class="float-left text-bold text-primary">2.</h4><br>
+          <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping" height="200px">
+          <h5 class="text-tertiary text-bold">Add your favorite items to your cart!</h5>
+        </div>
+      </q-card>
+      <q-card class="round-border bg-white" align="center" style="padding: 20px; width: 25vw;">
+        <!--<br><br><br><br><br><br>-->
+        <div align="center"  style="padding: 20px">
+          <h4 class="float-left text-bold text-primary">3.</h4><br>
+          <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" height="200px">
+          <h5 class="text-tertiary text-bold">Have it delivered straight to your home!</h5>
+        </div>
       </q-card>
     </section>
   </div>
@@ -114,7 +148,7 @@
 
 <style lang="scss">
   #corner {
-    background-image: url("../../assets/CornerShop.png");
+    background-image: url("../../assets/img/groceryStoreCartoon.jpg");
     height: 50%;
 
     /* Center and scale the image nicely */
