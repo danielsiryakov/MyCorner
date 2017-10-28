@@ -25,8 +25,9 @@
             </div>
           </div>
         </div>
-        <q-modal ref="logInSignUp"  transition="fade" :content-css="{maxWidth: '500px'}">
-          <h4><q-icon class="text-primary float-left" style="padding-left: 20px" @click="$refs.logInSignUp.close()" name="close"/></h4>
+        <q-modal ref="logInSignUp" transition="fade" :content-css="{maxWidth: '800px',maxHeight: '800px'}">
+          <h4><q-icon name="close" class="text-primary absolute-top-right" @click="$refs.logInSignUp.close()"/></h4>
+          <!--<h4><q-icon class="text-primary float-right" style="padding-right: 20px" @click="$refs.logInSignUp.close()" name="close"/></h4>-->
           <br><br>
           <div class="">
             <q-tabs :refs="$refs" v-model="formTab" no-pane-border color="tertiary">
@@ -87,14 +88,21 @@
       <div>
         <h2 class="text-primary">Are you a local store?</h2>
         <h5 class="text-tertiary">Managing your online store has never been easier! MyCorner allows you to easily upload your products online, manage your inventory, update store information and process customer orders.</h5>
+        <br><br><br>
+        <q-btn color="primary" big @click="$refs.trialInfo.open()">Start your free trial!</q-btn>
       </div>
       <img src="../../assets/img/screenshotDesktop.png" alt="MyCorner.Store" style="max-width: 1000px">
     </section>
+    <q-modal maximized ref="trialInfo" transition="fade">
+      <h4><q-icon name="close" class="text-primary absolute-top-right" @click="$refs.trialInfo.close()"/></h4>
+      <trial-period></trial-period>
+    </q-modal>
   </div>
 </template>
 
 <script>
   import Login from './Login.vue'
+  import TrialPeriod from './TrialPeriodOffer.vue'
   import SignUp from './Signup.vue'
   import {
     QTabs, QRouteTab, QBtn, QIcon
@@ -110,6 +118,7 @@
     components: {
       Login,
       SignUp,
+      TrialPeriod,
       QTabs,
       QRouteTab,
       QBtn,
@@ -127,6 +136,12 @@
 </script>
 
 <style lang="scss">
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0
+  }
   #corner {
     background-image: url("../../assets/img/groceryStoreCartoon.jpg");
     height: 50%;
