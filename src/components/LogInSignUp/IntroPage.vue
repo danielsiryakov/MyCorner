@@ -36,7 +36,7 @@
 
               <q-tab-pane name="login"><login @closeModal="$refs.logInSignUp.close()"></login></q-tab-pane>
               <q-tab-pane  name="signup"><sign-up v-if="!signedup" v-on:submit="signedup = true"></sign-up>
-                <div v-if="signedup" style="padding: 20px;">
+                <div v-if="signedup" style="padding: 20px;" class="layout-padding">
                   <h4>we sent you a confirmation email!</h4><br>
                   <big class="text-tertiary">
                     Confirm your email address and start shopping for everything you love!
@@ -59,29 +59,35 @@
     </section>
     <section class="layout-padding window-height bg-tertiary row no-wrap desktop-only" id="what-we-do" style="padding-top: 5%; padding-bottom: 5%;">
      <h2 class="text-white">How to use MyCorner?</h2>
-      <q-card class="round-border bg-light" align="center" style="padding: 20px; width: 25vw">
+      <q-card class="round-border bg-light" align="center" style="padding: 10px; width: 25vw">
         <!--<br><br><br><br><br><br>-->
         <div align="center"  style="padding: 20px">
           <h4 class="float-left text-bold text-primary">1.</h4><br>
-          <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="200px">
           <h5 class="text-tertiary text-bold">Search for stores on your corner!</h5>
         </div>
+        <q-card-media>
+          <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping">
+        </q-card-media>
         </q-card>
-      <q-card class="round-border bg-white" align="center" style="padding: 20px; width: 25vw;">
+      <q-card class="round-border bg-white" align="center" style="padding: 1px; width: 25vw;">
         <!--<br><br><br><br><br><br>-->
-        <div align="center"  style="padding: 20px">
+        <div align=""  style="padding: 20px">
           <h4 class="float-left text-bold text-primary">2.</h4><br>
-          <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping" height="200px">
           <h5 class="text-tertiary text-bold">Add your favorite items to your cart!</h5>
         </div>
+        <q-card-media>
+          <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping">
+        </q-card-media>
       </q-card>
-      <q-card class="round-border bg-white" align="center" style="padding: 20px; width: 25vw;">
+      <q-card class="round-border bg-white" align="center" style="padding: 10px; width: 25vw;">
         <!--<br><br><br><br><br><br>-->
-        <div align="center"  style="padding: 20px">
+        <div align=""  style="padding: 20px">
           <h4 class="float-left text-bold text-primary">3.</h4><br>
-          <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" height="200px">
           <h5 class="text-tertiary text-bold">Have it delivered straight to your home!</h5>
         </div>
+        <q-card-media>
+          <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" >
+        </q-card-media>
       </q-card>
     </section>
     <section class="layout-padding window-height bg-light row no-wrap desktop-only" id="partners" style="padding-top: 5%; padding-bottom: 5%;">
@@ -91,7 +97,7 @@
         <br><br><br>
         <q-btn color="primary" big @click="$refs.trialInfo.open()">Start your free trial!</q-btn>
       </div>
-      <img src="../../assets/img/screenshotDesktop.png" alt="MyCorner.Store" style="max-width: 1000px">
+      <img src="../../assets/img/screenshotDesktop.png" alt="MyCorner.Store" style="width: 60vw">
     </section>
     <q-modal maximized ref="trialInfo" transition="fade">
       <h4><q-icon name="close" class="text-primary absolute-top-right" @click="$refs.trialInfo.close()"/></h4>

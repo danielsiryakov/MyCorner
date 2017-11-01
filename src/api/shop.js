@@ -48,8 +48,10 @@ const USER_ORDERS_ACTIVE = API_URL + 'user/orders/active/retrieve'
 const HELPER_ORDER_STATUS_PARH = API_URL + 'helper/order/status/path'
 const STORE_CATEGORY_PRODUCTS_REORDER = API_URL + 'store/category/products/reorder/'
 const STORE_CART_RETRIEVE = API_URL + 'store/cart/retrieve/'
-
+const TEMPLATE_CATEGORIES_T1 = 'https://dev-mycorner.store/api/template/categories/t1'
+const TEMPLATE_CATEGORIES_T2 = 'https://dev-mycorner.store/api/template/categories/t2?category_id='
 axios.defaults.headers.common['authtoken'] = Cookies.get('authtoken')
+const CATEGORIES_FROM_TEMPLATE_ADD = 'https://dev-mycorner.store/api/store/categories/from_template/add'
 axios.defaults.headers.common['userID'] = Cookies.get('userID')
 
 export default {
@@ -358,6 +360,15 @@ export default {
   },
   helperOrderStatusPath () {
     return axios.get(HELPER_ORDER_STATUS_PARH)
+  },
+  templateCategoriesT1 () {
+    return axios.get(TEMPLATE_CATEGORIES_T1)
+  },
+  templateCategoriesT2 (id) {
+    return axios.get(TEMPLATE_CATEGORIES_T2 + id)
+  },
+  templateCategoriesAdd (payload) {
+    return axios.post(CATEGORIES_FROM_TEMPLATE_ADD, JSON.stringify(payload))
   }
   //  buyProducts (products, cb, errorCb) {
 //    setTimeout(() => {

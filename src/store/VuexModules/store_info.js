@@ -1,14 +1,19 @@
 import shop from '../../api/shop'
 import axios from 'axios'
 import router from '../../router'
+import Vue from 'vue'
 import { Cookies, Loading, Alert } from 'quasar'
 const CREATE_STORE = shop.API_URL + 'store/create'
 const IMAGEUPLOAD = shop.API_URL + 'assets/image/upload'
 const state = {
   selectedStore: '',
   dashboardStore: {},
+  T1Aisles: [],
+  T2Aisles: {},
   orders: [],
+  template_category_ids: [],
   store: {
+    category_ids: [],
     email: '',
     platform_categories: ['Grocery', 'Corner Store'],
     working_hours: {
@@ -284,14 +289,12 @@ const actions = {
   },
   getFullStoreInfo ({commit}, id) {
     // shop.storeInfo
-    shop.storeInfoFull(id, store => {
+    shop.storeInfo(id, store => {
       commit('update_full_store', store)
-      shop.storeCategoriesRetrieve(id, store => {
-        commit('update_store', {categories: store})
-      }).catch(error => {
-        const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
-        setTimeout(alert.dismiss, 5000)
-      })
+      commit('update_store', {category_ids: store.category_ids})
+    }).catch(error => {
+      const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
+      setTimeout(alert.dismiss, 5000)
     })
   },
   getActiveOrders ({commit}) {
@@ -304,10 +307,18 @@ const actions = {
         setTimeout(alert.dismiss, 5000)
       })
     }
+  },
+  getT1Aisles ({commit}) {
+    shop.templateCategoriesT1().then(response => {
+      commit('updateT1Aisles', response.data)
+    })
   }
 }
 
 const mutations = {
+  updateT1Aisles (state, data) {
+    state.T1Aisles = data
+  },
   createImage (state, file) {
     state.store.image = file
   },
@@ -372,6 +383,29 @@ const mutations = {
   },
   reset_store (state) {
     state.store = state.storeTemplate
+  },
+  enableT1Aisle (state, id) {
+    state.T1Aisles.forEach(aisle => {
+      if (aisle.category_id === id) { aisle.enabled = false }
+    })
+  },
+  enableDisableT2 (state, id) {
+    let index = state.store.category_ids.indexOf(id)
+    if (index > -1) {
+      state.store.category_ids.splice(index, 1)
+    }
+    else {
+      state.store.category_ids.push(id)
+    }
+    if (!(id in state.T2Aisles)) {
+      shop.templateCategoriesT2(id).then(response => {
+        Vue.set(state.T2Aisles, id, response.data)
+      })
+    }
+    if (id in state.T2Aisles) {
+      Vue.delete(state.T2Aisles, id)
+      // setTimeout(console.log(this.T2Aisles), 300)
+    }
   }
 }
 

@@ -1,7 +1,7 @@
 <template>
   <q-layout
     ref="layoutD"
-    :left-breakpoint="760"
+    :left-breakpoint="900"
     :view="'hHr LpR lFr'"
     :reveal="true"
     class=""
