@@ -52,6 +52,9 @@ const TEMPLATE_CATEGORIES_T1 = 'https://dev-mycorner.store/api/template/categori
 const TEMPLATE_CATEGORIES_T2 = 'https://dev-mycorner.store/api/template/categories/t2?category_id='
 axios.defaults.headers.common['authtoken'] = Cookies.get('authtoken')
 const CATEGORIES_FROM_TEMPLATE_ADD = 'https://dev-mycorner.store/api/store/categories/from_template/add'
+const PRODUCTS_FROM_TEMPLATE = 'https://dev-mycorner.store/api/template/category/t2/products?category_id='
+const PRODUCT_CREATE = 'https://dev-mycorner.store/api/store/products/create'
+const STORE_CATEGORY_PRODUCTS_RETRIEVE = 'https://dev-mycorner.store/api/store/category/products/retrieve?p='
 axios.defaults.headers.common['userID'] = Cookies.get('userID')
 
 export default {
@@ -367,8 +370,17 @@ export default {
   templateCategoriesT2 (id) {
     return axios.get(TEMPLATE_CATEGORIES_T2 + id)
   },
+  templateProducts (id, page) {
+    return axios.get(PRODUCTS_FROM_TEMPLATE + id + '&' + page)
+  },
+  storeCategoryProductsRetrieve (categoryID, page) {
+    return axios.get(STORE_CATEGORY_PRODUCTS_RETRIEVE + page + '&category_id=' + categoryID)
+  },
   templateCategoriesAdd (payload) {
     return axios.post(CATEGORIES_FROM_TEMPLATE_ADD, JSON.stringify(payload))
+  },
+  productCreate (payload) {
+    return axios.post(PRODUCT_CREATE, JSON.stringify(payload))
   }
   //  buyProducts (products, cb, errorCb) {
 //    setTimeout(() => {

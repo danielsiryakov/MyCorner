@@ -1,17 +1,28 @@
 <template>
   <div v-if="show">
     <div class="layout-padding">
-      <h3 class="text-bold text-tertiary">Choose which aisles to add to your store:</h3>
-      <q-card :id="aisle.category_id"
-              @click="getT2Categories(aisle.category_id)"
-              class="bg-light cursor-pointer text-tertiary text-bold"
-              inline style="padding: 10px"
-              v-for="(aisle, key) in T1Aisles"
-              :key="key">
-        {{aisle.name}}
-      </q-card>
+      <h4 class="text-bold text-tertiary">Choose which aisles to add to your store:</h4>
+      <div  class="row">
+        <div v-for="(aisle, key) in T1Aisles">
+          <q-card :id="aisle.category_id"
+                  @click="getT2Categories(aisle.category_id)"
+                  class="bg-light cursor-pointer text-tertiary text-bold"
+                  inline style="width: 15vw; padding: 10px"
+                  :key="key" v-if="!isInCategoryIds(aisle.category_id)">
+            {{aisle.name}}
+          </q-card>
+          <q-card :id="aisle.category_id"
+                  @click="getT2Categories(aisle.category_id)"
+                  class="bg-primary cursor-pointer text-white text-bold"
+                  inline style="width: 15vw; padding: 10px"
+                  :key="key" v-if="isInCategoryIds(aisle.category_id)">
+            {{aisle.name}}
+          </q-card>
+        </div>
+      </div>
+
       <br><br><br>
-      <h3 class="text-bold text-tertiary">Choose which product categories to add to your aisles:</h3>
+      <h4 class="text-bold text-tertiary">Choose which product categories to add to your aisles:</h4>
 
       <div v-for="(aisle, key) in T2Aisles" :key="key">
         <q-card :id="t2.category_id"
@@ -119,16 +130,25 @@ export default {
     ]),
     ...mapMutations([
       'enableT1Aisle',
-      'enableDisableT2'
+      'addDeleteAisle'
     ]),
     getT1Categories () {
       shop.templateCategoriesT1().then(response => {
         this.T1Aisles = response.data
       })
     },
+    isInCategoryIds (id) {
+      let index = this.template_category_ids.indexOf(id)
+      if (index > -1) {
+        return true
+      }
+      else {
+        return false
+      }
+    },
     getT2Categories (id) {
       this.enableT1Aisle(id)
-      this.enableDisableT2(id)
+      this.addDeleteAisle(id)
       let index = this.template_category_ids.indexOf(id)
       if (index > -1) {
         document.getElementById(id).classList.remove('bg-light')
@@ -144,22 +164,18 @@ export default {
       }
     },
     selectT2Categories (id) {
+      this.addDeleteAisle(id)
       if (document.getElementById(id).classList.contains('bg-light')) {
         document.getElementById(id).classList.remove('bg-light')
         document.getElementById(id).classList.add('bg-tertiary')
         document.getElementById(id).classList.remove('text-tertiary')
         document.getElementById(id).classList.add('text-white')
-        this.template_category_ids.push(id)
       }
       else {
         document.getElementById(id).classList.remove('bg-tertiary')
         document.getElementById(id).classList.add('bg-light')
         document.getElementById(id).classList.remove('text-white')
         document.getElementById(id).classList.add('text-tertiary')
-        let index = this.template_category_ids.indexOfid
-        if (index > -1) {
-          this.template_category_ids.splice(index, 1)
-        }
       }
     },
     rerender () {
