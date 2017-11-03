@@ -14,39 +14,44 @@
     <!--<div v-for="(product, key) in productsData.results" :key="key">-->
       <!--{{ product.title }}-->
     <!--</div>-->
-    <div class="row group">
-      <div class="">
+    <div class="row group no-wrap">
+      <div class="items-stretch">
         <h5 class="text-tertiary text-bold">Template Products</h5>
-        <q-item separator class=" group" v-if="productsData.results.length > 0" v-for="(product, key) in productsData.results" :key="key">
-          <!--<q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>-->
-          <q-item-side>
-            <img :src="product.image" alt="" width="100px" height="100px">
-          </q-item-side>
-          <q-item-main>
-            {{product.title}}<br>
-            $ {{product.price_cents / 100}}<br>
-            <!--{{product.description}}-->
-          </q-item-main>
-          <q-item-side class="group">
-          </q-item-side>
-        </q-item>
+        <draggable v-model="productsData.results" class="items-stretch" :options="{group:'products'}">
+          <q-item separator class=" group" v-if="productsData.results.length > 0" v-for="(product, key) in productsData.results" :key="key">
+            <!--<q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>-->
+            <q-item-side>
+              <img :src="product.image" alt="" width="100px" height="100px">
+            </q-item-side>
+            <q-item-main>
+              {{product.label}}<br>
+              $ {{product.price_cents / 100}}<br>
+              <!--{{product.description}}-->
+            </q-item-main>
+            <q-item-side class="group">
+            </q-item-side>
+          </q-item>
+        </draggable>
       </div>
-      <div>
+      <div class="items-stretch bg-light">
         <h5 class="text-tertiary text-bold">Your Added Products</h5>
-        <q-item separator class=" group" v-if="addedProductsData.results.length > 0" v-for="(product, key) in productsData.results" :key="key">
-          <!--<q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>-->
-          <q-item-side>
-            <img :src="product.image" alt="" width="100px" height="100px">
-          </q-item-side>
-          <q-item-main>
-            {{product.title}}<br>
-            $ {{product.price_cents / 100}}<br>
-            <!--{{product.description}}-->
-          </q-item-main>
-          <q-item-side class="group">
-          </q-item-side>
-        </q-item>
+        <draggable v-model="addedProductsData.results" class="items-stretch bg-light full-height	" :options="{group:'products'}" style="height: inherit">
+          <q-item separator class=" group" v-for="(product, key) in addedProductsData.results" :key="key">
+            <!--<q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>-->
+            <q-item-side>
+              <img :src="product.image" alt="" width="100px" height="100px">
+            </q-item-side>
+            <q-item-main>
+              {{ product.label }}<br>
+              $ {{product.price_cents / 100}}<br>
+              <!--{{product.description}}-->
+            </q-item-main>
+            <q-item-side class="group">
+            </q-item-side>
+          </q-item>
+        </draggable>
       </div>
+      <q-btn @click="addProducts">add products</q-btn>
     </div>
 
         <!--<q-data-table-->
@@ -140,6 +145,7 @@
 </template>
 
 <script>
+  import draggable from 'vuedraggable'
   import tooltipButton from './tooltipButton.vue'
   import ProductAddModal from '../Onboard/ProductAddModal.vue'
   import CategoryProducts from '../Onboard/StepThree.vue'
@@ -187,7 +193,8 @@
     components: {
       CategoryProducts,
       tooltipButton,
-      ProductAddModal
+      ProductAddModal,
+      draggable
     },
     methods: {
       getData () {
@@ -205,10 +212,21 @@
         shop.storeCategoryProductsRetrieve(this.selectedCategory, 1).then(response => {
           this.addedProductsData = response.data
         })
+      },
+      addProducts () {
+        axios.defaults.headers.common['storeID'] = this.selectedStore
+        shop.productCreate(this.addedProductsData.results)
       }
     }
   }
 </script>
 
 <style>
+  .dragArea {
+    min-height: 2000px;
+  }
+  .list-complete-enter, .list-complete-leave-active {
+    opacity: 0;
+  }
+
 </style>
