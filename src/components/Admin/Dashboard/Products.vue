@@ -33,10 +33,11 @@
           </q-item>
         </draggable>
       </div>
-      <div class="items-stretch bg-light">
+      <div class="items-stretch bg-light" style="padding: 10px">
         <h5 class="text-tertiary text-bold">Your Added Products</h5>
         <draggable v-model="addedProductsData.results" class="items-stretch bg-light full-height	" :options="{group:'products'}" style="height: inherit">
-          <q-item separator class=" group" v-for="(product, key) in addedProductsData.results" :key="key">
+          <q-item separator class=" group" v-for="(product, key) in addedProductsData.results" :key="key" >
+            {{key}}
             <!--<q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>-->
             <q-item-side>
               <img :src="product.image" alt="" width="100px" height="100px">
@@ -47,13 +48,39 @@
               <!--{{product.description}}-->
             </q-item-main>
             <q-item-side class="group">
+              <q-btn outline @click="openProduct(key)">Edit</q-btn>
             </q-item-side>
           </q-item>
         </draggable>
       </div>
       <q-btn @click="addProducts">add products</q-btn>
-    </div>
 
+    </div>
+    <q-modal ref="productEdit" minimized :content-css="{padding: '20px', maxWidth: '50vw'}">
+      <h4><q-icon name="close" style="padding: 10px" class="text-negative absolute-top-right" @click="$refs.productEdit.close()"/></h4>
+      <div class="layout-padding">
+        <h5 class="text-bold text-tertiary">{{ currentProduct.label}}</h5>
+        <br>
+        <div class="row">
+          <div class="">
+            <!--<h5 class="text-grey"><small>{{mutation.quantity}}x &nbsp</small></h5>-->
+            <h5 class="">Price: <q-input
+              v-model="currentProduct.price_cents"
+              type="number"
+              inverted
+              :step="0.05"
+            /></h5>
+            <h5 class="">Size: {{ currentProduct.size }} &nbsp</h5>
+          </div>
+          <img :src="currentProduct.image" style="width: 30vh; height: 30vh">
+        </div>
+        <br><br>
+        <div class="product-details group">
+          <q-btn big color="primary full-width" class="block">Save</q-btn>
+        </div>
+      </div>
+
+    </q-modal>
         <!--<q-data-table-->
     <!--v-for="(categories, key) in productData" :key="key"-->
     <!--:data="productData[key].products"-->
@@ -154,6 +181,7 @@
   export default {
     data () {
       return {
+        currentProduct: {},
         selectedCategory: '',
         productsData: {
           results: [],
@@ -162,7 +190,8 @@
         addedProductsData: {
           results: [],
           metadata: {}
-        }
+        },
+        productIndex: ''
       }
     },
     computed: {
@@ -197,6 +226,12 @@
       draggable
     },
     methods: {
+      openProduct (pindex) {
+        this.productIndex = pindex
+        this.currentProduct = this.addedProductsData.results[pindex]
+        this.currentProduct.price_cents = this.currentProduct.price_cents / 100
+        setTimeout(this.$refs.productEdit.open(), 300)
+      },
       getData () {
         this.getAddedProducts()
         this.getProductData()
