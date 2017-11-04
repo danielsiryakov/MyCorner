@@ -1,3 +1,4 @@
+
 <template>
   <div id="q-app" @load="hideLoader()">
     <router-view></router-view>
