@@ -48,13 +48,13 @@ const USER_ORDERS_ACTIVE = API_URL + 'user/orders/active/retrieve'
 const HELPER_ORDER_STATUS_PARH = API_URL + 'helper/order/status/path'
 const STORE_CATEGORY_PRODUCTS_REORDER = API_URL + 'store/category/products/reorder/'
 const STORE_CART_RETRIEVE = API_URL + 'store/cart/retrieve/'
-const TEMPLATE_CATEGORIES_T1 = 'https://dev-mycorner.store/api/template/categories/t1'
-const TEMPLATE_CATEGORIES_T2 = 'https://dev-mycorner.store/api/template/categories/t2?category_id='
+const TEMPLATE_CATEGORIES_T1 = API_URL + 'template/categories/t1'
+const TEMPLATE_CATEGORIES_T2 = API_URL + 'template/categories/t2?category_id='
 axios.defaults.headers.common['authtoken'] = Cookies.get('authtoken')
-const CATEGORIES_FROM_TEMPLATE_ADD = 'https://dev-mycorner.store/api/store/categories/from_template/add'
-const PRODUCTS_FROM_TEMPLATE = 'https://dev-mycorner.store/api/template/category/t2/products?category_id='
-const PRODUCT_CREATE = 'https://dev-mycorner.store/api/store/products/create'
-const STORE_CATEGORY_PRODUCTS_RETRIEVE = 'https://dev-mycorner.store/api/store/category/products/retrieve?p='
+const CATEGORIES_FROM_TEMPLATE_ADD = API_URL + 'store/categories/from_template/add'
+const PRODUCTS_FROM_TEMPLATE = API_URL + 'template/category/t2/products?category_id='
+const PRODUCT_CREATE = API_URL + 'store/products/create'
+const STORE_CATEGORY_PRODUCTS_RETRIEVE = API_URL + 'store/category/products/retrieve?p='
 axios.defaults.headers.common['userID'] = Cookies.get('userID')
 
 export default {
