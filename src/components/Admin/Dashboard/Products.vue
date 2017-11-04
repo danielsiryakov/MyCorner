@@ -15,13 +15,13 @@
       <!--{{ product.title }}-->
     <!--</div>-->
     <div class="row group no-wrap">
-      <div class="items-stretch">
+      <div class="items-stretch full-width" style="padding: 10px; border-right-style: groove">
         <h5 class="text-tertiary text-bold">Template Products</h5>
         <draggable v-model="productsData.results" class="items-stretch" :options="{group:'products'}">
           <q-item separator class=" group" v-if="productsData.results.length > 0" v-for="(product, key) in productsData.results" :key="key">
             <!--<q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>-->
-            <q-item-side>
-              <img :src="product.image" alt="" width="100px" height="100px">
+            <q-item-side :image="product.image">
+              <!--<img :src="product.image" alt="" width="100px" height="100px">-->
             </q-item-side>
             <q-item-main>
               {{product.label}}<br>
@@ -33,14 +33,14 @@
           </q-item>
         </draggable>
       </div>
-      <div class="items-stretch bg-light" style="padding: 10px">
+      <div class="items-stretch full-width" style="padding: 10px">
         <h5 class="text-tertiary text-bold">Your Added Products</h5>
-        <draggable v-model="addedProductsData.results" class="items-stretch bg-light full-height	" :options="{group:'products'}" style="height: inherit">
+        <draggable v-model="addedProductsData.results" class="items-stretch full-height	" :options="{group:'products'}" style="height: inherit">
           <q-item separator class=" group" v-for="(product, key) in addedProductsData.results" :key="key" >
             {{key}}
             <!--<q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>-->
-            <q-item-side>
-              <img :src="product.image" alt="" width="100px" height="100px">
+            <q-item-side :image="product.image">
+              <!--<img :src="product.image" alt="" width="100px" height="100px">-->
             </q-item-side>
             <q-item-main>
               {{ product.label }}<br>
@@ -56,23 +56,55 @@
       <q-btn @click="addProducts">add products</q-btn>
 
     </div>
-    <q-modal ref="productEdit" minimized :content-css="{padding: '20px', maxWidth: '50vw'}">
+    <q-modal ref="productEdit" minimized :content-css="{padding: '0px', maxWidth: '50vw'}">
       <h4><q-icon name="close" style="padding: 10px" class="text-negative absolute-top-right" @click="closeProductModal()"/></h4>
       <div class="layout-padding">
-        <h5 class="text-bold text-tertiary">{{ currentProduct.label}}</h5>
+        <h5 class="text-bold text-tertiary">{{ }}</h5>
         <br>
-        <div class="row">
+        <div class="row no-wrap">
           <div class="">
             <!--<h5 class="text-grey"><small>{{mutation.quantity}}x &nbsp</small></h5>-->
-            <h5 class="">Price: <q-input
-              v-model="newPrice"
-              type="number"
-              inverted
-              :step="0.05"
-            /></h5>
-            <h5 class="">Size: {{ currentProduct.size }} &nbsp</h5>
+            <q-field
+              icon="label_outline"
+              label="Product Label">
+              <q-input
+                v-model="currentProduct.label"
+                type="text"
+              />
+            </q-field>
+            <br>
+            <q-field
+              icon="attach_money"
+              label="Product Price">
+              <q-input
+                v-model="newPrice"
+                type="number"
+                prefix="$"
+                :step="0.05"/>
+            </q-field>
+            <br>
+            <q-field
+              icon="check_box_outline_blank"
+              label="Product Size:">
+              <q-input
+                v-model="currentProduct.size"
+                type="text"
+                />
+            </q-field>
+            <br>
+            <q-field
+              icon="sentiment_very_dissatisfied"
+              label="Tax Rate:">
+              <q-input
+                v-model="currentProduct.tax_rate"
+                type="number"
+                prefix="%"
+                :step="0.1"
+              /></q-field>
           </div>
-          <img :src="currentProduct.image" style="width: 30vh; height: 30vh">
+          <div>
+            <img :src="currentProduct.image" style="width: 30vh; height: 30vh">
+          </div>
         </div>
         <br><br>
         <div class="product-details group">
@@ -89,6 +121,10 @@
   import ProductAddModal from '../Onboard/ProductAddModal.vue'
   import CategoryProducts from '../Onboard/StepThree.vue'
   import shop from '../../../api/shop'
+  import {
+    Loading,
+    Alert
+  } from 'quasar'
   export default {
     data () {
       return {
@@ -155,15 +191,27 @@
       getProductData () {
         shop.templateProducts(this.selectedCategory, 1).then(response => {
           this.productsData = response.data
+        }).catch(error => {
+          console.log(error)
+          const alert = Alert.create({html: error.response.data.message, color: 'amber-9'})
+          setTimeout(alert.dismiss, 5000)
         })
       },
       getAddedProducts () {
         shop.storeCategoryProductsRetrieve(this.selectedCategory, 1).then(response => {
           this.addedProductsData = response.data
+        }).catch(error => {
+          console.log(error)
+          const alert = Alert.create({html: error.response.data.message, color: 'amber-9'})
+          setTimeout(alert.dismiss, 5000)
         })
       },
       addProducts () {
-        shop.productCreate(this.addedProductsData.results)
+        shop.productCreate(this.addedProductsData.results).catch(error => {
+          console.log(error)
+          const alert = Alert.create({html: error.response.data.message, color: 'amber-9'})
+          setTimeout(alert.dismiss, 5000)
+        })
       }
     }
   }
