@@ -100,7 +100,7 @@
           var sids = Object.keys(response.data.user_roles.store_map)
           if (sids.length > 0) {
             this.$store.commit('update_store_selection', sids[0])
-            axios.defaults.headers.common['storeId'] = sids[0]
+//            axios.defaults.headers.common['storeId'] = sids[0]
           }
           console.log(this.$store.state)
           if (response.data.is_store_owner) {

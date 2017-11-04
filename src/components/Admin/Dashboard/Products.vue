@@ -122,7 +122,7 @@
   import CategoryProducts from '../Onboard/StepThree.vue'
   import shop from '../../../api/shop'
   import {
-    Loading,
+//    Loading,
     Alert
   } from 'quasar'
   export default {
