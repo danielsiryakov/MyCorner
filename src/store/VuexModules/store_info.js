@@ -1702,6 +1702,7 @@ const mutations = {
     state.store = store
   },
   update_store_selection (state, value) {
+    console.log(value)
     state.selectedStore = value
   },
   reset_store (state) {

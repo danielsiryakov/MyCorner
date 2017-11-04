@@ -10,15 +10,15 @@
             <div class="blur-container mobile-only">
               <q-carousel arrows dots class="bgimgico mobile-only text-white">
                 <div slot="slide" class="" align="center">
-                  <h5 class="text-blur text-bold">Search for stores around your corner!</h5>
+                  <h1 class="text-blur text-bold">Search</h1>
                   <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="135px">
                 </div>
                 <div slot="slide" class="" align="center">
-                  <h5 class="text-blur text-bold">Add your favorite items to your cart!</h5>
+                  <h1 class="text-blur text-bold">Cart</h1>
                   <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping" height="135px">
                 </div>
                 <div slot="slide" class="" align="center">
-                  <h5 class="text-blur text-bold">Have it delivered straight to your home!</h5>
+                  <h1 class="text-blur text-bold">Delivered!</h1>
                   <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" height="135px">
                 </div>
               </q-carousel>
@@ -211,7 +211,7 @@
     bottom: 0;
     right: 0;
     background: inherit;
-    box-shadow: inset 0 0 0 200px rgba(0, 0, 0, 0.62);
+    box-shadow: inset 0 0 0 200px rgba(0, 0, 0, 0.08);
     filter: blur(10px);
   }
   .bimgico{
@@ -224,10 +224,10 @@
     width: 200px;
     outline: 0;
     border: 0;
-    border-bottom: 2px solid rgba(255,255,255, 0.3);
-    margin: 20px 0;
+    border-bottom: 2px solid rgba(255,255,255, 0.6);
+    margin: 5px 0;
     padding-bottom: 10px;
-    font-size: 18px;
+    font-size: 33px;
     font-weight: bold;
     color: rgba(255,255,255, 1);
   }
