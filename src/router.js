@@ -38,7 +38,8 @@ const Router = new VueRouter({
       component: load('Admin/Dashboard/Dashboard'),
       children: [
         {path: '/admin/store', meta: { Auth: true }, component: load('Admin/Dashboard/StoreInfo')},
-        {path: '/admin/products', meta: { Auth: true }, component: load('Admin/Dashboard/ProductAndCategories')},
+        {path: '/admin/categories', meta: { Auth: true }, component: load('Admin/Dashboard/Categories')},
+        {path: '/admin/products', meta: { Auth: true }, component: load('Admin/Dashboard/Products')},
         {path: '/admin/payments', meta: { Auth: true }, component: load('Admin/Dashboard/StorePayments')},
         {path: '/admin/orders', meta: { Auth: true }, component: load('Admin/Dashboard/Orders')}
       ]

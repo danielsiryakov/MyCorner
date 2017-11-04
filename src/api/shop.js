@@ -48,8 +48,13 @@ const USER_ORDERS_ACTIVE = API_URL + 'user/orders/active/retrieve'
 const HELPER_ORDER_STATUS_PARH = API_URL + 'helper/order/status/path'
 const STORE_CATEGORY_PRODUCTS_REORDER = API_URL + 'store/category/products/reorder/'
 const STORE_CART_RETRIEVE = API_URL + 'store/cart/retrieve/'
-
+const TEMPLATE_CATEGORIES_T1 = API_URL + 'template/categories/t1'
+const TEMPLATE_CATEGORIES_T2 = API_URL + 'template/categories/t2?category_id='
 axios.defaults.headers.common['authtoken'] = Cookies.get('authtoken')
+const CATEGORIES_FROM_TEMPLATE_ADD = API_URL + 'store/categories/from_template/add'
+const PRODUCTS_FROM_TEMPLATE = API_URL + 'template/category/t2/products?category_id='
+const PRODUCT_CREATE = API_URL + 'store/products/create'
+const STORE_CATEGORY_PRODUCTS_RETRIEVE = API_URL + 'store/category/products/retrieve?p='
 axios.defaults.headers.common['userID'] = Cookies.get('userID')
 
 export default {
@@ -358,6 +363,24 @@ export default {
   },
   helperOrderStatusPath () {
     return axios.get(HELPER_ORDER_STATUS_PARH)
+  },
+  templateCategoriesT1 () {
+    return axios.get(TEMPLATE_CATEGORIES_T1)
+  },
+  templateCategoriesT2 (id) {
+    return axios.get(TEMPLATE_CATEGORIES_T2 + id)
+  },
+  templateProducts (id, page) {
+    return axios.get(PRODUCTS_FROM_TEMPLATE + id + '&' + page)
+  },
+  storeCategoryProductsRetrieve (categoryID, page) {
+    return axios.get(STORE_CATEGORY_PRODUCTS_RETRIEVE + page + '&category_id=' + categoryID)
+  },
+  templateCategoriesAdd (payload) {
+    return axios.post(CATEGORIES_FROM_TEMPLATE_ADD, JSON.stringify(payload))
+  },
+  productCreate (payload) {
+    return axios.post(PRODUCT_CREATE, JSON.stringify(payload))
   }
   //  buyProducts (products, cb, errorCb) {
 //    setTimeout(() => {
