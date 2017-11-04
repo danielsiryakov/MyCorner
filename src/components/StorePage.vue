@@ -21,6 +21,7 @@
         <div class="row">
           <q-card class="bigger">
             <q-card-media overlay-position="bottom">
+              <!--<img v-if="store.image" class="dimmed" :src="s.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">-->
               <img v-if="!store.image" class="dimmed" src="../assets/fulllogo.png" alt="" style="object-fit: contain;  width: 100vw; height: 40vh;">
               <img class="dimmed" v-if="store.image" :src="store.image" alt="" style="object-fit: cover;  width: 100vw; height: 40vh;">
               <q-card-title slot="overlay">
@@ -39,9 +40,39 @@
           <q-tab default slot="title" name="Products" label="Products" class="text-bold text-tertiary"/>
           <q-tab slot="title" name="Information" label="Information" class="text-bold text-tertiary"/>
           <!-- Targets -->
-          <q-tab-pane name="Items">
-            <div class="row" v-if="t1 == ''">
-              <q-item separator class="full-width group" :opened="false" :label="t1cat.name" v-for="(t1cat, index) in T1Categories" :key="index" v-if="t1cat.products.length !== 0">
+          <q-tab-pane name="Products">
+            <q-search clearable inverted :debounce="0" placeholder="Search for products in store!" v-model="search"></q-search>
+            <div class="row bg-white" v-if="search !== ''">
+              <q-item class="lt-md"
+                      v-for="(p, index) in filteredProducts"
+                      :key="index" @click="open(p)">
+                <q-item-side :image="p.image" style="padding-right: 10px;">
+                  <!--<img :src="p.image" style="width: 100px; height: 100px">-->
+                </q-item-side>
+                <q-item-main style="padding: 5px;" v-if="p.title.length >= 30" class="">{{p.title.substring(0,30)}}...</q-item-main><br>
+                <q-item-main style="padding: 5px;" v-if="p.title.length < 30" class="">{{p.title}}</q-item-main><br>
+                <q-item-side>
+                  <span class="text-bold">${{p.price_cents / 100}}</span>
+                </q-item-side>
+              </q-item>
+              <q-card inline flat style="width: 30vh; height: 30vh"
+                      class="gt-sm bg-white"
+                      v-for="p in filteredProducts"
+                       :key="p.product_id" @click="open(p)">
+                <!--<q-card inline flat style="width: 30vh; height: 30vh" class="bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">-->
+                <q-card-media overlay-position="bottom">
+                  <img :src="p.image" style="padding: 25px">
+                  <q-card-title class="text-condensed" slot="overlay">
+                    <small class="">{{p.title.substring(0,30)}}</small><br>
+                    <!--{{getProductCartQuantity(id, p.id).quantity}}-->
+                    <span class="text-bold ">${{p.price_cents / 100}}</span>
+                    <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
+                  </q-card-title>
+                </q-card-media>
+              </q-card>
+            </div>
+            <div class="row" v-if="search == ''">
+              <q-collapsible separator class="full-width group" :opened="false" :label="cat.name" v-for="(cat, index) in allProducts" :key="index" v-if="cat.products.length !== 0">
                 <!--{{ filter(cat.products) }}-->
                 <q-item class="lt-md bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
                   <q-item-side :image="p.image" style="padding-right: 10px;">
@@ -65,7 +96,7 @@
                     </q-card-title>
                   </q-card-media>
                 </q-card>
-              </q-item>
+              </q-collapsible>
             </div>
           </q-tab-pane>
           <q-tab-pane name="Information" class="" v-if="store">
@@ -136,6 +167,7 @@
   import layoutStore from '../store/otherJS/layout-store'
   import CartPage from './CartPage.vue'
   import StoreReview from './StoreReview.vue'
+//  import shop from '../api/shop'
   import {
     Loading, date, filter
   } from 'quasar'
@@ -149,14 +181,6 @@
         cartProducts: [],
         stars: 4,
         cartQuantity: 1,
-        pg: 1,
-        pgSize: 20,
-        pgSizes: [
-          10, 20, 50, 100
-        ],
-        t1: '',
-        t2: '',
-        categories: {},
         layoutStore
       }
     },
@@ -168,14 +192,24 @@
     computed: {
       ...mapGetters([
         'allStores',
-        'T1Categories',
-        'T2Categories',
+        'allProducts',
         'cartCount',
         'getCartByStore'
       ]),
       store () {
         return this.$store.state.storeSearch.currentStore
 //        return this.allStores.find((s) => s._id === this.id) || {}
+      },
+      filteredProducts () {
+        let filteredProducts = []
+        for (var i = 0; i < this.allProducts.length; i++) {
+          filteredProducts = filteredProducts.concat(this.allProducts[i].products)
+        }
+//        return allProducts
+        var self = this
+        return filteredProducts.filter(function (cust) {
+          return cust.title.toLowerCase().indexOf(self.search.toLowerCase()) >= 0
+        })
       },
       deliveryOffered () {
         if (this.store.hasOwnProperty('delivery')) {
@@ -189,15 +223,13 @@
     created () {
       Loading.show()
       this.getStore(this.id)
-      this.categories = this.storeT1CategoriesRetrieve(this.id)
-      this.storeT1CategoriesRetrieve(this.id)
+      this.getAllProducts(this.id)
       Loading.hide()
     },
     methods: {
       ...mapActions([
         'getStore',
-        'storeT1CategoriesRetrieve',
-        'storeT2CategoriesRetrieve'
+        'getAllProducts'
       ]),
       filter (products) {
         return (filter('S', {field: 'title', list: products}))
@@ -274,7 +306,7 @@
       '$route' (to, from) {
         Loading.show()
         this.getStore(this.id)
-        this.storeT1CategoriesRetrieve(this.id)
+        this.getAllProducts(this.id)
         Loading.hide()
       }
     }
