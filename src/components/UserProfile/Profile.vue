@@ -9,7 +9,7 @@
               <q-item
                 link
                 v-for="modal in types"
-                :key="modal"
+                :key="modal.label"
                 @click="openPageModal(modal)"
                 v-ripple.mat
               >

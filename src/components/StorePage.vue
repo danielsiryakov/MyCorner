@@ -71,33 +71,7 @@
                 <!--</q-card-media>-->
               <!--</q-card>-->
             <!--</div>-->
-            <!--<div class="row" v-if="search == ''">-->
-              <!--<q-collapsible separator class="full-width group" :opened="false" :label="cat.name" v-for="(cat, index) in allProducts" :key="index" v-if="cat.products.length !== 0">-->
-                <!--&lt;!&ndash;{{ filter(cat.products) }}&ndash;&gt;-->
-                <!--<q-item class="lt-md bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">-->
-                  <!--<q-item-side :image="p.image" style="padding-right: 10px;">-->
-                    <!--&lt;!&ndash;<img :src="p.image" style="width: 100px; height: 100px">&ndash;&gt;-->
-                  <!--</q-item-side>-->
-                  <!--<q-item-main v-if="p.title.length >= 30" class="">{{p.title.substring(0,30)}}...</q-item-main><br>-->
-                  <!--<q-item-main v-if="p.title.length < 30" class="">{{p.title}}</q-item-main><br>-->
-                  <!--<q-item-side>-->
-                    <!--<span class="text-bold">${{p.price_cents / 100}}</span>-->
-                  <!--</q-item-side>-->
-                <!--</q-item>-->
-                <!--<q-card inline flat style="width: 30vh; height: 30vh" class="gt-sm col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">-->
-                <!--&lt;!&ndash;<q-card inline flat style="width: 30vh; height: 30vh" class="bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">&ndash;&gt;-->
-                  <!--<q-card-media overlay-position="bottom">-->
-                    <!--<img :src="p.image" style="padding: 25px">-->
-                    <!--<q-card-title class="text-condensed" slot="overlay">-->
-                      <!--<small class="">{{p.title.substring(0,30)}}</small><br>-->
-                      <!--&lt;!&ndash;{{getProductCartQuantity(id, p.id).quantity}}&ndash;&gt;-->
-                      <!--<span class="text-bold">${{p.price_cents / 100}}</span>-->
-                      <!--<q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>-->
-                    <!--</q-card-title>-->
-                  <!--</q-card-media>-->
-                <!--</q-card>-->
-              <!--</q-collapsible>-->
-            <!--</div>-->
+
             <q-tabs class="" no-pane-border inverted>
               <q-tab slot="title" v-for="(aisle, key) in allCategories"
                      :key="key"
@@ -110,8 +84,12 @@
                           :key="key"
                           :name="aisle.name">
                 <br>
-                  <div v-for="(category, key) in aisle.children_categories" :key="key">
-                    {{category.name}}
+                  <div v-for="(category, key) in aisle.children_categories" :key="key" @click="openT2Category(category)">
+                    <q-card class="bg-white text-bold" style="padding: 15px">
+                      {{category.name}}
+                      <q-icon class="float-right" name="keyboard_arrow_right"></q-icon>
+                    </q-card>
+                    <br>
                   </div>
               </q-tab-pane>
             </q-tabs>
@@ -162,6 +140,46 @@
         </q-tabs>
         <br>
       </div>
+      <q-modal ref="T2Products" class="" maximized :content-css="{padding: '20px'}">
+        <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.T2Products.close()"/></h4>
+        <h4 class="text-bold text-tertiary">{{currentCategory.name}}</h4>
+        <div class="row" v-if="search == ''">
+          <!--{{ filter(cat.products) }}-->
+            <q-item class="lt-md bg-white full-width" v-for="p in T2Products.results" :key="p.asset_id" @click="open(p)">
+              <q-item-side :image="p.image" style="padding-right: 10px;">
+              <!--<img :src="p.image" style="width: 100px; height: 100px">-->
+              </q-item-side>
+
+              <q-item-main v-if="p.label.length >= 30" class="">{{p.label.substring(0,30)}}...</q-item-main><br>
+
+              <q-item-main v-if="p.label.length < 30" class="">{{p.label}}</q-item-main><br>
+              <q-chip floating class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
+
+              <q-item-side right>
+                <q-item-tile>${{p.price_cents / 100}}</q-item-tile>
+              </q-item-side>
+
+            </q-item>
+
+            <q-card inline flat
+                    style="width: 30vh; height: 30vh"
+                    class="gt-sm bg-white"
+                    v-for="p in T2Products.results"
+                    :key="p.asset_id"
+                    @click="open(p)">
+              <!--<q-card inline flat style="width: 30vh; height: 30vh" class="bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">-->
+              <q-card-media overlay-position="bottom">
+              <img :src="p.image" style="padding: 25px">
+              <q-card-title class="text-condensed" slot="overlay">
+              <small class="">{{p.label.substring(0,30)}}</small><br>
+              <!--{{getProductCartQuantity(id, p.id).quantity}}-->
+              <span class="text-bold">${{p.price_cents / 100}}</span>
+              <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
+              </q-card-title>
+              </q-card-media>
+            </q-card>
+        </div>
+      </q-modal>
 
       <q-modal ref="StoreReview" class="" :content-css="{padding: '20px', maxWidth: '800px', maxHeight: '800px'}">
         <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.StoreReview.close()"/></h4>
@@ -183,6 +201,7 @@
   import ProductPage from './ProductPage.vue'
   import layoutStore from '../store/otherJS/layout-store'
   import CartPage from './CartPage.vue'
+  import axios from 'axios'
   import StoreReview from './StoreReview.vue'
   import shop from '../api/shop'
 //  import shop from '../api/shop'
@@ -199,7 +218,12 @@
         cartProducts: [],
         stars: 4,
         cartQuantity: 1,
-        layoutStore
+        currentCategory: '',
+        layoutStore,
+        T2Products: {
+          results: [],
+          metadata: {}
+        }
       }
     },
     components: {
@@ -262,13 +286,35 @@
         this.$refs.StoreReview.open()
       },
       getCategoryProducts (cID) {
+        axios.defaults.headers.common['storeID'] = this.id
         shop.storeCategoryProductsRetrieve(cID).then(response => {
-          this.addedProductsData.results = this.addedProductsData.results.concat(response.data.results)
-          this.addedProductsData.metadata = response.data.metadata
+          this.T2Products.results = this.T2Products.results.concat(response.data.results)
+          this.T2Products.metadata = response.data.metadata
         }).catch(error => {
           console.log(error)
           const alert = Alert.create({html: error.response.data.message, color: 'amber-9'})
           setTimeout(alert.dismiss, 5000)
+        })
+      },
+      openT2Category (category) {
+        this.currentCategory = category
+        this.T2Products = {
+          results: [],
+          metadata: {}
+        }
+        Loading.show({
+          delay: 200 // milliseconds
+        })
+        axios.defaults.headers.common['storeID'] = this.id
+        shop.storeCategoryProductsRetrieve(category.category_id).then(response => {
+          Loading.hide()
+          this.T2Products.results = this.T2Products.results.concat(response.data.results)
+          this.T2Products.metadata = response.data.metadata
+          this.$refs.T2Products.open()
+        }).catch(error => {
+          console.log(error)
+//          const alert = Alert.create({html: error.response.data.message, color: 'amber-9'})
+//          setTimeout(alert.dismiss, 5000)
         })
       },
       checkCurrentDay (key) {
