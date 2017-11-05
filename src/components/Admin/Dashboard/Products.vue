@@ -3,7 +3,7 @@
   <div class="layout-padding">
     <div class="row no-wrap">
       <div class="full-width" style="padding: 15px">
-        <h4 class="text-tertiary text-bold">Select an aisle:</h4>
+        <h4 class="text-tertiary text-bold">Aisle:</h4>
         <q-select
           v-model="selectedT1"
           :options="T1SelectOptions"
@@ -11,7 +11,7 @@
         />
       </div>
       <div class="full-width" style="padding: 15px">
-        <h4 class="text-tertiary text-bold">Select an aisle category:</h4>
+        <h4 class="text-tertiary text-bold">Category:</h4>
         <q-select
           v-model="selectedCategory"
           :options="selectOptions"
@@ -45,12 +45,12 @@
               </q-item-side>
             </q-item>
             </draggable>
-        <q-btn outline @click="refresher">Load More...</q-btn>
+        <q-btn v-if="selectedCategory != ''" outline @click="refresher">Load More...</q-btn>
 
           <!--</q-infinite-scroll>-->
       </div>
       <div class="items-stretch full-width" style="padding: 15px">
-        <h5 class="text-tertiary text-bold">Your Added Products</h5>
+        <h5 class="text-tertiary text-bold">Store Products</h5>
 
         <draggable v-model="addedProductsData.results" class="items-stretch full-height	" :options="{group:'products'}" style="height: inherit">
           <q-item separator class=" group" v-for="(product, key) in addedProductsData.results" :key="key" >
@@ -74,11 +74,11 @@
         round
         color="primary"
         class="fixed-bottom-right animate-pop"
-        style="margin: 0 15px 15px 0"
+        style="margin: 0 15px 105px 0"
       >
         <q-icon name="keyboard_arrow_up" />
       </q-btn>
-      <!--<q-btn @click="addProducts">add products</q-btn>-->
+      <q-btn v-if="selectedCategory != ''" @click="addProducts" style="margin: 0 15px 15px 0" round class="fixed-bottom-right animate-pop" color="primary">Save</q-btn>
     </div>
     <q-modal ref="productEdit" minimized :content-css="{padding: '0px', maxWidth: '50vw'}">
       <h4><q-icon name="close" style="padding: 10px" class="text-negative absolute-top-right" @click="closeProductModal()"/></h4>
@@ -214,7 +214,7 @@
         })
       },
       getAddedProducts () {
-        shop.storeCategoryProductsRetrieve(this.selectedCategory, this.addedPage).then(response => {
+        shop.storeCategoryProductsRetrieve(this.selectedCategory, this.addedPage, this.selectedCategory).then(response => {
           this.addedProductsData.results = this.addedProductsData.results.concat(response.data.results)
           this.addedProductsData.metadata = response.data.metadata
         }).catch(error => {

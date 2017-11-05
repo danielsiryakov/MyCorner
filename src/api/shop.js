@@ -373,8 +373,8 @@ export default {
   templateProducts (id, page) {
     return axios.get(PRODUCTS_FROM_TEMPLATE + id + '&p=' + page)
   },
-  storeCategoryProductsRetrieve (categoryID, page) {
-    return axios.get(STORE_CATEGORY_PRODUCTS_RETRIEVE + page)
+  storeCategoryProductsRetrieve (categoryID, page, cid) {
+    return axios.get(STORE_CATEGORY_PRODUCTS_RETRIEVE + page + '&category_id=' + cid)
   },
   templateCategoriesAdd (payload) {
     return axios.post(CATEGORIES_FROM_TEMPLATE_ADD, JSON.stringify(payload))
