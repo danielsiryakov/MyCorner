@@ -371,7 +371,7 @@ export default {
     return axios.get(TEMPLATE_CATEGORIES_T2 + id)
   },
   templateProducts (id, page) {
-    return axios.get(PRODUCTS_FROM_TEMPLATE + id + '&' + page)
+    return axios.get(PRODUCTS_FROM_TEMPLATE + id + '&p=' + page)
   },
   storeCategoryProductsRetrieve (categoryID, page) {
     return axios.get(STORE_CATEGORY_PRODUCTS_RETRIEVE + page + '&category_id=' + categoryID)

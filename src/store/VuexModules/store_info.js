@@ -9,6 +9,7 @@ const state = {
   selectedStore: '',
   dashboardStore: {},
   T1Aisles: [],
+  T2Categories: [],
   T2Aisles: {},
   orders: [],
   categoriesT2: [
@@ -1635,12 +1636,20 @@ const actions = {
     shop.templateCategoriesT1().then(response => {
       commit('updateT1Aisles', response.data)
     })
+  },
+  getT2Categories ({commit}, id) {
+    shop.templateCategoriesT2(id).then(response => {
+      commit('updateT2Categories', response.data)
+    })
   }
 }
 
 const mutations = {
   updateT1Aisles (state, data) {
     state.T1Aisles = data
+  },
+  updateT2Categories (state, data) {
+    state.T2Categories = data
   },
   createImage (state, file) {
     state.store.image = file

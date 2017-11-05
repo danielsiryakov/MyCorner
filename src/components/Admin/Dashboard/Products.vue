@@ -1,13 +1,24 @@
 <template>
   <!-- if you want automatic padding use "layout-padding" class -->
   <div class="layout-padding">
-
-    <h4 class="text-tertiary text-bold">Select a category to add products to:</h4>
-    <q-select
-      v-model="selectedCategory"
-      :options="selectOptions"
-      @change="getData"
-    />
+    <div class="row no-wrap">
+      <div class="full-width" style="padding: 15px">
+        <h4 class="text-tertiary text-bold">Select an aisle:</h4>
+        <q-select
+          v-model="selectedT1"
+          :options="T1SelectOptions"
+          @change="getT2Data"
+        />
+      </div>
+      <div class="full-width" style="padding: 15px">
+        <h4 class="text-tertiary text-bold">Select an aisle category:</h4>
+        <q-select
+          v-model="selectedCategory"
+          :options="selectOptions"
+          @change="getData"
+        />
+      </div>
+    </div>
     <br><br>
     <!--{{productsData.results}}-->
 
@@ -15,29 +26,34 @@
       <!--{{ product.title }}-->
     <!--</div>-->
     <div class="row group no-wrap">
-      <div class="items-stretch full-width" style="padding: 10px; border-right-style: groove">
+      <div class="items-stretch full-width" style="padding: 15px; border-right-style: groove">
         <h5 class="text-tertiary text-bold">Template Products</h5>
-        <draggable v-model="productsData.results" class="items-stretch" :options="{group:'products'}">
-          <q-item separator class=" group" v-if="productsData.results.length > 0" v-for="(product, key) in productsData.results" :key="key">
-            <!--<q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>-->
-            <q-item-side :image="product.image">
-              <!--<img :src="product.image" alt="" width="100px" height="100px">-->
-            </q-item-side>
-            <q-item-main>
-              {{product.label}}<br>
-              $ {{product.price_cents / 100}}<br>
-              <!--{{product.description}}-->
-            </q-item-main>
-            <q-item-side class="group">
-            </q-item-side>
-          </q-item>
-        </draggable>
+          <!--<q-infinite-scroll :handler="refresher" v-if="selectedCategory !== ''">-->
+            <draggable v-model="productsData.results" class="items-stretch" :options="{group:'products'}">
+
+            <q-item separator class=" group" v-if="productsData.results.length > 0" v-for="(product, key) in productsData.results" :key="key">
+              <!--<q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>-->
+              <q-item-side :image="product.image">
+                <!--<img :src="product.image" alt="" width="100px" height="100px">-->
+              </q-item-side>
+              <q-item-main>
+                {{product.label}}<br>
+                $ {{product.price_cents / 100}}<br>
+                <!--{{product.description}}-->
+              </q-item-main>
+              <q-item-side class="group">
+              </q-item-side>
+            </q-item>
+            </draggable>
+        <q-btn outline @click="refresher">Load More...</q-btn>
+
+          <!--</q-infinite-scroll>-->
       </div>
-      <div class="items-stretch full-width" style="padding: 10px">
+      <div class="items-stretch full-width" style="padding: 15px">
         <h5 class="text-tertiary text-bold">Your Added Products</h5>
+
         <draggable v-model="addedProductsData.results" class="items-stretch full-height	" :options="{group:'products'}" style="height: inherit">
           <q-item separator class=" group" v-for="(product, key) in addedProductsData.results" :key="key" >
-            {{key}}
             <!--<q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>-->
             <q-item-side :image="product.image">
               <!--<img :src="product.image" alt="" width="100px" height="100px">-->
@@ -53,8 +69,16 @@
           </q-item>
         </draggable>
       </div>
-      <q-btn @click="addProducts">add products</q-btn>
-
+      <q-btn
+        v-back-to-top.animate="{offset: 500, duration: 200}"
+        round
+        color="primary"
+        class="fixed-bottom-right animate-pop"
+        style="margin: 0 15px 15px 0"
+      >
+        <q-icon name="keyboard_arrow_up" />
+      </q-btn>
+      <!--<q-btn @click="addProducts">add products</q-btn>-->
     </div>
     <q-modal ref="productEdit" minimized :content-css="{padding: '0px', maxWidth: '50vw'}">
       <h4><q-icon name="close" style="padding: 10px" class="text-negative absolute-top-right" @click="closeProductModal()"/></h4>
@@ -121,16 +145,21 @@
   import ProductAddModal from '../Onboard/ProductAddModal.vue'
   import CategoryProducts from '../Onboard/StepThree.vue'
   import shop from '../../../api/shop'
+  import { mapActions } from 'vuex'
   import {
-//    Loading,
-    Alert
+    Loading,
+    Alert,
+    QSpinnerDots
   } from 'quasar'
   export default {
     data () {
       return {
+        addedPage: 1,
+        templatePage: 1,
         newPrice: 0,
         currentProduct: {},
         selectedCategory: '',
+        selectedT1: '',
         productsData: {
           results: [],
           metadata: {}
@@ -142,38 +171,11 @@
         productIndex: ''
       }
     },
-    computed: {
-      productData: {
-        get () { return this.$store.state.storeInfo.store.categories }
-//        set (value) { this.$store.commit('update_full_store', value) }
-      },
-      selectOptions () {
-        let options = []
-        let categoryIds = this.$store.state.storeInfo.store.category_ids
-        let categoriesT2 = this.$store.state.storeInfo.categoriesT2
-        categoryIds.forEach(category => {
-          let record = categoriesT2.find(c => c.category_id === category)
-          if (record) {
-            options.push({
-              label: record.name,
-              value: record.category_id,
-              inset: true
-            })
-          }
-        })
-        return options
-      },
-      selectedStore: {
-        get () { return this.$store.state.storeInfo.selectedStore }
-      }
-    },
-    components: {
-      CategoryProducts,
-      tooltipButton,
-      ProductAddModal,
-      draggable
-    },
     methods: {
+      ...mapActions([
+        'getT1Aisles',
+        'getT2Categories'
+      ]),
       openProduct (pindex) {
         this.productIndex = pindex
         this.currentProduct = this.addedProductsData.results[pindex]
@@ -185,12 +187,26 @@
         setTimeout(this.$refs.productEdit.close(), 300)
       },
       getData () {
+        this.addedPage = 1
+        this.templatePage = 1
+        this.productsData = {
+          results: [],
+          metadata: {}
+        }
+        this.addedProductsData = {
+          results: [],
+          metadata: {}
+        }
         this.getAddedProducts()
         this.getProductData()
       },
+      getT2Data () {
+        this.getT2Categories(this.selectedT1)
+      },
       getProductData () {
-        shop.templateProducts(this.selectedCategory, 1).then(response => {
-          this.productsData = response.data
+        shop.templateProducts(this.selectedCategory, this.templatePage).then(response => {
+          this.productsData.results = this.productsData.results.concat(response.data.results)
+          this.productsData.metadata = response.data.metadata
         }).catch(error => {
           console.log(error)
           const alert = Alert.create({html: error.response.data.message, color: 'amber-9'})
@@ -198,8 +214,9 @@
         })
       },
       getAddedProducts () {
-        shop.storeCategoryProductsRetrieve(this.selectedCategory, 1).then(response => {
-          this.addedProductsData = response.data
+        shop.storeCategoryProductsRetrieve(this.selectedCategory, this.addedPage).then(response => {
+          this.addedProductsData.results = this.addedProductsData.results.concat(response.data.results)
+          this.addedProductsData.metadata = response.data.metadata
         }).catch(error => {
           console.log(error)
           const alert = Alert.create({html: error.response.data.message, color: 'amber-9'})
@@ -212,7 +229,61 @@
           const alert = Alert.create({html: error.response.data.message, color: 'amber-9'})
           setTimeout(alert.dismiss, 5000)
         })
+      },
+      refresher () {
+        Loading.show()
+        setTimeout(() => {
+          this.templatePage = this.templatePage + 1
+          this.getProductData()
+          Loading.hide()
+        }, 200)
       }
+    },
+    computed: {
+      productData: {
+        get () { return this.$store.state.storeInfo.store.categories }
+//        set (value) { this.$store.commit('update_full_store', value) }
+      },
+      selectOptions () {
+        let options = []
+        let T2Categories = this.$store.state.storeInfo.T2Categories
+        T2Categories.forEach(category => {
+//          let record = categoriesT2.find(c => c.category_id === category)
+//          if (record) {
+          options.push({
+            label: category.name,
+            value: category.category_id,
+            inset: true
+          })
+        })
+        return options
+      },
+      T1SelectOptions () {
+        let options = []
+        let T1Aisles = this.$store.state.storeInfo.T1Aisles
+        T1Aisles.forEach(aisle => {
+//          let record = categoriesT2.find(c => c.category_id === category)
+          options.push({
+            label: aisle.name,
+            value: aisle.category_id,
+            inset: true
+          })
+        })
+        return options
+      },
+      selectedStore: {
+        get () { return this.$store.state.storeInfo.selectedStore }
+      }
+    },
+    components: {
+      CategoryProducts,
+      tooltipButton,
+      ProductAddModal,
+      draggable,
+      QSpinnerDots
+    },
+    created () {
+      this.getT1Aisles()
     }
   }
 </script>
