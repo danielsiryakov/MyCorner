@@ -1,20 +1,20 @@
 import shop from '../../api/shop'
 const state = {
-  all: []
+  storeCategories: []
 }
 
 const actions = {
   getAllProducts ({commit}, id) {
-    shop.getProducts(id, products => {
-      commit('recieve_products', products)
+    shop.storeCategoriesRetrieveT1(id).then(response => {
+      commit('updateCategories', response.data)
       // console.log(products)
     })
   }
 }
 
 const mutations = {
-  recieve_products (state, products) {
-    state.all = products
+  updateCategories (state, categories) {
+    state.storeCategories = categories
   },
   add_to_cart (state, product, quantity) {
     // state.all.find(p => p.id === productId).inventory--
@@ -22,8 +22,8 @@ const mutations = {
 }
 
 const getters = {
-  allProducts (state) {
-    return state.all
+  allCategories (state) {
+    return state.storeCategories
   }
 }
 

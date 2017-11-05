@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <!--<h4 class="text-bold text-tertiary">{{ product.title }}</h4>-->
-    <h5 class="text-bold text-tertiary">{{ product.title }}</h5>
+    <h5 class="text-bold text-tertiary">{{ product.label }}</h5>
     <br>
     <div class="row justify-center">
       <img :src="product.image" style="width: 30vh; height: 30vh">

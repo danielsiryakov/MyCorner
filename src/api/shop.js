@@ -53,8 +53,9 @@ const TEMPLATE_CATEGORIES_T2 = API_URL + 'template/categories/t2?category_id='
 axios.defaults.headers.common['authtoken'] = Cookies.get('authtoken')
 const CATEGORIES_FROM_TEMPLATE_ADD = API_URL + 'store/categories/from_template/add'
 const PRODUCTS_FROM_TEMPLATE = API_URL + 'template/category/t2/products?category_id='
-const PRODUCT_CREATE = API_URL + 'store/products/create'
+const STORE_CATEGORY_PRODUCTS_CREATE = API_URL + 'store/products/create?category_id='
 const STORE_CATEGORY_PRODUCTS_RETRIEVE = API_URL + 'store/category/products/retrieve?p='
+const STORE_CATEGORIES_RETRIEVE_T1 = API_URL + 'store/categories/retrieve/t1?store_id='
 axios.defaults.headers.common['userID'] = Cookies.get('userID')
 
 export default {
@@ -371,16 +372,19 @@ export default {
     return axios.get(TEMPLATE_CATEGORIES_T2 + id)
   },
   templateProducts (id, page) {
-    return axios.get(PRODUCTS_FROM_TEMPLATE + id + '&' + page)
+    return axios.get(PRODUCTS_FROM_TEMPLATE + id + '&p=' + page)
   },
   storeCategoryProductsRetrieve (categoryID, page) {
     return axios.get(STORE_CATEGORY_PRODUCTS_RETRIEVE + page + '&category_id=' + categoryID)
   },
+  storeCategoriesRetrieveT1 (id) {
+    return axios.get(STORE_CATEGORIES_RETRIEVE_T1 + id)
+  },
   templateCategoriesAdd (payload) {
     return axios.post(CATEGORIES_FROM_TEMPLATE_ADD, JSON.stringify(payload))
   },
-  productCreate (payload) {
-    return axios.post(PRODUCT_CREATE, JSON.stringify(payload))
+  productCreate (payload, categoryID) {
+    return axios.post(STORE_CATEGORY_PRODUCTS_CREATE + categoryID, JSON.stringify(payload))
   }
   //  buyProducts (products, cb, errorCb) {
 //    setTimeout(() => {
