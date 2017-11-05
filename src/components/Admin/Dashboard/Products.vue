@@ -201,6 +201,15 @@
         this.getProductData()
       },
       getT2Data () {
+        this.selectedCategory = ''
+        this.productsData = {
+          results: [],
+          metadata: {}
+        }
+        this.addedProductsData = {
+          results: [],
+          metadata: {}
+        }
         this.getT2Categories(this.selectedT1)
       },
       getProductData () {
