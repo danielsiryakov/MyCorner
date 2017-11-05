@@ -11,6 +11,7 @@
                    @blur="$v.name.$touch"
                    />
         </q-field>
+        <br>
         <q-field :error="$v.email.$error" error-label="Valid email is required" icon="mail">
           <q-input v-model="email"
                    type="email"
@@ -64,7 +65,7 @@
             </div>
           </div>
           <div class="dropzone-preview" v-if="storeImage">
-            <img :src="storeImage">
+            <img :src="storeImage" class="full-width">
             <q-btn @click="removeImage" flat color="tertiary">Remove</q-btn>
           </div>
         </q-field>

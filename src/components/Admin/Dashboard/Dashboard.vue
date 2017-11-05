@@ -100,8 +100,6 @@
         get () { return this.$store.state.storeInfo.selectedStore },
         set (value) { this.$store.commit('update_store_selection', value) }
       }
-    },
-    mounted () {
     }
   }
 </script>

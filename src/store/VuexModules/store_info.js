@@ -1606,6 +1606,7 @@ const actions = {
     })
     console.log(authtoken)
     axios.post(CREATE_STORE, JSON.stringify(storePayload)).then(function (response) {
+      // axios.defaults.headers.common['authtoken'] = response.headers['authtoken']
       router.push('/admin')
       console.log(response)
     }).catch(function (error) {

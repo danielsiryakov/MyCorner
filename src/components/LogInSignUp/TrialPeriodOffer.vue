@@ -29,7 +29,7 @@
         <h5 class="text-bold">
           Benefits include:
         </h5>
-        <ui style="text-align: left;">
+        <ul style="text-align: left;">
           <li>Anyone in your neighborhood with a phone can now shop with you! </li>
           <li>No subscription fees! We make money when you make money.</li>
           <li>No fees on cash orders. Period. </li>
@@ -39,7 +39,7 @@
           <li>Automatic payments backed by one of the world’s leading payment providers that specializes in fraud detection. </li>
           <li>Customers can reorder with the click of a button (let’s keep them coming back!)</li>
           <li>Security and privacy. Your data is sacred to us and we work hard to make our partners feel safe.</li>
-        </ui>
+        </ul>
       </div>
 
     </div>

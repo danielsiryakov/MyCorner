@@ -55,6 +55,7 @@ const CATEGORIES_FROM_TEMPLATE_ADD = API_URL + 'store/categories/from_template/a
 const PRODUCTS_FROM_TEMPLATE = API_URL + 'template/category/t2/products?category_id='
 const STORE_CATEGORY_PRODUCTS_CREATE = API_URL + 'store/products/create?category_id='
 const STORE_CATEGORY_PRODUCTS_RETRIEVE = API_URL + 'store/category/products/retrieve?p='
+const STORE_CATEGORIES_RETRIEVE_T1 = API_URL + 'store/categories/retrieve/t1?store_id='
 axios.defaults.headers.common['userID'] = Cookies.get('userID')
 
 export default {
@@ -373,8 +374,11 @@ export default {
   templateProducts (id, page) {
     return axios.get(PRODUCTS_FROM_TEMPLATE + id + '&p=' + page)
   },
-  storeCategoryProductsRetrieve (categoryID, page, cid) {
-    return axios.get(STORE_CATEGORY_PRODUCTS_RETRIEVE + page + '&category_id=' + cid)
+  storeCategoryProductsRetrieve (categoryID, page) {
+    return axios.get(STORE_CATEGORY_PRODUCTS_RETRIEVE + page + '&category_id=' + categoryID)
+  },
+  storeCategoriesRetrieveT1 (id) {
+    return axios.get(STORE_CATEGORIES_RETRIEVE_T1 + id)
   },
   templateCategoriesAdd (payload) {
     return axios.post(CATEGORIES_FROM_TEMPLATE_ADD, JSON.stringify(payload))

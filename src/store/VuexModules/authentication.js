@@ -11,7 +11,7 @@ const state = {
 }
 
 const actions = {
-  login ({ commit }, creds, errorCb) {
+  login2 ({ commit }, creds, errorCb) {
     axios.get(LOGIN_URL, {
       params: {
         email: creds.email,
@@ -56,7 +56,7 @@ const actions = {
     Cookies.remove('authtoken')
     LocalStorage.remove('authtoken')
     commit('authenticationFalse')
-    router.replace('/login')
+    router.push('/login')
   }
 }
 

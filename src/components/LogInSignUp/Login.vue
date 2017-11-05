@@ -78,6 +78,7 @@
             password: creds.password
           }
         }).then(response => {
+          this.authenticationTrue()
           this.loading = false
           this.$emit('closeModal')
           Cookies.set('userID', response.data.login.userID, {
@@ -91,12 +92,8 @@
           axios.defaults.headers.common['authtoken'] = response.data.login.authtoken
           axios.defaults.headers.common['userID'] = response.data.login.userID
           LocalStorage.set('authtoken', response.data.login.authtoken)
-          this.$store.commit('authenticationTrue')
-          this.authenticationTrue()
+//          this.$store.commit('authenticationTrue')
           this.getUserInfo()
-          this.getAddressBook()
-          this.retriesActiveCarts()
-          this.getWallet()
           var sids = Object.keys(response.data.user_roles.store_map)
           if (sids.length > 0) {
             this.$store.commit('update_store_selection', sids[0])
@@ -107,7 +104,7 @@
             this.$router.push('/admin')
           }
           else {
-            this.$router.push('/')
+            this.$router.push('/home')
           }
 
           // Router.push('/')

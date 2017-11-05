@@ -52,7 +52,11 @@
       <div class="items-stretch full-width" style="padding: 15px">
         <h5 class="text-tertiary text-bold">Store Products</h5>
 
-        <draggable v-model="addedProductsData.results" class="items-stretch full-height	" :options="{group:'products'}" style="height: inherit">
+        <draggable
+          v-model="addedProductsData.results"
+          class="items-stretch full-height	"
+          :options="{group:'products'}"
+          style="height: inherit">
           <q-item separator class=" group" v-for="(product, key) in addedProductsData.results" :key="key" >
             <!--<q-checkbox :id="p_index" v-model="product.checked" @input="product.add_to_category=true"></q-checkbox>-->
             <q-item-side :image="product.image">
@@ -64,11 +68,16 @@
               <!--{{product.description}}-->
             </q-item-main>
             <q-item-side class="group">
-              <q-btn outline @click="openProduct(key)">Edit</q-btn>
+              <q-btn outline @click="openProduct(product, key)">Edit</q-btn>
             </q-item-side>
           </q-item>
         </draggable>
       </div>
+      <q-fixed-position corner="bottom-left" :offset="[18, 18]">
+        <q-btn color="primary" big @click="addProducts">
+          Save
+        </q-btn>
+      </q-fixed-position>
       <q-btn
         v-back-to-top.animate="{offset: 500, duration: 200}"
         round
@@ -80,7 +89,7 @@
       </q-btn>
       <q-btn v-if="selectedCategory != ''" @click="addProducts" style="margin: 0 15px 15px 0" round class="fixed-bottom-right animate-pop" color="primary">Save</q-btn>
     </div>
-    <q-modal ref="productEdit" minimized :content-css="{padding: '0px', maxWidth: '50vw'}">
+    <q-modal ref="productEdit" minimized :content-css="{padding: '0px'}">
       <h4><q-icon name="close" style="padding: 10px" class="text-negative absolute-top-right" @click="closeProductModal()"/></h4>
       <div class="layout-padding">
         <h5 class="text-bold text-tertiary">{{ }}</h5>
@@ -101,7 +110,7 @@
               icon="attach_money"
               label="Product Price">
               <q-input
-                v-model="newPrice"
+                v-model="currentProduct.price_cents"
                 type="number"
                 prefix="$"
                 :step="0.05"/>
@@ -132,7 +141,7 @@
         </div>
         <br><br>
         <div class="product-details group">
-          <q-btn big color="primary full-width" class="block" @click="closeProductModal()">Save</q-btn>
+          <q-btn big color="primary full-width" class="block" @click="saveProductModal()">Save</q-btn>
         </div>
       </div>
     </q-modal>
@@ -145,6 +154,7 @@
   import ProductAddModal from '../Onboard/ProductAddModal.vue'
   import CategoryProducts from '../Onboard/StepThree.vue'
   import shop from '../../../api/shop'
+  import Vue from 'vue'
   import { mapActions } from 'vuex'
   import {
     Loading,
@@ -176,15 +186,25 @@
         'getT1Aisles',
         'getT2Categories'
       ]),
-      openProduct (pindex) {
+      openProduct (product, pindex) {
         this.productIndex = pindex
-        this.currentProduct = this.addedProductsData.results[pindex]
-        this.newPrice = this.currentProduct.price_cents / 100
-        setTimeout(this.$refs.productEdit.open(), 300)
+//        this.currentProduct = this.addedProductsData.results[pindex]
+        this.currentProduct = Object.assign({}, product)
+        this.currentProduct.price_cents /= 100
+        this.$refs.productEdit.open()
       },
       closeProductModal () {
-        this.currentProduct.price_cents = this.newPrice * 100
-        setTimeout(this.$refs.productEdit.close(), 300)
+//        this.currentProduct.price_cents = this.currentProduct.price_cents * 100
+        this.$refs.productEdit.close()
+      },
+      saveProductModal () {
+        this.currentProduct.price_cents = this.currentProduct.price_cents * 100
+        if (this.currentProduct.enabled) {
+          Vue.set(this.currentProduct, 'store_id', this.selectedStore)
+          shop.categoryProductUpdate(this.currentProduct)
+        }
+        this.addedProductsData.results[this.productIndex] = Object.assign({}, this.currentProduct)
+        this.$refs.productEdit.close()
       },
       getData () {
         this.addedPage = 1
@@ -223,7 +243,7 @@
         })
       },
       getAddedProducts () {
-        shop.storeCategoryProductsRetrieve(this.selectedCategory, this.addedPage, this.selectedCategory).then(response => {
+        shop.storeCategoryProductsRetrieve(this.selectedCategory, this.addedPage).then(response => {
           this.addedProductsData.results = this.addedProductsData.results.concat(response.data.results)
           this.addedProductsData.metadata = response.data.metadata
         }).catch(error => {
@@ -233,7 +253,9 @@
         })
       },
       addProducts () {
-        shop.productCreate(this.addedProductsData.results, this.selectedCategory).catch(error => {
+        shop.productCreate(this.addedProductsData.results, this.selectedCategory).then(response => {
+          this.addedProductsData = response.data
+        }).catch(error => {
           console.log(error)
           const alert = Alert.create({html: error.response.data.message, color: 'amber-9'})
           setTimeout(alert.dismiss, 5000)

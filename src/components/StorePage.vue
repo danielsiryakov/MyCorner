@@ -41,63 +41,80 @@
           <q-tab slot="title" name="Information" label="Information" class="text-bold text-tertiary"/>
           <!-- Targets -->
           <q-tab-pane name="Products">
-            <q-search clearable inverted :debounce="0" placeholder="Search for products in store!" v-model="search"></q-search>
-            <div class="row bg-white" v-if="search !== ''">
-              <q-item class="lt-md"
-                      v-for="(p, index) in filteredProducts"
-                      :key="index" @click="open(p)">
-                <q-item-side :image="p.image" style="padding-right: 10px;">
-                  <!--<img :src="p.image" style="width: 100px; height: 100px">-->
-                </q-item-side>
-                <q-item-main style="padding: 5px;" v-if="p.title.length >= 30" class="">{{p.title.substring(0,30)}}...</q-item-main><br>
-                <q-item-main style="padding: 5px;" v-if="p.title.length < 30" class="">{{p.title}}</q-item-main><br>
-                <q-item-side>
-                  <span class="text-bold">${{p.price_cents / 100}}</span>
-                </q-item-side>
-              </q-item>
-              <q-card inline flat style="width: 30vh; height: 30vh"
-                      class="gt-sm bg-white"
-                      v-for="p in filteredProducts"
-                       :key="p.product_id" @click="open(p)">
-                <!--<q-card inline flat style="width: 30vh; height: 30vh" class="bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">-->
-                <q-card-media overlay-position="bottom">
-                  <img :src="p.image" style="padding: 25px">
-                  <q-card-title class="text-condensed" slot="overlay">
-                    <small class="">{{p.title.substring(0,30)}}</small><br>
-                    <!--{{getProductCartQuantity(id, p.id).quantity}}-->
-                    <span class="text-bold ">${{p.price_cents / 100}}</span>
-                    <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
-                  </q-card-title>
-                </q-card-media>
-              </q-card>
-            </div>
-            <div class="row" v-if="search == ''">
-              <q-collapsible separator class="full-width group" :opened="false" :label="cat.name" v-for="(cat, index) in allProducts" :key="index" v-if="cat.products.length !== 0">
-                <!--{{ filter(cat.products) }}-->
-                <q-item class="lt-md bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
-                  <q-item-side :image="p.image" style="padding-right: 10px;">
-                    <!--<img :src="p.image" style="width: 100px; height: 100px">-->
-                  </q-item-side>
-                  <q-item-main v-if="p.title.length >= 30" class="">{{p.title.substring(0,30)}}...</q-item-main><br>
-                  <q-item-main v-if="p.title.length < 30" class="">{{p.title}}</q-item-main><br>
-                  <q-item-side>
-                    <span class="text-bold">${{p.price_cents / 100}}</span>
-                  </q-item-side>
-                </q-item>
-                <q-card inline flat style="width: 30vh; height: 30vh" class="gt-sm col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">
-                <!--<q-card inline flat style="width: 30vh; height: 30vh" class="bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">-->
-                  <q-card-media overlay-position="bottom">
-                    <img :src="p.image" style="padding: 25px">
-                    <q-card-title class="text-condensed" slot="overlay">
-                      <small class="">{{p.title.substring(0,30)}}</small><br>
-                      <!--{{getProductCartQuantity(id, p.id).quantity}}-->
-                      <span class="text-bold">${{p.price_cents / 100}}</span>
-                      <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
-                    </q-card-title>
-                  </q-card-media>
-                </q-card>
-              </q-collapsible>
-            </div>
+            <!--<q-search clearable inverted :debounce="0" placeholder="Search for products in store!" v-model="search"></q-search>-->
+            <!--<div class="row bg-white" v-if="search !== ''">-->
+              <!--<q-item class="lt-md"-->
+                      <!--v-for="(p, index) in filteredProducts"-->
+                      <!--:key="index" @click="open(p)">-->
+                <!--<q-item-side :image="p.image" style="padding-right: 10px;">-->
+                  <!--&lt;!&ndash;<img :src="p.image" style="width: 100px; height: 100px">&ndash;&gt;-->
+                <!--</q-item-side>-->
+                <!--<q-item-main style="padding: 5px;" v-if="p.title.length >= 30" class="">{{p.title.substring(0,30)}}...</q-item-main><br>-->
+                <!--<q-item-main style="padding: 5px;" v-if="p.title.length < 30" class="">{{p.title}}</q-item-main><br>-->
+                <!--<q-item-side>-->
+                  <!--<span class="text-bold">${{p.price_cents / 100}}</span>-->
+                <!--</q-item-side>-->
+              <!--</q-item>-->
+              <!--<q-card inline flat style="width: 30vh; height: 30vh"-->
+                      <!--class="gt-sm bg-white"-->
+                      <!--v-for="p in filteredProducts"-->
+                       <!--:key="p.product_id" @click="open(p)">-->
+                <!--&lt;!&ndash;<q-card inline flat style="width: 30vh; height: 30vh" class="bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">&ndash;&gt;-->
+                <!--<q-card-media overlay-position="bottom">-->
+                  <!--<img :src="p.image" style="padding: 25px">-->
+                  <!--<q-card-title class="text-condensed" slot="overlay">-->
+                    <!--<small class="">{{p.title.substring(0,30)}}</small><br>-->
+                    <!--&lt;!&ndash;{{getProductCartQuantity(id, p.id).quantity}}&ndash;&gt;-->
+                    <!--<span class="text-bold ">${{p.price_cents / 100}}</span>-->
+                    <!--<q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>-->
+                  <!--</q-card-title>-->
+                <!--</q-card-media>-->
+              <!--</q-card>-->
+            <!--</div>-->
+            <!--<div class="row" v-if="search == ''">-->
+              <!--<q-collapsible separator class="full-width group" :opened="false" :label="cat.name" v-for="(cat, index) in allProducts" :key="index" v-if="cat.products.length !== 0">-->
+                <!--&lt;!&ndash;{{ filter(cat.products) }}&ndash;&gt;-->
+                <!--<q-item class="lt-md bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">-->
+                  <!--<q-item-side :image="p.image" style="padding-right: 10px;">-->
+                    <!--&lt;!&ndash;<img :src="p.image" style="width: 100px; height: 100px">&ndash;&gt;-->
+                  <!--</q-item-side>-->
+                  <!--<q-item-main v-if="p.title.length >= 30" class="">{{p.title.substring(0,30)}}...</q-item-main><br>-->
+                  <!--<q-item-main v-if="p.title.length < 30" class="">{{p.title}}</q-item-main><br>-->
+                  <!--<q-item-side>-->
+                    <!--<span class="text-bold">${{p.price_cents / 100}}</span>-->
+                  <!--</q-item-side>-->
+                <!--</q-item>-->
+                <!--<q-card inline flat style="width: 30vh; height: 30vh" class="gt-sm col-sm-2 col-lg-4 col-md-4 bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">-->
+                <!--&lt;!&ndash;<q-card inline flat style="width: 30vh; height: 30vh" class="bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">&ndash;&gt;-->
+                  <!--<q-card-media overlay-position="bottom">-->
+                    <!--<img :src="p.image" style="padding: 25px">-->
+                    <!--<q-card-title class="text-condensed" slot="overlay">-->
+                      <!--<small class="">{{p.title.substring(0,30)}}</small><br>-->
+                      <!--&lt;!&ndash;{{getProductCartQuantity(id, p.id).quantity}}&ndash;&gt;-->
+                      <!--<span class="text-bold">${{p.price_cents / 100}}</span>-->
+                      <!--<q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>-->
+                    <!--</q-card-title>-->
+                  <!--</q-card-media>-->
+                <!--</q-card>-->
+              <!--</q-collapsible>-->
+            <!--</div>-->
+            <q-tabs class="" no-pane-border inverted>
+              <q-tab slot="title" v-for="(aisle, key) in allCategories"
+                     :key="key"
+                     :name="aisle.name"
+                     :label="aisle.name"
+                     class="text-bold text-tertiary"/>
+              <!--<q-tab slot="title" name="Information" label="Information" class="text-bold text-tertiary"/>-->
+              <!-- Targets -->
+              <q-tab-pane v-for="(aisle, key) in allCategories"
+                          :key="key"
+                          :name="aisle.name">
+                <br>
+                  <div v-for="(category, key) in aisle.children_categories" :key="key">
+                    {{category.name}}
+                  </div>
+              </q-tab-pane>
+            </q-tabs>
           </q-tab-pane>
           <q-tab-pane name="Information" class="" v-if="store">
             <q-card class="row justify-center bg-light layout-padding">
@@ -167,9 +184,10 @@
   import layoutStore from '../store/otherJS/layout-store'
   import CartPage from './CartPage.vue'
   import StoreReview from './StoreReview.vue'
+  import shop from '../api/shop'
 //  import shop from '../api/shop'
   import {
-    Loading, date, filter
+    Loading, date, filter, Alert
   } from 'quasar'
   import { mapGetters, mapActions } from 'vuex'
   export default {
@@ -192,7 +210,7 @@
     computed: {
       ...mapGetters([
         'allStores',
-        'allProducts',
+        'allCategories',
         'cartCount',
         'getCartByStore'
       ]),
@@ -242,6 +260,16 @@
       },
       submitReview () {
         this.$refs.StoreReview.open()
+      },
+      getCategoryProducts (cID) {
+        shop.storeCategoryProductsRetrieve(cID).then(response => {
+          this.addedProductsData.results = this.addedProductsData.results.concat(response.data.results)
+          this.addedProductsData.metadata = response.data.metadata
+        }).catch(error => {
+          console.log(error)
+          const alert = Alert.create({html: error.response.data.message, color: 'amber-9'})
+          setTimeout(alert.dismiss, 5000)
+        })
       },
       checkCurrentDay (key) {
         return [

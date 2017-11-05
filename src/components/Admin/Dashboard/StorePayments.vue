@@ -171,12 +171,13 @@
     outline: none;
     padding: 3px 0px 3px 3px;
     margin: 5px 1px 3px 0px;
-    border: 1px solid #2f2f2f;
+    border: 1px solid #b0b0b0;
   }
 
   input[type=text]:focus, textarea:focus {
     /*box-shadow: 0 0 5px #3bc18c;*/
-    padding: 3px 0px 3px 3px;
+    /*padding: 3px 0px 3px 3px;*/
+    padding: 5px;
     margin: 5px 1px 3px 0px;
     border: 1px solid #3bc18c;
   }
@@ -186,7 +187,7 @@
     -ms-flex-align: center;
     align-items: center;
     border: none;
-    border-radius: 3px;
+    border-radius: 0px;
     box-shadow: none;
     display: -webkit-inline-box;
     display: -ms-inline-flexbox;

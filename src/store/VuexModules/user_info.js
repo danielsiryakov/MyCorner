@@ -27,12 +27,14 @@ const actions = {
         commit('update_store_selection', sids[0])
         axios.defaults.headers.common['storeID'] = sids[0]
       }
+      else {
+        dispatch('getAddressBook')
+        dispatch('retriesActiveCarts')
+        dispatch('getWallet')
+      }
 //      shop.retrieveAddressBookDefualt(addressBook => {
 //        commit('setDefaultAddress', addressBook)
 //      })
-      dispatch('getAddressBook')
-      dispatch('retriesActiveCarts')
-      dispatch('getWallet')
     })
   },
   getAddressBook ({commit}) {
