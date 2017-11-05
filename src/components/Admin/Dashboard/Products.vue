@@ -273,17 +273,15 @@
     computed: {
       productData: {
         get () { return this.$store.state.storeInfo.store.categories }
-//        set (value) { this.$store.commit('update_full_store', value) }
       },
       selectOptions () {
         let options = []
         let T2Categories = this.$store.state.storeInfo.T2Categories
         T2Categories.forEach(category => {
-//          let record = categoriesT2.find(c => c.category_id === category)
-//          if (record) {
           options.push({
             label: category.name,
             value: category.category_id,
+            stamp: category.product_count.toString(),
             inset: true
           })
         })
@@ -293,10 +291,10 @@
         let options = []
         let T1Aisles = this.$store.state.storeInfo.T1Aisles
         T1Aisles.forEach(aisle => {
-//          let record = categoriesT2.find(c => c.category_id === category)
           options.push({
             label: aisle.name,
             value: aisle.category_id,
+            stamp: aisle.product_count.toString(),
             inset: true
           })
         })
