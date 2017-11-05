@@ -26,10 +26,6 @@
         <q-item-side icon="store"/>
         <q-item-main label="Store Info"/>
       </q-side-link>
-      <q-side-link item to="/admin/categories">
-        <q-item-side icon="motorcycle"/>
-        <q-item-main label="Categories"/>
-      </q-side-link>
       <q-side-link item to="/admin/products">
         <q-item-side icon="add_shopping_cart"/>
         <q-item-main label="Products"/>
