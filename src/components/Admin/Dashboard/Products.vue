@@ -224,7 +224,7 @@
         })
       },
       addProducts () {
-        shop.productCreate(this.addedProductsData.results).catch(error => {
+        shop.productCreate(this.addedProductsData.results, this.selectedCategory).catch(error => {
           console.log(error)
           const alert = Alert.create({html: error.response.data.message, color: 'amber-9'})
           setTimeout(alert.dismiss, 5000)
