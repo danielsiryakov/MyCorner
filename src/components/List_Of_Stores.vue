@@ -55,7 +55,8 @@
     methods: {
       ...mapActions([
         'getAllStores',
-        'getUserInfo'
+        'getUserInfo',
+        'searchForStores'
       ]),
       ...mapMutations([
         'activeStore'
@@ -72,6 +73,7 @@
       // already being observed
       console.log('getallstores didnt start yet')
       this.getAllStores()
+      this.searchForStores()
     },
     data () {
       return {

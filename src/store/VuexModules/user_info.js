@@ -30,9 +30,9 @@ const actions = {
       dispatch('getAddressBook')
       dispatch('retriesActiveCarts')
       dispatch('getWallet')
-//      shop.retrieveAddressBookDefualt(addressBook => {
-//        commit('setDefaultAddress', addressBook)
-//      })
+      shop.retrieveAddressBookDefualt(addressBook => {
+        commit('setDefaultAddress', addressBook)
+      })
     })
   },
   getAddressBook ({commit}) {
