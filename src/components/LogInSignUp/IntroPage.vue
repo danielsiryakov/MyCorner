@@ -149,8 +149,8 @@
           <img src="../../assets/admin-products.png" alt="MyCorner.Store" style="width: 400px;"><br><br>
           <div>
             We have painstakingly hand crafted our custom store template to make uploading your inventory as simple as dragging an item into your store.
-            Most of our items come with nutrition facts and details so you dont have to work about any data entry.
-            We currently have over 140 categories and 18 thousand items in our ever growing collection!
+            Most of our items come with nutrition facts and details so you don't have to wory about any data entry.
+            We currently have over 140 categories and 18 thousand items in our ever growing catalog!
           </div>
         </div>
         <div slot="slide" class="" align="center">
