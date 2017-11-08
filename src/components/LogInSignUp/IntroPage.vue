@@ -1,9 +1,10 @@
 <template>
   <div class="layout-view">
+
     <section class="flex window-height" id="corner">
       <div class="sm-width-1of1 md-width-1of1 bg-width-5of5 lg-width-3of5">
         <img src="../../assets/fulllogo.png" class="mobile-only" style="padding: 20px;height: 100px">
-        <img src="../../assets/fulllogo.png" class=" desktop-only" style="width: 30vw">
+        <img src="../../assets/fulllogo.png" class="glow_logo_desktop desktop-only" style="width: 30vw">
 
         <div class="row centered justify-center group" id="footer" style="padding: 20px;">
           <div class="col-lg-8">
@@ -46,63 +47,179 @@
             </q-tabs>
           </div>
         </q-modal>
-        <div class="row justify-center group" id="footer" style="padding-bottom: 20px;">
+        <div class="desktop-only row justify-center group" id="footer" style="padding-bottom: 20px;">
           <div class="col-lg-8">
             <div class="row justify-center group">
-              <q-btn big color="tertiary" class="col-5" @click="formTab='login', $refs.logInSignUp.open()">Login</q-btn>
-              <q-btn big color="tertiary" class="  col-5" @click="formTab='signup', $refs.logInSignUp.open()">Sign Up</q-btn>
+              <q-btn big color="green-10" class="text-bold text-primary col-4" style="font-size: 25px;" @click="formTab='signup', $refs.logInSignUp.open()">
+                Sign Up Today!
+              </q-btn>
+            </div>
+          </div>
+        </div>
+        <div class="mobile-only row justify-center group" id="footer" style="padding-bottom: 20px;">
+          <div class="col-lg-8">
+            <div class="row justify-center group">
+              <q-btn big color="primary" class="col-5" @click="formTab='login', $refs.logInSignUp.open()">Login</q-btn>
+              <q-btn big color="primary" class="col-5" @click="formTab='signup', $refs.logInSignUp.open()">Sign Up</q-btn>
             </div>
           </div>
         </div>
       </div>
-      <a class="bottom_left" href="https://www.trevormitchellartist.com/">Image courtesy of Trevor Mitchell</a>
+      <!--a class="bottom_left" href="https://www.trevormitchellartist.com/">Image courtesy of Trevor Mitchell</a-->
     </section>
-    <section class="layout-padding window-height bg-tertiary row no-wrap desktop-only" id="what-we-do" style="padding-top: 5%; padding-bottom: 5%;">
-     <h2 class="text-white">How to use MyCorner?</h2>
-      <q-card class="round-border bg-light" align="center" style="padding: 10px; width: 25vw">
-        <!--<br><br><br><br><br><br>-->
-        <div align="center"  style="padding: 20px">
+
+    <section align="center" class="window-height bg-light desktop-only" id="what-we-do" style="padding-top: 6%; padding-bottom: 7%; padding-left: 3%; padding-right: 3%; min-height: 750px;">
+      <h2 class="text-primary">Shop on MyCorner!</h2>
+      <h5 class="text-grey-6">Shopping has never been simpler. Find all your favorite items right around the corner and have them delivered to you in minutes!</h5><br><br><br>
+      <q-card class="bg-grey-1" align="center" style="width: 27%;" inline>
+        <q-card-title align="left">
           <h4 class="float-left text-bold text-primary">1.</h4><br>
-          <h5 class="text-tertiary text-bold">Search for stores on your corner!</h5>
-        </div>
+        </q-card-title>
         <q-card-media>
-          <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping">
+          <img style="width: 35%;" class="card_icons" src="../../assets/icons/storeSearch.svg" alt="All your favorite stores at your fingertips">
         </q-card-media>
-        </q-card>
-      <q-card class="round-border bg-white" align="center" style="padding: 1px; width: 25vw;">
-        <!--<br><br><br><br><br><br>-->
-        <div align=""  style="padding: 20px">
+        <br><br>
+        <q-card-separator />
+        <q-card-title>
+            Search
+            <span slot="subtitle">
+              <div style="overflow-y:scroll; overflow-x:hidden; max-height:35px;">
+                Search for all your favorite stores right around your corner and step inside.
+              </div>
+            </span>
+        </q-card-title>
+      </q-card>
+      <q-card class="bg-grey-1" align="center" style="width: 27%" inline>
+        <q-card-title align="left">
           <h4 class="float-left text-bold text-primary">2.</h4><br>
-          <h5 class="text-tertiary text-bold">Add your favorite items to your cart!</h5>
-        </div>
+        </q-card-title>
         <q-card-media>
-          <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping">
+          <img style="width: 35%;" class="card_icons" src="../../assets/icons/addProducts.svg" alt="Add your favorite items to your cart and checkout with the click of a button">
         </q-card-media>
+        <br><br>
+        <q-card-separator />
+        <q-card-title>
+            Shop
+            <span slot="subtitle">
+              <div style="overflow-y:scroll; overflow-x:hidden; max-height:35px;">
+                Add items to your carts as you shop and checkout with the click of a button.
+              </div>
+            </span>
+        </q-card-title>
       </q-card>
-      <q-card class="round-border bg-white" align="center" style="padding: 10px; width: 25vw;">
-        <!--<br><br><br><br><br><br>-->
-        <div align=""  style="padding: 20px">
+      <q-card class="bg-grey-1" align="center" style="width: 27%" inline>
+        <q-card-title align="left">
           <h4 class="float-left text-bold text-primary">3.</h4><br>
-          <h5 class="text-tertiary text-bold">Have it delivered straight to your home!</h5>
-        </div>
+        </q-card-title>
         <q-card-media>
-          <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" >
+          <img style="width: 35%;" src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" >
         </q-card-media>
+        <br><br>
+        <q-card-separator />
+        <q-card-title>
+          Enjoy
+          <span slot="subtitle">
+            <div style="overflow-y:scroll; overflow-x:hidden; max-height:35px;">
+              Have your items delivered straight to your home or pick them up without waiting on a single line!
+            </div>
+          </span>
+        </q-card-title>
       </q-card>
-    </section>
-    <section class="layout-padding window-height bg-light row no-wrap desktop-only" id="partners" style="padding-top: 5%; padding-bottom: 5%;">
-      <div>
-        <h2 class="text-primary">Are you a local store?</h2>
-        <h5 class="text-tertiary">Managing your online store has never been easier! MyCorner allows you to easily upload your products online, manage your inventory, update store information and process customer orders.</h5>
-        <br><br><br>
-        <q-btn color="primary" big @click="$refs.trialInfo.open()">Start your free trial!</q-btn>
-      </div>
-      <img src="../../assets/img/screenshotDesktop.png" alt="MyCorner.Store" style="width: 60vw">
     </section>
     <q-modal maximized ref="trialInfo" transition="fade">
       <h4><q-icon name="close" class="text-primary absolute-top-right" @click="$refs.trialInfo.close()"/></h4>
       <trial-period></trial-period>
     </q-modal>
+
+    <section class="layout-padding window-height bg-grey-1 row no-wrap desktop-only" id="partners" style="padding-top: 5%; padding-bottom: 5%; min-height: 750px;">
+      <div align="center" style="padding:30px; padding-top: 70px;">
+        <h3 class="text-primary">Are you a local merchant?</h3><br>
+        <q-btn color="primary" big @click="$refs.trialInfo.open()">Start your free trial today!</q-btn>
+      </div>
+      <q-carousel arrows dots class="bgimgico text-grey-9">
+        <div slot="slide" class="" align="center">
+          <img src="../../assets/admin-store.png" alt="MyCorner.Store" style="width: 400px;"><br><br>
+          <div>
+            Managing your online store has never been easier!
+            MyCorner allows you to easily manage your store information with one simple form.
+            From setting your store hours, to updating your delivery fees, we strive to make this process as enjoyable as possible.
+          </div>
+        </div>
+        <div slot="slide" class="" align="center">
+          <img src="../../assets/admin-products.png" alt="MyCorner.Store" style="width: 400px;"><br><br>
+          <div>
+            We have painstakingly hand crafted our custom store template to make uploading your inventory as simple as dragging an item into your store.
+            Most of our items come with nutrition facts and details so you dont have to work about any data entry.
+            We currently have over 140 categories and 18 thousand items in our ever growing collection!
+          </div>
+        </div>
+        <div slot="slide" class="" align="center">
+          <img src="../../assets/store_product_list_view.png" alt="MyCorner.Store" style="width: 400px"><br><br>
+          <div>
+            Don't have time to go through all your items? That's ok. Save your progress and come back any time! Wanna know the best part?
+            Your progress is automatically visible to your customers so they don't waste a second shopping for their favorite goods at their favorite store.
+          </div>
+        </div>
+      </q-carousel>
+    </section>
+
+    <section class="layout-padding window-height bg-light row no-wrap desktop-only" id="partners" style="padding-top: 5%; padding-bottom: 5%; min-height: 750px;">
+      <q-carousel arrows dots class="bgimgico text-grey-9">
+        <div slot="slide" class="" align="center">
+          <img src="../../assets/store_search.png" alt="MyCorner.Store" style="width: 400px;"><br><br>
+          <div>
+            Take a walk around the block and see what's on your corner. Our selection of stores is constantly growing.
+            Haven't found what your looking for? We would love nothing more then for you to tell your favorite store about us or contact us with your suggestions.
+          </div>
+        </div>
+        <div slot="slide" class="" align="center">
+          <img src="../../assets/store_product_list_view.png" alt="MyCorner.Store" style="width: 400px;"><br><br>
+          <div>
+            Walk the aisles and add items to your cart.
+          </div>
+        </div>
+        <div slot="slide" class="" align="center">
+          <img src="../../assets/store_item_details.png" alt="MyCorner.Store" style="width: 400px"><br><br>
+          <div>
+            Still not sure if you found what your looking for?
+            No worries, we take pride in our inventory and do our very best to provide you with details and nutrition facts.
+            If it dosen't feel like your holding the items in the palm of your hands we haven't done our job.
+          </div>
+        </div>
+        <div slot="slide" class="" align="center">
+          <img src="../../assets/store_cart.png" alt="MyCorner.Store" style="width: 400px"><br><br>
+          <div>
+            Checkout is as easy as clicking a button!
+          </div>
+        </div>
+      </q-carousel>
+      <div align="center" style="padding:30px; padding-top: 70px;">
+        <h3 class="text-primary">Looking to do some shopping?</h3><br>
+        <q-btn color="primary" big @click="$refs.logInSignUp.open()">Sign Up, it's free!</q-btn>
+      </div>
+    </section>
+
+    <section class="layout-padding window-height desktop-only" id="contact" align="center" style="min-height: 750px;">
+      <h2 class="text-white text-bold">
+        CONTACT US
+        <h6 class="text-light-green-3">
+          From our team here at MyCorner, we sincerly hope to be a part of your shopping experience.
+          If you have questions, concerns, feedback, suggestions or requests we are here to help in any way we can.
+        </h6>
+      </h2>
+      <div class="absolute-center" style="padding: 40px; padding-left: 20%; padding-right: 20%;">
+        <q-field icon="email" type="email" label="Email" helper="Required" dark=true><q-input dark=true v-model="contactUsEmail" /></q-field>
+        <q-field icon="phone" label="Phone" type="tel" helper="Optional" dark=true><q-input dark=true v-model="contactUsPhoneNumber" /></q-field>
+        <q-field icon="person" label="Name" helper="Optional" dark=true><q-input dark=true v-model="contactUsName" /></q-field>
+        <q-field icon="mail" label="Message" :count="500" helper="Required" dark=true>
+          <q-input dark=true type="textarea" v-model="contactUsMessage" :max-height="100" :min-rows="4" />
+        </q-field>
+      </div>
+      <q-btn big color="light-green-8" class="text-bold text-primary col-4" style="font-size: 25px;">
+        Send
+      </q-btn>
+    </section>
+
   </div>
 </template>
 
@@ -118,7 +235,11 @@
     data () {
       return {
         formTab: 'login',
-        signedup: false
+        signedup: false,
+        contactUsEmail: '',
+        contactUsPhoneNumber: '',
+        contactUsName: '',
+        contactUsMessage: ''
       }
     },
     components: {
@@ -148,6 +269,12 @@
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0
   }
+  section#contact {
+    background-color: rgba(0, 60, 0, 0.95);
+    background-image: url("../../assets/map-image.png") !important;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
   #corner {
     background-image: url("../../assets/img/groceryStoreCartoon.jpg");
     height: 50%;
@@ -170,11 +297,11 @@
     width: 30%;
     height: 18%;
     padding: 20px;
-    background-color: rgba(0, 10, 0, 0.67);
+    background-color: rgba(0, 15, 0, 0.6);
     box-shadow:
-      0 0 60px 30px rgba(0, 10, 0, 0.27),
-      0 0 100px 60px rgba(0, 10, 0, 0.17),
-      0 0 140px 90px rgba(0, 10, 0, 0.47);
+      0 0 60px 30px rgba(0, 15, 0, 0.26),
+      0 0 100px 60px rgba(0, 15, 0, 0.11),
+      0 0 140px 90px rgba(0, 15, 0, 0.41);
   }
   .glow_logo_mobile {
     width: 40%;
