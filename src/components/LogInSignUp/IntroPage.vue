@@ -55,7 +55,6 @@
           </div>
         </div>
       </div>
-      <a class="bottom_left" href="https://www.trevormitchellartist.com/">Image courtesy of Trevor Mitchell</a>
     </section>
     <section class="layout-padding window-height bg-tertiary row no-wrap desktop-only" id="what-we-do" style="padding-top: 5%; padding-bottom: 5%;">
      <h2 class="text-white">How to use MyCorner?</h2>

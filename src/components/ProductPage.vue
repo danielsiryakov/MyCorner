@@ -22,7 +22,7 @@
       <hr>
       <!--{{productDetails.nutrition}}-->
       <div class="row no-wrap group desktop-only">
-        <div v-if="productDetails">
+        <div v-if="productDetails.nutrition.serving_size !== ''">
           <section class="performance-facts">
             <header class="performance-facts__header">
               <h1 class="performance-facts__title">Nutrition Facts</h1>
@@ -70,7 +70,7 @@
         </div>
       </div>
       <div class="row no-margin group mobile-only">
-        <div v-if="productDetails">
+        <div v-if="productDetails.nutrition.serving_size !== ''">
           <section class="performance-facts">
             <header class="performance-facts__header">
               <h1 class="performance-facts__title">Nutrition Facts</h1>
