@@ -4,7 +4,7 @@
     <section class="flex window-height" id="corner">
       <div class="sm-width-1of1 md-width-1of1 bg-width-5of5 lg-width-3of5">
         <img src="../../assets/fulllogo.png" class="mobile-only" style="padding: 20px;height: 100px">
-        <img src="../../assets/fulllogo.png" class="glow_logo_desktop desktop-only" style="width: 30vw">
+        <img src="../../assets/fulllogo.png" class="desktop-only" style="width: 30vw">
 
         <div class="row centered justify-center group" id="footer" style="padding: 20px;">
           <div class="col-lg-8">
@@ -50,7 +50,7 @@
         <div class="desktop-only row justify-center group" id="footer" style="padding-bottom: 20px;">
           <div class="col-lg-8">
             <div class="row justify-center group">
-              <q-btn big color="green-10" class="text-bold text-primary col-4" style="font-size: 25px;" @click="formTab='signup', $refs.logInSignUp.open()">
+              <q-btn big color="primary" class="text-bold text-primary col-4" style="font-size: 25px;" @click="formTab='signup', $refs.logInSignUp.open()">
                 Sign Up Today!
               </q-btn>
             </div>
@@ -208,14 +208,14 @@
         </h6>
       </h2>
       <div class="absolute-center" style="padding: 40px; padding-left: 20%; padding-right: 20%;">
-        <q-field icon="email" type="email" label="Email" helper="Required" dark=true><q-input dark=true v-model="contactUsEmail" /></q-field>
-        <q-field icon="phone" label="Phone" type="tel" helper="Optional" dark=true><q-input dark=true v-model="contactUsPhoneNumber" /></q-field>
-        <q-field icon="person" label="Name" helper="Optional" dark=true><q-input dark=true v-model="contactUsName" /></q-field>
-        <q-field icon="mail" label="Message" :count="500" helper="Required" dark=true>
-          <q-input dark=true type="textarea" v-model="contactUsMessage" :max-height="100" :min-rows="4" />
+        <q-field icon="email" type="email" label="Email" helper="Required" dark><q-input dark v-model="contactUsEmail" /></q-field>
+        <q-field icon="phone" label="Phone" type="tel" helper="Optional" dark><q-input dark v-model="contactUsPhoneNumber" /></q-field>
+        <q-field icon="person" label="Name" helper="Optional" dark><q-input dark v-model="contactUsName" /></q-field>
+        <q-field icon="mail" label="Message" :count="500" helper="Required" dark>
+          <q-input dark type="textarea" v-model="contactUsMessage" :max-height="100" :min-rows="4" />
         </q-field>
       </div>
-      <q-btn big color="light-green-8" class="text-bold text-primary col-4" style="font-size: 25px;">
+      <q-btn big color="primary" class="text-bold text-primary col-4" style="font-size: 25px;">
         Send
       </q-btn>
     </section>
@@ -270,7 +270,7 @@
     opacity: 0
   }
   section#contact {
-    background-color: rgba(0, 60, 0, 0.95);
+    background-color: rgba(0, 50, 0, 0.95);
     background-image: url("../../assets/map-image.png") !important;
     background-repeat: no-repeat;
     background-position: center;
@@ -292,16 +292,6 @@
     position:absolute;
     bottom: 0;
     left:0;
-  }
-  .glow_logo_desktop {
-    width: 30%;
-    height: 18%;
-    padding: 20px;
-    background-color: rgba(0, 15, 0, 0.6);
-    box-shadow:
-      0 0 60px 30px rgba(0, 15, 0, 0.26),
-      0 0 100px 60px rgba(0, 15, 0, 0.11),
-      0 0 140px 90px rgba(0, 15, 0, 0.41);
   }
   .glow_logo_mobile {
     width: 40%;
