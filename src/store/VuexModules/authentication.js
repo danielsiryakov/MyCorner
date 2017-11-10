@@ -55,7 +55,6 @@ const actions = {
   },
 
   logout ({ commit }) {
-    router.push('/home')
     Cookies.remove('userID')
     Cookies.remove('authtoken')
     LocalStorage.remove('authtoken')
