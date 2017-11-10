@@ -207,7 +207,7 @@
           If you have questions, concerns, feedback, suggestions or requests we are here to help in any way we can.
         </h6>
       </h2>
-      <div class="absolute-center" style="padding: 40px; padding-left: 20%; padding-right: 20%;">
+      <div class="center" style="padding: 40px; padding-left: 20%; padding-right: 20%;">
         <q-field icon="email" type="email" label="Email" helper="Required" dark><q-input dark v-model="contactUsEmail" /></q-field>
         <q-field icon="phone" label="Phone" type="tel" helper="Optional" dark><q-input dark v-model="contactUsPhoneNumber" /></q-field>
         <q-field icon="person" label="Name" helper="Optional" dark><q-input dark v-model="contactUsName" /></q-field>

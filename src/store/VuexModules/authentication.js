@@ -1,7 +1,11 @@
 import axios from 'axios'
 import router from '../../router'
 import shop from '../../api/shop'
-import { Cookies, LocalStorage } from 'quasar'
+import {
+  Cookies,
+  LocalStorage
+} from 'quasar'
+
 const LOGIN_URL = shop.API_URL + 'user/login'
 const SIGNUP_URL = shop.API_URL + 'user/create'
 const USER_RETRIEVE = shop.API_URL + 'user/retrieve'
@@ -29,7 +33,6 @@ const actions = {
       })
       axios.defaults.headers.common['authtoken'] = response.data.login.authtoken
       axios.defaults.headers.common['userID'] = response.data.login.userID
-      // LocalStorage.set('authtoken', response.data.login.authtoken)
       commit('authenticationTrue')
       router.push('/')
     }).catch(error => {
@@ -52,11 +55,12 @@ const actions = {
   },
 
   logout ({ commit }) {
+    router.push('/home')
     Cookies.remove('userID')
     Cookies.remove('authtoken')
     LocalStorage.remove('authtoken')
     commit('authenticationFalse')
-    router.push('/login')
+    router.replace('/reload')
   }
 }
 

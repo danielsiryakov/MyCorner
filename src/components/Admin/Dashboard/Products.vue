@@ -282,7 +282,8 @@
             label: category.name,
             value: category.category_id,
             stamp: category.product_count.toString(),
-            inset: true
+            inset: true,
+            avatar: category.icon
           })
         })
         return options
