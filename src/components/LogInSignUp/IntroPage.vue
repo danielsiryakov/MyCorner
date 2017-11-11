@@ -3,25 +3,23 @@
 
     <section class="flex window-height" id="corner">
       <!-- A Toolbar with a title and subtitle -->
-
-      <q-toolbar color="white" slot="header" class="absolute-top desktop-only" >
+      <q-toolbar color="primary" inverted class="light-dimmed absolute-top-right desktop-only" style="height: 8%; background: rgba(0, 0, 0, 0.01);">
           <q-toolbar-title>
             <img src="../../assets/fulllogo.png"
                  class="desktop-only absolute-top-left"
-                 style="height: 4rem; padding: 5px">
+                 style="max-width: 90%; max-height: 90%; z-index: 99; padding-left: 30px; padding-top: 5px;">
           </q-toolbar-title>
-
-          <q-btn flat big style="padding: 10px;" @click="$refs.commonQuestions.open()">
-            <q-icon name="question answer" />
-            Common Questions
+          <q-btn style="padding: 10px; z-index: 99;" @click="$refs.commonQuestions.open()">
+            <q-icon style="z-index: 99;" name="question answer" />
+            <span big class="text-bold" style="z-index: 99;">Q & A</span>
           </q-btn>
-          <q-btn flat big style="padding: 10px;" @click="$refs.trialInfo.open()">
-            <q-icon name="monetization on" />
-            Store Trial
+          <q-btn style="padding: 10px; z-index: 99;" @click="$refs.trialInfo.open()">
+            <q-icon small style="z-index: 99;" name="monetization on" />
+            <span class="text-bold" style="z-index: 99;">Trial</span>
           </q-btn>
-          <q-btn flat big style="padding: 10px;" @click="$refs.logInSignUp.open()">
-            <q-icon name="lock open" />
-            login
+          <q-btn style="padding: 10px; z-index: 99;" @click="$refs.logInSignUp.open()">
+            <q-icon small style="z-index: 99;" name="lock open" />
+            <span class="text-bold" style="z-index: 99;">Login</span>
           </q-btn>
       </q-toolbar>
       <div class="sm-width-1of1 md-width-1of1 bg-width-5of5 lg-width-3of5">
@@ -305,7 +303,7 @@
     background-position: center;
   }
   #corner {
-    background-image: url("../../assets/img/groceryStoreCartoon.jpg");
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.08), rgba(0,0,0,0.16)), url("../../assets/img/groceryStoreCartoon.jpg");
     height: 50%;
 
     /* Center and scale the image nicely */
