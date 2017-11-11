@@ -154,12 +154,12 @@
       <common-questions></common-questions>
     </q-modal>
 
-    <section class="layout-padding window-height bg-grey-1 row no-wrap desktop-only" id="partners" style="padding-top: 5%; padding-bottom: 5%; min-height: 750px;">
-      <div align="center" style="padding:30px; padding-top: 70px;">
+    <section class="layout-padding justify-center window-height bg-grey-1 row desktop-only" id="partners" style="min-height: 800px;">
+      <div align="center" style="">
         <h3 class="text-primary">Are you a local merchant?</h3><br>
         <q-btn color="primary" big @click="$refs.trialInfo.open()">Start your free trial today!</q-btn>
       </div>
-      <q-carousel arrows dots class="bgimgico text-grey-9">
+      <q-carousel arrows dots class="text-grey-9">
         <div slot="slide" class="" align="center">
           <img src="../../assets/admin-store.png" alt="MyCorner.Store" style="width: 400px;"><br><br>
           <div>
