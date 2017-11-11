@@ -2,9 +2,28 @@
   <div class="layout-view">
 
     <section class="flex window-height" id="corner">
+      <!-- A Toolbar with a title and subtitle -->
+      <q-toolbar color="primary" inverted class="absolute-top-right desktop-only" style="height: 13%;">
+          <q-toolbar-title>
+            <img src="../../assets/fulllogo.png"
+                 class="desktop-only absolute-top-left"
+                 style="width: 30vw">
+          </q-toolbar-title>
+          <q-btn flat style="padding: 10px;" @click="$refs.commonQuestions.open()">
+            <q-icon name="question answer" />
+            Common Questions
+          </q-btn>
+          <q-btn flat style="padding: 10px;" @click="$refs.trialInfo.open()">
+            <q-icon name="monetization on" />
+            Store Trial
+          </q-btn>
+          <q-btn flat style="padding: 10px;" @click="$refs.logInSignUp.open()">
+            <q-icon name="lock open" />
+            login
+          </q-btn>
+      </q-toolbar>
       <div class="sm-width-1of1 md-width-1of1 bg-width-5of5 lg-width-3of5">
         <img src="../../assets/fulllogo.png" class="mobile-only" style="padding: 20px;height: 100px">
-        <img src="../../assets/fulllogo.png" class="desktop-only" style="width: 30vw">
 
         <div class="row centered justify-center group" id="footer" style="padding: 20px;">
           <div class="col-lg-8">
@@ -130,6 +149,10 @@
       <h4><q-icon name="close" class="text-primary absolute-top-right" @click="$refs.trialInfo.close()"/></h4>
       <trial-period></trial-period>
     </q-modal>
+    <q-modal maximized ref="commonQuestions" transition="fade">
+      <h4><q-icon name="close" class="text-primary absolute-top-right" @click="$refs.commonQuestions.close()"/></h4>
+      <common-questions></common-questions>
+    </q-modal>
 
     <section class="layout-padding window-height bg-grey-1 row no-wrap desktop-only" id="partners" style="padding-top: 5%; padding-bottom: 5%; min-height: 750px;">
       <div align="center" style="padding:30px; padding-top: 70px;">
@@ -226,6 +249,7 @@
 <script>
   import Login from './Login.vue'
   import TrialPeriod from './TrialPeriodOffer.vue'
+  import CommonQuestions from './CommonQuestions.vue'
   import SignUp from './Signup.vue'
   import {
     QTabs, QRouteTab, QBtn, QIcon
@@ -249,7 +273,8 @@
       QTabs,
       QRouteTab,
       QBtn,
-      QIcon
+      QIcon,
+      CommonQuestions
     },
     computed: mapState({
       userAuth: 'authenticated'
