@@ -1,16 +1,16 @@
 <template>
-  <div align="center" class="text-tertiary">
+  <div align="" class="text-tertiary">
     <div style="margin:0 auto;max-width:800px;background:white;">
       <div style="padding:0px; color:#0f1f38; font-size:16px;line-height:30px;text-align: left">
         <h4 class="bg-tertiary text-white" style="padding: 10px">Frequently Asked Questions</h4>
         <br>
       </div>
       <q-list>
-        <q-collapsible icon="store" label="Commonly asked questions by store owners">
+        <q-collapsible opened  icon="store" label="Commonly asked questions by store owners">
           <div>
             <q-list>
-              <q-collapsible icon="add circle outline" label="What if I don't offer delivery?">
-                <div>
+              <q-collapsible opened  icon="add circle outline" label="What if I don't offer delivery?">
+                <div class="answer">
                   You may disable delivery and or pickup services in your admin panel at
                   any time. These changes will instantly be applied to your store. That
                   means that as soon as you enable or disable the feature your customers
@@ -18,7 +18,7 @@
                 </div>
               </q-collapsible>
               <q-collapsible icon="add circle outline" label="What are your fees?">
-                <div>
+                <div class="answer">
                   We do not have any subscription fees. You are offered a free trial. Once
                   your trial has expired you may continue using our services. Our fees on
                   credit card orders are 8% plus $0.30. Cash transactions are completely free
@@ -26,7 +26,7 @@
                 </div>
               </q-collapsible>
               <q-collapsible icon="add circle outline" label="What does your platform offer?">
-                <div>
+                <div class="answer">
                   Think of us as the online version of your store. We allow you to manage
                   your inventory, edit your store details, accept orders and have automatic
                   checkout for your customers. But most importantly we promote your store.
@@ -34,7 +34,7 @@
                 </div>
               </q-collapsible>
               <q-collapsible icon="add circle outline" label="This sounds like something I may be interested in but I'm not sure I'm ready to take the plunge?">
-                <div>
+                <div class="answer">
                   Until it is time for you to enable your store the only commitment you
                   are making is singing up. We will not charge you a cent until your trial
                   period expires. We hope to make long lasting partnerships. That being said,
@@ -45,7 +45,7 @@
                 </div>
               </q-collapsible>
                 <q-collapsible icon="add circle outline" label="I have too many products to count. How will I upload all of them?">
-                  <div>
+                  <div class="answer">
                     We have worked hard on making this as pleasant an experience as we could
                     imagine. We have roughly 18k items in our current inventory database armed
                     with standard pricing, details, images, and nutrition facts. Our admin panel
@@ -56,7 +56,7 @@
                   </div>
                 </q-collapsible>
                 <q-collapsible icon="add circle outline" label="What if I run out of a product or would like to edit a couple of items in a category?">
-                  <div>
+                  <div class="answer">
                     There are a couple of options to deal with this. If you have to work on
                     a couple of items in a single category you may either work on them directly
                     or disable the category and, once your done editing, re-enable it. If you
@@ -68,7 +68,7 @@
                   </div>
                 </q-collapsible>
                 <q-collapsible icon="add circle outline" label="What happens if I get an order for an item that is out of stock?">
-                  <div>
+                  <div class="answer">
                     Although we would encourage you to keep your store up to date we understand
                     that this is not always possible. So if you do end up receiving an order
                     including an item that you no longer have available you may always contact
@@ -84,15 +84,6 @@
           </div>
         </q-collapsible>
       </q-list>
-    </div>
-
-    <div style="margin:0 auto;max-width:800px;background:#F5F7F9;" align="center" class="absolute-bottom">
-      <div style="cursor:auto;color:#0f1f38 ;font-size:13px;line-height:20px; padding:20px 3px;">
-        From our team here at MyCorner we sincerly hope to be a part of your journey!
-        Thank you for taking the time to read a little about us and we look forward to hearing from you!
-        <br>
-        If you have questions, concerns, feedback, suggestions or requests we are here to help in any way we can.
-      </div>
     </div>
   </div>
 </template>
@@ -132,5 +123,7 @@
 </script>
 
 <style>
-
+.answer {
+  padding: 20px;
+}
 </style>
