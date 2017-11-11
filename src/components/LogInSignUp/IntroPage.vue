@@ -3,21 +3,23 @@
 
     <section class="flex window-height" id="corner">
       <!-- A Toolbar with a title and subtitle -->
-      <q-toolbar color="primary" inverted class="absolute-top-right desktop-only" style="height: 13%;">
+
+      <q-toolbar color="white" slot="header" class="absolute-top desktop-only" >
           <q-toolbar-title>
             <img src="../../assets/fulllogo.png"
                  class="desktop-only absolute-top-left"
-                 style="width: 30vw">
+                 style="height: 4rem; padding: 5px">
           </q-toolbar-title>
-          <q-btn flat style="padding: 10px;" @click="$refs.commonQuestions.open()">
+
+          <q-btn flat big style="padding: 10px;" @click="$refs.commonQuestions.open()">
             <q-icon name="question answer" />
             Common Questions
           </q-btn>
-          <q-btn flat style="padding: 10px;" @click="$refs.trialInfo.open()">
+          <q-btn flat big style="padding: 10px;" @click="$refs.trialInfo.open()">
             <q-icon name="monetization on" />
             Store Trial
           </q-btn>
-          <q-btn flat style="padding: 10px;" @click="$refs.logInSignUp.open()">
+          <q-btn flat big style="padding: 10px;" @click="$refs.logInSignUp.open()">
             <q-icon name="lock open" />
             login
           </q-btn>
@@ -87,63 +89,65 @@
       <!--a class="bottom_left" href="https://www.trevormitchellartist.com/">Image courtesy of Trevor Mitchell</a-->
     </section>
 
-    <section align="center" class="window-height bg-light desktop-only" id="what-we-do" style="padding-top: 6%; padding-bottom: 7%; padding-left: 3%; padding-right: 3%; min-height: 750px;">
+    <section align="center" class="layout-padding window-height bg-light desktop-only" id="what-we-do">
       <h2 class="text-primary">Shop on MyCorner!</h2>
-      <h5 class="text-grey-6">Shopping has never been simpler. Find all your favorite items right around the corner and have them delivered to you in minutes!</h5><br><br><br>
-      <q-card class="bg-grey-1" align="center" style="width: 27%;" inline>
-        <q-card-title align="left">
-          <h4 class="float-left text-bold text-primary">1.</h4><br>
-        </q-card-title>
-        <q-card-media>
-          <img style="width: 35%;" class="card_icons" src="../../assets/icons/storeSearch.svg" alt="All your favorite stores at your fingertips">
-        </q-card-media>
-        <br><br>
-        <q-card-separator />
-        <q-card-title>
+      <h5 class="text-grey-6">Shopping has never been simpler. Find all your favorite items right around the corner and have them delivered to you in minutes!</h5><br><br>
+      <div class="row no-wrap">
+        <q-card class="col bg-grey-1" align="center" inline>
+          <q-card-title align="left">
+            <h4 class="float-left text-bold text-primary">1.</h4><br>
+          </q-card-title>
+          <q-card-media>
+            <img style="width: 35%;" class="card_icons" src="../../assets/icons/storeSearch.svg" alt="All your favorite stores at your fingertips">
+          </q-card-media>
+          <br><br>
+          <q-card-separator />
+          <q-card-title>
             Search
             <span slot="subtitle">
-              <div style="overflow-y:scroll; overflow-x:hidden; max-height:35px;">
+              <div>
                 Search for all your favorite stores right around your corner and step inside.
               </div>
             </span>
-        </q-card-title>
-      </q-card>
-      <q-card class="bg-grey-1" align="center" style="width: 27%" inline>
-        <q-card-title align="left">
-          <h4 class="float-left text-bold text-primary">2.</h4><br>
-        </q-card-title>
-        <q-card-media>
-          <img style="width: 35%;" class="card_icons" src="../../assets/icons/addProducts.svg" alt="Add your favorite items to your cart and checkout with the click of a button">
-        </q-card-media>
-        <br><br>
-        <q-card-separator />
-        <q-card-title>
+          </q-card-title>
+        </q-card>
+        <q-card class="col bg-grey-1" align="center" inline>
+          <q-card-title align="left">
+            <h4 class="float-left text-bold text-primary">2.</h4><br>
+          </q-card-title>
+          <q-card-media>
+            <img style="width: 35%;" class="card_icons" src="../../assets/icons/addProducts.svg" alt="Add your favorite items to your cart and checkout with the click of a button">
+          </q-card-media>
+          <br><br>
+          <q-card-separator />
+          <q-card-title>
             Shop
             <span slot="subtitle">
-              <div style="overflow-y:scroll; overflow-x:hidden; max-height:35px;">
+              <div>
                 Add items to your carts as you shop and checkout with the click of a button.
               </div>
             </span>
-        </q-card-title>
-      </q-card>
-      <q-card class="bg-grey-1" align="center" style="width: 27%" inline>
-        <q-card-title align="left">
-          <h4 class="float-left text-bold text-primary">3.</h4><br>
-        </q-card-title>
-        <q-card-media>
-          <img style="width: 35%;" src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" >
-        </q-card-media>
-        <br><br>
-        <q-card-separator />
-        <q-card-title>
-          Enjoy
-          <span slot="subtitle">
-            <div style="overflow-y:scroll; overflow-x:hidden; max-height:35px;">
+          </q-card-title>
+        </q-card>
+        <q-card class="col bg-grey-1" align="center" inline>
+          <q-card-title align="left">
+            <h4 class="float-left text-bold text-primary">3.</h4><br>
+          </q-card-title>
+          <q-card-media>
+            <img style="width: 35%;" src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" >
+          </q-card-media>
+          <br><br>
+          <q-card-separator />
+          <q-card-title>
+            Enjoy
+            <span slot="subtitle">
+            <div>
               Have your items delivered straight to your home or pick them up without waiting on a single line!
             </div>
           </span>
-        </q-card-title>
-      </q-card>
+          </q-card-title>
+        </q-card>
+      </div>
     </section>
     <q-modal maximized ref="trialInfo" transition="fade">
       <h4><q-icon name="close" class="text-primary absolute-top-right" @click="$refs.trialInfo.close()"/></h4>
