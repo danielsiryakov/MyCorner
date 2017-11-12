@@ -14,13 +14,13 @@
             <q-icon name="keyboard_arrow_left"></q-icon>Shop for more items!
           </q-side-link>
           <br>
-          <q-item class="bg-white" v-for="p in cart.products" :key="p.asset_id" v-if="p.quantity && cart.totals.subtotal">
+          <q-item class="bg-white cursor-pointer" v-for="p in cart.products" :key="p.asset_id" v-if="p.quantity && cart.totals.subtotal">
             <q-item-side @click="open(p, cart)" :avatar="p.image">
               <q-item-tile>
                 {{ p.quantity }} x {{ formattedPrice(p.price_cents) }}
               </q-item-tile>
             </q-item-side>
-            <q-item-main @click="open(p, cart)">{{ formattedTitle(p.title) }}</q-item-main>
+            <q-item-main @click="open(p, cart)">{{ formattedTitle(p.label) }}</q-item-main>
             <q-icon name="delete" color="negative" @click="removeFromCart(p, cart)"></q-icon>
           </q-item>
           <br>
@@ -36,10 +36,10 @@
       <checkout v-if="checkoutCart !== ''" :cart="checkoutCart" @checkedOut="checkedout"></checkout>
     </q-modal>
 
-    <q-modal ref="productModal" class="" :content-css="{padding: '20px', maxWidth: '500px', maxHeight: '800px'}">
+    <q-modal ref="productModal" class="" :content-css="{padding: '20px', maxWidth: '600px'}">
       <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.productModal.close()"/></h4>
       <!--<i class="text-negative" @click="$refs.productModal.close()">close</i>-->
-      <product-page :product="ProductObject" :quantityProp="cartQuantity" v-on:added="close"></product-page>
+      <product-page :productDetails="currentProductDetails" :product="ProductObject" :quantityProp="cartQuantity" v-on:added="close"></product-page>
     </q-modal>
   </div>
 </template>
@@ -48,6 +48,7 @@
   import { mapActions, mapGetters } from 'vuex'
   import ProductPage from './ProductPage.vue'
   import Checkout from './Checkout.vue'
+  import shop from '../api/shop'
   export default {
     components: {
       ProductPage,
@@ -79,6 +80,12 @@
         'getStore',
         'retriesActiveCarts'
       ]),
+      getProductDetails (id) {
+        console.log('getting product details')
+        shop.productTemplateRetrieve(id).then(response => {
+          this.currentProductDetails = response.data
+        })
+      },
       checkedout () {
         this.retriesActiveCarts()
         this.$refs.checkout.close()
@@ -116,10 +123,11 @@
           product_id: product.product_id
         })
       },
-      open: function (Product, cart) {
-        this.ProductObject = Product
+      open: function (product, cart) {
+        this.ProductObject = product
+        this.getProductDetails(product.asset_id)
         this.ProductObject['store_id'] = cart.store_id
-        this.cartQuantity = Product.quantity
+        this.cartQuantity = product.quantity
         this.$refs.productModal.open()
       },
       close: function () {
@@ -135,7 +143,36 @@
       return {
         cartQuantity: 1,
         ProductObject: {},
-        checkoutCart: ''
+        checkoutCart: '',
+        currentProductDetails: {
+          asset_id: '',
+          link: '',
+          size: '',
+          title: '',
+          details: [
+            {
+              body: '',
+              header: ''
+            }
+          ],
+          nutrition: {
+            calories: '',
+            disclaimer: '',
+            serving_size: '',
+            servings_per_container: '',
+            nutrients: [
+              {
+                total: '',
+                label: '',
+                pct_daily_value: '',
+                subcategories: []
+              }
+            ]
+          },
+          price_cents: '',
+          display_title: '',
+          template_category_id: ''
+        }
       }
     }
   }

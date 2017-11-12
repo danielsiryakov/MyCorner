@@ -85,7 +85,7 @@
                           :name="aisle.name">
                 <br>
                   <div v-for="(category, key) in aisle.children_categories" :key="key" @click="openT2Category(category)">
-                    <q-card class="bg-white text-bold" style="padding: 15px">
+                    <q-card flat class="bg-white text-bold" style="padding: 15px">
                       {{category.name}}
                       <q-icon class="float-right" name="keyboard_arrow_right"></q-icon>
                     </q-card>
@@ -95,7 +95,7 @@
             </q-tabs>
           </q-tab-pane>
           <q-tab-pane name="Information" class="" v-if="store">
-            <q-card class="row justify-center bg-light layout-padding">
+            <q-card class="row justify-center bg-light">
               <div class="col-lg-8" align="center">
                 <!--<h3 class="" style="padding: 10px;">Information</h3>-->
                 <div class="group " style="padding: 10px;">
@@ -188,10 +188,10 @@
         <!--<address-edit :address="selectedAddress"></address-edit>-->
       </q-modal>
 
-      <q-modal ref="productModal" class="" :content-css="{padding: '20px', maxWidth: '500px', maxHeight: '800px'}">
+      <q-modal ref="productModal" class="" :content-css="{padding: '20px', maxWidth: '600px'}">
         <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.productModal.close()"/></h4>
         <!--<i class="text-negative" @click="$refs.productModal.close()">close</i>-->
-        <product-page :product="ProductObject" :quantityProp="cartQuantity" v-on:added="close"></product-page>
+        <product-page :product="ProductObject" :quantityProp="cartQuantity" :productDetails="currentProductDetails" v-on:added="close"></product-page>
       </q-modal>
     </div>
 	</q-layout>
@@ -223,6 +223,35 @@
         T2Products: {
           results: [],
           metadata: {}
+        },
+        currentProductDetails: {
+          asset_id: '',
+          link: '',
+          size: '',
+          title: '',
+          details: [
+            {
+              body: '',
+              header: ''
+            }
+          ],
+          nutrition: {
+            calories: '',
+            disclaimer: '',
+            serving_size: '',
+            servings_per_container: '',
+            nutrients: [
+              {
+                total: '',
+                label: '',
+                pct_daily_value: '',
+                subcategories: []
+              }
+            ]
+          },
+          price_cents: '',
+          display_title: '',
+          template_category_id: ''
         }
       }
     },
@@ -273,6 +302,12 @@
         'getStore',
         'getAllProducts'
       ]),
+      getProductDetails (id) {
+        console.log('getting product details')
+        shop.productTemplateRetrieve(id).then(response => {
+          this.currentProductDetails = response.data
+        })
+      },
       filter (products) {
         return (filter('S', {field: 'title', list: products}))
       },
@@ -339,9 +374,10 @@
 //        this.ProductObject = Product
 //        this.showModal = true
 //      },
-      open: function (Product) {
-        this.ProductObject = Product
-        this.cartQuantity = this.productCartQuantity(Product.asset_id)
+      open: function (product) {
+        this.getProductDetails(product.asset_id)
+        this.ProductObject = product
+        this.cartQuantity = this.productCartQuantity(product.asset_id)
         this.$refs.productModal.open()
       },
       close: function () {

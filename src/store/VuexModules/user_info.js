@@ -26,13 +26,14 @@ const actions = {
         dispatch('getFullStoreInfo', sids[0])
         commit('update_store_selection', sids[0])
         axios.defaults.headers.common['storeID'] = sids[0]
+        dispatch('getT1Aisles')
       }
       dispatch('getAddressBook')
       dispatch('retriesActiveCarts')
       dispatch('getWallet')
-//      shop.retrieveAddressBookDefualt(addressBook => {
-//        commit('setDefaultAddress', addressBook)
-//      })
+      shop.retrieveAddressBookDefualt(addressBook => {
+        commit('setDefaultAddress', addressBook)
+      })
     })
   },
   getAddressBook ({commit}) {

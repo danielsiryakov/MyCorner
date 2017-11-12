@@ -20,6 +20,55 @@
       </div>
     </div>
     <br><br>
+    <q-btn v-if="selectedCategory !== ''" outline @click="openSearchModal">Search for a product to add</q-btn>
+    <q-modal v-if="selectedCategory !== ''" ref="productSearch" minimized :content-css="{padding: '20px', minWidth: '600px'}">
+      <q-search inverted placeholder="Search for Products to Add!" v-model="terms" v-if="create_product_modal_view">
+        <q-autocomplete
+          separator
+          @search="search"
+          @selected="selected"
+          :max-results="100"
+        />
+      </q-search>
+      <br>
+      <q-field v-if="create_product_modal_view">
+        <q-input v-model="new_product.title" type="text" float-label="Product Name"
+                 :value = "new_product.title" clearable/>
+      </q-field>
+      <q-field v-if="create_product_modal_view">
+        <q-input v-model="new_product.price_cents" type="number" prefix="$" float-label="Product Price"
+                 :value = "new_product.price_cents" clearable/>
+      </q-field>
+
+      <q-field v-if="create_product_modal_view">
+        <q-input v-model="new_product.description" type="text" float-label="Product Description"
+                 :value = "new_product.description" clearable/>
+      </q-field>
+      <div class="col-12">
+        <q-field>
+          <div v-if="!new_product.image">
+            <div class="dropzone-area"
+                 drag-over="handleDragOver"
+                 @dragenter="this.hovering=true"
+                 @dragleave="this.hovering=false"
+                 :class="{'hovered': this.hovering}">
+              <div class="dropzone-text">
+                <span class="dropzone-title">
+                  Drag and drop an image of your item here or click to select one from your device
+                </span>
+              </div>
+              <input type="file" @change="onFileChange">
+            </div>
+          </div>
+          <div class="dropzone-preview" v-if="new_product.image">
+            <img :src="new_product.image" alt="" height="200px" width="200px">
+            <q-btn @click="removeImage" flat color="tertiary">Remove</q-btn>
+          </div>
+        </q-field>
+      </div>
+      <q-btn outline @click="addProduct">Add Product</q-btn>
+    </q-modal>
+
     <!--{{productsData.results}}-->
 
     <!--<div v-for="(product, key) in productsData.results" :key="key">-->
@@ -154,6 +203,7 @@
   import ProductAddModal from '../Onboard/ProductAddModal.vue'
   import CategoryProducts from '../Onboard/StepThree.vue'
   import shop from '../../../api/shop'
+  import axios from 'axios'
   import Vue from 'vue'
   import { mapActions } from 'vuex'
   import {
@@ -164,6 +214,8 @@
   export default {
     data () {
       return {
+        hovering: false,
+        create_product_modal_view: true,
         addedPage: 1,
         templatePage: 1,
         newPrice: 0,
@@ -178,14 +230,72 @@
           results: [],
           metadata: {}
         },
-        productIndex: ''
+        productIndex: '',
+        terms: '',
+        new_product: {
+          label: '',
+          title: '',
+          image: '', // leaving at top level for now (which means variants cant have imgs)
+          category_id: '', // ? just one or list of cats it falls in (tempted to say list)
+          asset_id: ''
+        }
       }
     },
     methods: {
       ...mapActions([
         'getT1Aisles',
-        'getT2Categories'
+        'getT2Categories',
+        'getUserInfo'
       ]),
+      onFileChange (e) {
+        var reader = new FileReader()
+        var files = e.target.files || e.dataTransfer.files
+        if (!files.length) return
+        console.log(files)
+        if (files.length !== 1) {
+          setTimeout(Alert.create({
+            html: 'Please include an image for your new item.',
+            color: 'red-7'
+          }).dismiss, 5000)
+          return
+        }
+        reader.onload = (e) => {
+          this.new_product.image = e.target.result
+          this.new_asset = e.target.result
+        }
+        console.log(e.target.files)
+        reader.readAsDataURL(files[0])
+      },
+      createImage (file) {
+        var reader = new FileReader()
+        reader.onload = (e) => {
+          this.new_product.images.push(e.target.result)
+          this.new_asset = e.target.result
+        }
+        reader.readAsDataURL(file)
+      },
+      openSearchModal () {
+        this.$refs.productSearch.open()
+      },
+      removeImage: function (e) {
+        this.new_product.image = ''
+      },
+      selected (item) {
+        this.new_product.title = item.title
+        this.new_product.label = item.label
+        this.new_product.image = item.image
+        this.new_product.asset_id = item.asset_id
+        this.new_product.category_id = item.template_category_id
+      },
+      search: function (terms, done) {
+        axios.get(shop.ASSET_IMAGE_SEARCH + terms, {
+        }).then(function (response) {
+          console.log(response.data)
+          done(response.data)
+        }).catch(function (error) {
+          done([error])
+        })
+      },
       openProduct (product, pindex) {
         this.productIndex = pindex
 //        this.currentProduct = this.addedProductsData.results[pindex]
@@ -252,6 +362,19 @@
           setTimeout(alert.dismiss, 5000)
         })
       },
+      addProduct () {
+        this.$refs.productSearch.close()
+        this.new_product.price_cents = this.new_product.price_cents * 100
+        this.addedProductsData.results.push(this.new_product)
+        this.new_product = {
+          label: '',
+          title: '',
+          image: '', // leaving at top level for now (which means variants cant have imgs)
+          category_id: '', // ? just one or list of cats it falls in (tempted to say list)
+          asset_id: ''
+        }
+        this.addProducts()
+      },
       addProducts () {
         shop.productCreate(this.addedProductsData.results, this.selectedCategory).then(response => {
           this.addedProductsData = response.data
@@ -282,7 +405,8 @@
             label: category.name,
             value: category.category_id,
             stamp: category.product_count.toString(),
-            inset: true
+            inset: true,
+            avatar: category.icon
           })
         })
         return options
@@ -312,7 +436,13 @@
       QSpinnerDots
     },
     created () {
-      this.getT1Aisles()
+      this.getUserInfo()
+//      this.getT1Aisles()
+    },
+    watch: {
+      '$route' (to, from) {
+        this.getUserInfo()
+      }
     }
   }
 </script>
@@ -324,5 +454,86 @@
   .list-complete-enter, .list-complete-leave-active {
     opacity: 0;
   }
+  .modal-content.scroll{
+    padding: 10px;
+  }
+  .list-complete-item {
+    padding: 4px;
+    margin-top: 4px;
+    border: solid 1px;
+    transition: all 1s;
+  }
 
+  .list-complete-enter, .list-complete-leave-active {
+    opacity: 0;
+  }
+  .dropzone-area {
+    width: 100% !important;
+    height: 100px !important;
+    position: relative;
+    border: 2px dashed #CBCBCB;
+  &.hovered {
+     border: 2px dashed #2E94C4;
+  .dropzone-title {
+    color: #1975A0;
+  }
+  }
+  }
+
+  .dropzone-area input {
+    position: absolute;
+    cursor: pointer;
+    top: 0px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+
+  .dropzone-text {
+    position: absolute;
+    top: 50%;
+    text-align: center;
+    transform: translate(0, -50%);
+    width: 100%;
+  span {
+    display: block;
+    font-family: Arial, Helvetica;
+    line-height: 1.9;
+  }
+  }
+
+  .dropzone-title {
+    font-size: 13px;
+    color: #787878;
+    letter-spacing: 0.4px;
+  }
+  .dropzone-info {
+    font-size: 13px;
+    font-size: 0.8125rem;
+    color: #A8A8A8;
+    letter-spacing: 0.4px;
+  }
+
+  .dropzone-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: none;
+  }
+
+  .dropzone-preview {
+    width: 80% !important;
+    position: relative;
+  &:hover .dropzone-button {
+     display: block;
+   }
+  img {
+    display: block;
+    height: auto;
+    max-width: 100%;
+  }
+  }
 </style>

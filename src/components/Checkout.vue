@@ -25,6 +25,13 @@
             <q-input class="bg-white" v-model="phone"></q-input>
           </q-field>
           <br>
+          <q-field>
+            <span class="text-bold">Instructions: </span>
+            <q-input class=""
+                     type="textarea"
+                     v-model="instructions"></q-input>
+          </q-field>
+          <br>
           <span class="text-bold">Payment:</span>
           <q-select
             v-model="selectedCC"
@@ -40,7 +47,7 @@
             <q-item class="bg-white" v-for="p in cart.products" :key="p.product_id" v-if="p.quantity>0">
               <q-item-side>{{ p.quantity }} x</q-item-side>
               <q-item-main>
-                {{ p.title }}
+                {{ p.label }}
               </q-item-main>
 
               <q-item-side>${{ p.price_cents / 100 }}</q-item-side>
@@ -58,7 +65,6 @@
         </div>
       </div>
     </div>
-
     <div v-if="orderPlaced">
       <div class="bg-light">
         <h4 class="text-bold">Thank You For Your Order!</h4>
@@ -66,9 +72,7 @@
         <h5 class="text-bold">{{ cart.store_name }}</h5>
         {{ currentStore.address.line1 }}
       </div>
-
     </div>
-
   </div>
 </template>
 
@@ -84,7 +88,8 @@
         orderType: 'PickUp',
         selectedAddress: '',
         selectedCC: '',
-        orderPlaced: false
+        orderPlaced: false,
+        instructions: ''
       }
     },
     components: {
@@ -195,6 +200,7 @@
       },
       checkout () {
         let payload = {}
+        payload.instructions = this.instructions
         payload.cart_id = this.cart.id
         payload.store_id = this.cart.store_id
         payload.instructions = ''
