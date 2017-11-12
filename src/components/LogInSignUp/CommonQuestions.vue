@@ -80,7 +80,26 @@
         </q-collapsible>
         <q-collapsible icon="perm_identity" label="Commonly asked questions by customers">
           <div>
-            Content
+            <q-list>
+              <q-collapsible icon="add circle outline" label="I am shopping in one store and would like to move on to another. Will I loose my cart items?">
+                <div class="answer">
+                  MyCorner allows for multiple carts! You may shop in as many stores as
+                  you like and checkout from any store whenever you like.
+                </div>
+              </q-collapsible>
+              <q-collapsible icon="add circle outline" label="I ordered from a store and really enjoyed the experience but can remember what store it was?">
+                <div class="answer">
+                  Not to worry, you may see your past orders in your profile tab and re-order
+                  from and store you wish.
+                </div>
+              </q-collapsible>
+              <q-collapsible icon="add circle outline" label="I signed up. What's next?">
+                <div class="answer">
+                  Simply confirm your email, sign in, type in your address and we will find all the stores near you that
+                  deliver or offer pickup. Now shop!
+                </div>
+              </q-collapsible>
+            </q-list>
           </div>
         </q-collapsible>
       </q-list>
