@@ -5,16 +5,7 @@ function load (component) {
   return () => System.import(`components/${component}.vue`)
 }
 
-// import CartPage from './components/CartPage'
-// import IntroPage from './components/LogInSignUp/IntroPage.vue'
-// import HomePage from './components/HomePage'
-// import ProductPage from './components/ProductPage'
 import StoresListPage from './components/List_Of_Stores'
-// import StorePage from './components/StorePage'
-// import ProfilePage from './components/UserProfile/Profile.vue'
-// import StoreOnboard from './components/Admin/Onboard/Store_Onboarding_Page.vue'
-// import Dashboard from './components/Admin/Dashboard.vue'
-// import { Cookies } from 'quasar'
 import store from './store/index'
 Vue.use(VueRouter)
 
@@ -38,7 +29,8 @@ const Router = new VueRouter({
       component: load('Admin/Dashboard/Dashboard'),
       children: [
         {path: '/admin/store', meta: { Auth: true }, component: load('Admin/Dashboard/StoreInfo')},
-        {path: '/admin/products', meta: { Auth: true }, component: load('Admin/Dashboard/ProductAndCategories')},
+        {path: '/admin/categories', meta: { Auth: true }, component: load('Admin/Dashboard/Categories')},
+        {path: '/admin/products', meta: { Auth: true }, component: load('Admin/Dashboard/Products')},
         {path: '/admin/payments', meta: { Auth: true }, component: load('Admin/Dashboard/StorePayments')},
         {path: '/admin/orders', meta: { Auth: true }, component: load('Admin/Dashboard/Orders')}
       ]
@@ -48,6 +40,14 @@ const Router = new VueRouter({
       name: 'intro',
       meta: { Auth: false },
       component: load('LogInSignUp/IntroPage')
+    },
+    {
+      path: '/reload',
+      name: 'reload',
+      meta: { Auth: false },
+      component: function () {
+        location.pathname = ''
+      }
     },
     {
       path: '/termsofuse',
@@ -63,11 +63,9 @@ const Router = new VueRouter({
     },
     {path: '*', component: load('Error404')}]
 })
-// var jwt = Cookies.get('authtoken')
-//
+
 Router.beforeEach((to, from, next) => {
   store.commit('checkAuth')
-  // if (to.path === '/login') { store.commit('authenticationFalse') }
   if (to.meta.Auth && !store.state.auth.authenticated) {
     console.log('authentication is: ' + store.state.auth.authenticated)
     next({path: '/login', replace: true})

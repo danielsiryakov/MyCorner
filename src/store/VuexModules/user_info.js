@@ -1,3 +1,4 @@
+import axios from 'axios'
 import shop from '../../api/shop'
 const state = {
   info: {
@@ -5,7 +6,8 @@ const state = {
     email: '',
     user_id: '111',
     user_roles: {
-      Access: {}
+      access: {},
+      store_map: {}
     }
   },
   address_book: [],
@@ -17,13 +19,21 @@ const state = {
 const actions = {
   async getUserInfo ({dispatch, commit}) {
     shop.userInfo(info => {
+      console.log(info)
       commit('setUserInfo', info)
-      shop.retrieveAddressBookDefualt(addressBook => {
-        commit('setDefaultAddress', addressBook)
-      })
+      var sids = Object.keys(info.user_roles.store_map)
+      if (sids.length > 0) {
+        dispatch('getFullStoreInfo', sids[0])
+        commit('update_store_selection', sids[0])
+        axios.defaults.headers.common['storeID'] = sids[0]
+        dispatch('getT1Aisles')
+      }
       dispatch('getAddressBook')
       dispatch('retriesActiveCarts')
       dispatch('getWallet')
+      shop.retrieveAddressBookDefualt(addressBook => {
+        commit('setDefaultAddress', addressBook)
+      })
     })
   },
   getAddressBook ({commit}) {

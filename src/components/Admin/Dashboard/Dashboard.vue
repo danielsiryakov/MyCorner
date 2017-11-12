@@ -1,7 +1,7 @@
 <template>
   <q-layout
     ref="layoutD"
-    :left-breakpoint="760"
+    :left-breakpoint="900"
     :view="'hHr LpR lFr'"
     :reveal="true"
     class=""
@@ -27,7 +27,7 @@
         <q-item-main label="Store Info"/>
       </q-side-link>
       <q-side-link item to="/admin/products">
-        <q-item-side icon="motorcycle"/>
+        <q-item-side icon="add_shopping_cart"/>
         <q-item-main label="Products"/>
       </q-side-link>
       <q-side-link item :to="{path: '/store-sign-up', exact: true}">
@@ -100,8 +100,6 @@
         get () { return this.$store.state.storeInfo.selectedStore },
         set (value) { this.$store.commit('update_store_selection', value) }
       }
-    },
-    mounted () {
     }
   }
 </script>

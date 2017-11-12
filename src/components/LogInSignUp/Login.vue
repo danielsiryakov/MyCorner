@@ -37,13 +37,12 @@
 <script>
   import { mapActions, mapMutations } from 'vuex'
   import shop from '../../api/shop'
+//  import update_store_selection from '../../store/VuexModules/store_info'
   import {
     QInput, QBtn, Cookies, LocalStorage, Alert
   } from 'quasar'
   import axios from 'axios'
   const LOGIN_URL = shop.API_URL + 'user/login'
-//  const SIGNUP_URL = API_URL + 'user/create'
-//  const USER_RETRIEVE = API_URL + 'user/retrieve'
   export default {
     data () {
       return {
@@ -62,7 +61,6 @@
     },
     methods: {
       ...mapActions([
-//        'login',
         'retrieve',
         'getUserInfo',
         'retriesActiveCarts',
@@ -70,7 +68,6 @@
         'getWallet'
       ]),
       ...mapMutations([
-//        'login',
         'authenticationTrue'
       ]),
       login (creds) {
@@ -81,6 +78,7 @@
             password: creds.password
           }
         }).then(response => {
+          this.authenticationTrue()
           this.loading = false
           this.$emit('closeModal')
           Cookies.set('userID', response.data.login.userID, {
@@ -94,17 +92,19 @@
           axios.defaults.headers.common['authtoken'] = response.data.login.authtoken
           axios.defaults.headers.common['userID'] = response.data.login.userID
           LocalStorage.set('authtoken', response.data.login.authtoken)
-          this.$store.commit('authenticationTrue')
-          this.authenticationTrue()
+//          this.$store.commit('authenticationTrue')
           this.getUserInfo()
-          this.getAddressBook()
-          this.retriesActiveCarts()
-          this.getWallet()
-          if (response.data.is_store_owner === true) {
+          var sids = Object.keys(response.data.user_roles.store_map)
+          if (sids.length > 0) {
+            this.$store.commit('update_store_selection', sids[0])
+//            axios.defaults.headers.common['storeId'] = sids[0]
+          }
+          console.log(this.$store.state)
+          if (response.data.is_store_owner) {
             this.$router.push('/admin')
           }
           else {
-            this.$router.push('/')
+            this.$router.push('/home')
           }
 
           // Router.push('/')

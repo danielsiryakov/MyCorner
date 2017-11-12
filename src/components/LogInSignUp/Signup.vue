@@ -3,7 +3,7 @@
     <h3>Sign Up</h3><br>
     Are you a user or store owner?
     <q-tabs :refs="$refs" v-model="formTab" no-pane-border color="white" >
-      <q-tab default slot="title" name="user" label="User" class="text-tertiary text-bold"/>
+      <q-tab slot="title" name="user" label="User" class="text-tertiary text-bold"/>
       <q-tab slot="title" name="owner" @click="this.is_store_owner = true" label="Store Owner"class="text-tertiary text-bold" />
 
       <!--<q-tab-pane name="login"><login></login></q-tab-pane>-->
@@ -45,10 +45,10 @@
       return {
         password: '',
         email: '',
-        is_store_owner: false,
-        formTab: 'login'
+        is_store_owner: false
       }
     },
+    props: ['formTab'],
     components: {
       QInput, QBtn, TermsOfService, Privacy
     },

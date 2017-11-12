@@ -1,14 +1,21 @@
 import shop from '../../api/shop'
 import axios from 'axios'
 import router from '../../router'
+import Vue from 'vue'
 import { Cookies, Loading, Alert } from 'quasar'
 const CREATE_STORE = shop.API_URL + 'store/create'
 const IMAGEUPLOAD = shop.API_URL + 'assets/image/upload'
 const state = {
   selectedStore: '',
   dashboardStore: {},
+  T1Aisles: [],
+  T2Categories: [],
+  T2Aisles: {},
   orders: [],
+  categoriesT2: [],
+  categoriesT1: [],
   store: {
+    category_ids: [],
     email: '',
     platform_categories: ['Grocery', 'Corner Store'],
     working_hours: {
@@ -274,7 +281,8 @@ const actions = {
     })
     console.log(authtoken)
     axios.post(CREATE_STORE, JSON.stringify(storePayload)).then(function (response) {
-      router.push('/')
+      // axios.defaults.headers.common['authtoken'] = response.headers['authtoken']
+      router.push('/admin')
       console.log(response)
     }).catch(function (error) {
       const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
@@ -284,14 +292,9 @@ const actions = {
   },
   getFullStoreInfo ({commit}, id) {
     // shop.storeInfo
-    shop.storeInfoFull(id, store => {
+    shop.storeInfo(id, store => {
       commit('update_full_store', store)
-      shop.storeCategoriesRetrieve(id, store => {
-        commit('update_store', {categories: store})
-      }).catch(error => {
-        const alert = Alert.create({html: error.response.data.message, color: 'red-7'})
-        setTimeout(alert.dismiss, 5000)
-      })
+      commit('update_store', {category_ids: store.category_ids})
     })
   },
   getActiveOrders ({commit}) {
@@ -304,10 +307,41 @@ const actions = {
         setTimeout(alert.dismiss, 5000)
       })
     }
+  },
+  getT1Aisles ({commit}) {
+    console.log(state.selectedStore)
+    axios.defaults.headers.common['storeID'] = state.selectedStore
+    shop.templateCategoriesT1().then(response => {
+      commit('updateT1Aisles', response.data)
+    })
+  },
+  getT2Categories ({commit}, id) {
+    let i = 0
+    let t2 = []
+    for (; i < state.T1Aisles.length; i++) {
+      if (id === state.T1Aisles[i].category_id) {
+        t2 = state.T1Aisles[i].children_categories
+      }
+    }
+    console.log(t2)
+    if (t2.length) {
+      commit('updateT2Categories', t2)
+    }
+    else {
+      shop.templateCategoriesT2(id).then(response => {
+        commit('updateT2Categories', response.data)
+      })
+    }
   }
 }
 
 const mutations = {
+  updateT1Aisles (state, data) {
+    state.T1Aisles = data
+  },
+  updateT2Categories (state, data) {
+    state.T2Categories = data
+  },
   createImage (state, file) {
     state.store.image = file
   },
@@ -372,6 +406,29 @@ const mutations = {
   },
   reset_store (state) {
     state.store = state.storeTemplate
+  },
+  enableT1Aisle (state, id) {
+    state.T1Aisles.forEach(aisle => {
+      if (aisle.category_id === id) { aisle.enabled = false }
+    })
+    if (!(id in state.T2Aisles)) {
+      shop.templateCategoriesT2(id).then(response => {
+        Vue.set(state.T2Aisles, id, response.data)
+      })
+    }
+    if (id in state.T2Aisles) {
+      Vue.delete(state.T2Aisles, id)
+      // setTimeout(console.log(this.T2Aisles), 300)
+    }
+  },
+  addDeleteAisle (state, id) {
+    let index = state.store.category_ids.indexOf(id)
+    if (index > -1) {
+      state.store.category_ids.splice(index, 1)
+    }
+    else {
+      state.store.category_ids.push(id)
+    }
   }
 }
 
