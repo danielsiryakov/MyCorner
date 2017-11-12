@@ -85,7 +85,7 @@
                           :name="aisle.name">
                 <br>
                   <div v-for="(category, key) in aisle.children_categories" :key="key" @click="openT2Category(category)">
-                    <q-card class="bg-white text-bold" style="padding: 15px">
+                    <q-card flat class="bg-white text-bold" style="padding: 15px">
                       {{category.name}}
                       <q-icon class="float-right" name="keyboard_arrow_right"></q-icon>
                     </q-card>

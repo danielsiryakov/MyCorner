@@ -84,7 +84,6 @@
           </div>
         </div>
       </div>
-      <!--a class="bottom_left" href="https://www.trevormitchellartist.com/">Image courtesy of Trevor Mitchell</a-->
     </section>
 
     <section align="center" class="layout-padding bg-light desktop-only" id="what-we-do">

@@ -14,7 +14,7 @@
             <q-icon name="keyboard_arrow_left"></q-icon>Shop for more items!
           </q-side-link>
           <br>
-          <q-item class="bg-white" v-for="p in cart.products" :key="p.asset_id" v-if="p.quantity && cart.totals.subtotal">
+          <q-item class="bg-white cursor-pointer" v-for="p in cart.products" :key="p.asset_id" v-if="p.quantity && cart.totals.subtotal">
             <q-item-side @click="open(p, cart)" :avatar="p.image">
               <q-item-tile>
                 {{ p.quantity }} x {{ formattedPrice(p.price_cents) }}
