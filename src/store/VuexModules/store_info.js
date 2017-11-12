@@ -309,6 +309,8 @@ const actions = {
     }
   },
   getT1Aisles ({commit}) {
+    console.log(state.selectedStore)
+    axios.defaults.headers.common['storeID'] = state.selectedStore
     shop.templateCategoriesT1().then(response => {
       commit('updateT1Aisles', response.data)
     })
