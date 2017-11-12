@@ -72,7 +72,7 @@
               <q-tab slot="title" name="signup" label="Sign Up" />
 
               <q-tab-pane name="login"><login @closeModal="$refs.logInSignUp.close()"></login></q-tab-pane>
-              <q-tab-pane  name="signup"><sign-up v-if="!signedup" v-on:submit="signedup = true"></sign-up>
+              <q-tab-pane  name="signup"><sign-up :formTab="'owner'" v-if="!signedup" v-on:submit="signedup = true"></sign-up>
                 <div v-if="signedup" style="padding: 20px;" class="layout-padding">
                   <h4>we sent you a confirmation email!</h4><br>
                   <big class="text-tertiary">
