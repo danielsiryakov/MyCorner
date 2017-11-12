@@ -84,13 +84,23 @@
                           :key="key"
                           :name="aisle.name">
                 <br>
-                  <div v-for="(category, key) in aisle.children_categories" :key="key" @click="openT2Category(category)">
-                    <q-card flat class="bg-white text-bold" style="padding: 15px">
-                      {{category.name}}
-                      <q-icon class="float-right" name="keyboard_arrow_right"></q-icon>
+                <div class="row">
+                  <div v-for="(category, key) in aisle.children_categories"
+                       :key="key"
+                       @click="openT2Category(category)">
+                    <q-card inline class="cursor-pointer bg-white text-bold" style="padding: 15px;">
+                      <q-card-title>
+                        <h5 class="text-bold">{{category.name}}</h5>
+                      </q-card-title>
+
+                      <q-card-media>
+                        <img :src="category.icon" alt="" style="padding: 20px; height: 200px; width: 200px">
+                      </q-card-media>
+                      <!--<q-icon class="float-right" name="keyboard_arrow_right"></q-icon>-->
                     </q-card>
-                    <br>
                   </div>
+                </div>
+
               </q-tab-pane>
             </q-tabs>
           </q-tab-pane>
@@ -162,20 +172,21 @@
             </q-item>
 
             <q-card inline flat
-                    style="width: 30vh; height: 30vh"
+                    style="width: 40vh; height: 40vh"
                     class="gt-sm bg-white"
                     v-for="p in T2Products.results"
                     :key="p.asset_id"
                     @click="open(p)">
               <!--<q-card inline flat style="width: 30vh; height: 30vh" class="bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">-->
               <q-card-media overlay-position="bottom">
-              <img :src="p.image" style="padding: 25px">
-              <q-card-title class="text-condensed" slot="overlay">
-              <small class="">{{p.label.substring(0,30)}}</small><br>
+                <img :src="p.image" style="padding: 25px">
+                <q-card-title class="text-condensed" slot="overlay">
+                <small class="">{{p.label.substring(0,30)}}</small>
+                  <br>
               <!--{{getProductCartQuantity(id, p.id).quantity}}-->
-              <span class="text-bold">${{p.price_cents / 100}}</span>
-              <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
-              </q-card-title>
+                <span class="text-bold">${{p.price_cents / 100}}</span>
+                <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
+                </q-card-title>
               </q-card-media>
             </q-card>
         </div>
