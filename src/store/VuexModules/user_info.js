@@ -1,5 +1,6 @@
 import axios from 'axios'
 import shop from '../../api/shop'
+// import router from '../../router'
 const state = {
   info: {
     confirmed: false,
