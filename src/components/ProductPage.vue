@@ -141,8 +141,8 @@
         return (this.mutation.quantity * this.product.price_cents / 100)
       },
       displayQuantity: function () {
-        if (this.mutation.name !== this.product.title) {
-          this.mutation.name = this.product.title
+        if (this.mutation.name !== this.product.label) {
+          this.mutation.name = this.product.label
           if (this.quantityProp) {
             this.mutation.quantity = this.quantityProp
           }
@@ -169,6 +169,7 @@
       addItem () {
         this.addToCart({
           asset_id: this.product.asset_id,
+          label: this.product.label,
           title: this.product.title,
           image: this.product.image,
           price_cents: this.product.price_cents,
