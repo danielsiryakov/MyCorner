@@ -138,6 +138,7 @@ export default {
         Cookies.remove('authtoken')
         LocalStorage.remove('authtoken')
         this.$store.commit('authenticationFalse')
+        console.log('no permission for user info')
         router.push('/login')
       }
       const alert = Alert.create({html: error.response.data.message, color: 'red-7'})

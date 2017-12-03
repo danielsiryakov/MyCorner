@@ -39,7 +39,7 @@
   import shop from '../../api/shop'
 //  import update_store_selection from '../../store/VuexModules/store_info'
   import {
-    QInput, QBtn, Cookies, LocalStorage, Alert
+    QInput, QBtn, Cookies, Alert
   } from 'quasar'
   import axios from 'axios'
   const LOGIN_URL = shop.API_URL + 'user/login'
@@ -65,12 +65,14 @@
         'getUserInfo',
         'retriesActiveCarts',
         'getAddressBook',
-        'getWallet'
+        'getWallet',
+        'login'
       ]),
       ...mapMutations([
-        'authenticationTrue'
+        'authenticationTrue',
+        'setUserInfo'
       ]),
-      login (creds) {
+      login2 (creds) {
         this.loading = true
         axios.get(LOGIN_URL, {
           params: {
@@ -78,8 +80,9 @@
             password: creds.password
           }
         }).then(response => {
-          this.authenticationTrue()
+          this.setUserInfo(response.data)
           this.loading = false
+          this.$store.commit('authenticationTrue')
           this.$emit('closeModal')
           Cookies.set('userID', response.data.login.userID, {
             path: '/',
@@ -91,23 +94,19 @@
           })
           axios.defaults.headers.common['authtoken'] = response.data.login.authtoken
           axios.defaults.headers.common['userID'] = response.data.login.userID
-          LocalStorage.set('authtoken', response.data.login.authtoken)
-//          this.$store.commit('authenticationTrue')
           this.getUserInfo()
+          // LocalStorage.set('authtoken', response.data.login.authtoken)
           var sids = Object.keys(response.data.user_roles.store_map)
           if (sids.length > 0) {
             this.$store.commit('update_store_selection', sids[0])
-//            axios.defaults.headers.common['storeId'] = sids[0]
           }
-          console.log(this.$store.state)
-          if (response.data.is_store_owner) {
-            this.$router.push('/admin')
-          }
-          else {
-            this.$router.push('/home')
-          }
-
-          // Router.push('/')
+          this.$router.push('/store_search')
+          // if (response.data.is_store_owner) {
+          //   this.$router.push({ name: 'admin' })
+          // }
+          // else {
+          //   this.$router.push({ name: 'home' })
+          // }
         }).catch(error => {
           this.loading = false
           this.loginError = true

@@ -15,6 +15,44 @@ const state = {
 }
 
 const actions = {
+  login ({ dispatch, commit }, creds) {
+    axios.get(LOGIN_URL, {
+      params: {
+        email: creds.email,
+        password: creds.password
+      }
+    }).then(response => {
+      commit('setUserInfo', response.data)
+      commit('authenticationTrue')
+      Cookies.set('userID', response.data.login.userID, {
+        path: '/',
+        expires: 10
+      })
+      Cookies.set('authtoken', response.data.login.authtoken, {
+        path: '/',
+        expires: 10
+      })
+      this.$emit('closeModal')
+      axios.defaults.headers.common['authtoken'] = response.data.login.authtoken
+      axios.defaults.headers.common['userID'] = response.data.login.userID
+      // LocalStorage.set('authtoken', response.data.login.authtoken)
+      var sids = Object.keys(response.data.user_roles.store_map)
+      dispatch('getUserInfo')
+      if (sids.length > 0) {
+        commit('update_store_selection', sids[0])
+      }
+      // router.push('/store_search')
+      if (response.data.is_store_owner) {
+        router.push({ name: 'admin' })
+      }
+      else {
+        router.push({ name: 'home' })
+      }
+    }).catch(error => {
+      // this.loginError = true
+      console.log(error)
+    })
+  },
   login2 ({ commit }, creds, errorCb) {
     axios.get(LOGIN_URL, {
       params: {
@@ -59,7 +97,17 @@ const actions = {
     Cookies.remove('authtoken')
     LocalStorage.remove('authtoken')
     commit('authenticationFalse')
-    router.replace('/reload')
+    router.push('/')
+  },
+  async checkAuth ({ commit }) {
+    var hasCookies = Boolean(Cookies.has('authtoken'))
+    console.log('has cookies: ' + hasCookies)
+    if (hasCookies) {
+      await commit('authenticationTrue')
+    }
+    else {
+      await commit('authenticationFalse')
+    }
   }
 }
 
@@ -69,16 +117,6 @@ const mutations = {
   },
   authenticationFalse (state) {
     state.authenticated = false
-  },
-  checkAuth: function (state) {
-    let hasCookies = Cookies.has('authtoken')
-    console.log('has cookies: ' + hasCookies)
-    if (hasCookies) {
-      state.authenticated = true
-    }
-    else {
-      state.authenticated = false
-    }
   }
 }
 
