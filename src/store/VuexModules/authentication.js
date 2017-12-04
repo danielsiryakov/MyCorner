@@ -11,7 +11,9 @@ const SIGNUP_URL = shop.API_URL + 'user/create'
 const USER_RETRIEVE = shop.API_URL + 'user/retrieve'
 
 const state = {
-  authenticated: false
+  authenticated: false,
+  loggedIn: false,
+  loginError: false
 }
 
 const actions = {
@@ -22,6 +24,7 @@ const actions = {
         password: creds.password
       }
     }).then(response => {
+      commit('loginSuccess')
       commit('setUserInfo', response.data)
       commit('authenticationTrue')
       Cookies.set('userID', response.data.login.userID, {
@@ -32,7 +35,6 @@ const actions = {
         path: '/',
         expires: 10
       })
-      this.$emit('closeModal')
       axios.defaults.headers.common['authtoken'] = response.data.login.authtoken
       axios.defaults.headers.common['userID'] = response.data.login.userID
       // LocalStorage.set('authtoken', response.data.login.authtoken)
@@ -50,6 +52,7 @@ const actions = {
       }
     }).catch(error => {
       // this.loginError = true
+      commit('loginError')
       console.log(error)
     })
   },
@@ -114,6 +117,12 @@ const actions = {
 const mutations = {
   authenticationTrue (state) {
     state.authenticated = true
+  },
+  loginError (state) {
+    state.loginError = true
+  },
+  loginSuccess (state) {
+    state.loggedIn = true
   },
   authenticationFalse (state) {
     state.authenticated = false

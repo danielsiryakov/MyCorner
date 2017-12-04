@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import { mapActions, mapMutations } from 'vuex'
+  import { mapActions, mapMutations, mapState } from 'vuex'
   import shop from '../../api/shop'
 //  import update_store_selection from '../../store/VuexModules/store_info'
   import {
@@ -58,6 +58,12 @@
     components: {
       QInput,
       QBtn
+    },
+    computed: {
+      ...mapState([
+        'loggedIn'
+        // 'loginError'
+      ])
     },
     methods: {
       ...mapActions([
@@ -119,6 +125,12 @@
             'password': this.password,
             'email': this.email
           })
+        if (this.loggedIn === true) {
+          this.$emit('closeModal')
+        }
+        else {
+          this.loginError = true
+        }
       },
       resetPassword () {
         this.resetClicked = true
