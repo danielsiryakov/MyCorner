@@ -122,9 +122,9 @@
         if (this.loggedIn === true) {
           this.$emit('closeModal')
         }
-        else {
-          this.loginError = true
-        }
+        // else {
+        //   this.loginError = true
+        // }
       },
       resetPassword () {
         this.resetClicked = true

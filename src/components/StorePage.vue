@@ -84,11 +84,12 @@
                           :key="key"
                           :name="aisle.name">
                 <br>
-                <div class="row">
+                <div class="row group">
                   <div v-for="(category, key) in aisle.children_categories"
                        :key="key"
-                       @click="openT2Category(category)">
-                    <q-card inline class="cursor-pointer bg-white text-bold" style="padding: 15px;">
+                       @click="openT2Category(category)"
+                       class="full-width">
+                    <q-card inline class="desktop-only cursor-pointer bg-white text-bold" style="padding: 15px;">
                       <q-card-title>
                         <h5 class="text-bold" style="word-wrap: break-word; width: 200px; height: 80px">{{category.name}}</h5>
                       </q-card-title>
@@ -96,7 +97,14 @@
                       <q-card-media>
                         <img :src="category.icon" alt="" style="padding: 20px; height: 200px; width: 200px">
                       </q-card-media>
- al                   <!--<q-icon class="float-right" name="keyboard_arrow_right"></q-icon>-->
+                    <!--<q-icon class="float-right" name="keyboard_arrow_right"></q-icon>-->
+                    </q-card>
+                    <q-card class="full-width mobile-only">
+                      <q-item class="full-width">
+                        <q-item-side :image="category.icon"></q-item-side>
+                        <q-item-main :label="category.name" class="text-bold">
+                        </q-item-main>
+                      </q-item>
                     </q-card>
                   </div>
                 </div>
