@@ -81,6 +81,17 @@ const actions = {
     Cookies.remove('authtoken')
     LocalStorage.remove('authtoken')
     commit('authenticationFalse')
+    commit('syncCarts', [])
+    let info = {
+      confirmed: false,
+      email: '',
+      user_id: '111',
+      user_roles: {
+        access: {},
+        store_map: {}
+      }
+    }
+    commit('setUserInfo', info)
     router.push('/')
   },
   async checkAuth ({ commit }) {

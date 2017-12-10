@@ -235,7 +235,7 @@
   import shop from '../api/shop'
 //  import shop from '../api/shop'
   import {
-    Loading, date, filter, Alert
+    Loading, date, filter, Alert, QItemTitle
   } from 'quasar'
   import { mapGetters, mapActions } from 'vuex'
   export default {
@@ -287,7 +287,8 @@
     components: {
       ProductPage,
       CartPage,
-      StoreReview
+      StoreReview,
+      QItemTitle
     },
     computed: {
       ...mapGetters([
