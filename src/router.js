@@ -32,14 +32,14 @@ const Router = new VueRouter({
       component: HomePageLayout,
       meta: { Auth: true },
       children: [
-        {path: 'home', meta: { Auth: true }, name: 'home', component: HomePage},
-        {path: 'store_search', meta: { Auth: true }, component: StoresListPage},
-        {path: 'cart', meta: { Auth: true }, component: CartPage},
-        {path: 'user/by_id/:id', meta: { Auth: true }, name: 'profile', component: Profile, props: true}
+        {path: 'home', meta: { Auth: false }, name: 'home', component: HomePage},
+        {path: 'store_search', meta: { Auth: false }, component: StoresListPage},
+        {path: 'cart', meta: { Auth: false }, component: CartPage},
+        {path: 'user/by_id/:id', meta: { Auth: false }, name: 'profile', component: Profile, props: true}
       ]
     },
-    {path: '/store/by_id/:id', meta: { Auth: true }, name: 'store', component: StorePage, props: true},
-    {path: '/product/by_id/:id', meta: { Auth: true }, component: ProductPage},
+    {path: '/store/by_id/:id', meta: { Auth: false }, name: 'store', component: StorePage, props: true},
+    {path: '/product/by_id/:id', meta: { Auth: false }, component: ProductPage},
     {path: '/store-sign-up', meta: { Auth: true }, component: StoreOnboarding},
     {path: '/admin',
       component: AdminLayout,

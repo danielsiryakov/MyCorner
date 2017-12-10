@@ -72,13 +72,13 @@
         'retriesActiveCarts',
         'getAddressBook',
         'getWallet',
-        'login'
+        'login2'
       ]),
       ...mapMutations([
         'authenticationTrue',
         'setUserInfo'
       ]),
-      login2 (creds) {
+      login (creds) {
         this.loading = true
         axios.get(LOGIN_URL, {
           params: {
@@ -106,13 +106,7 @@
           if (sids.length > 0) {
             this.$store.commit('update_store_selection', sids[0])
           }
-          this.$router.push('/store_search')
-          // if (response.data.is_store_owner) {
-          //   this.$router.push({ name: 'admin' })
-          // }
-          // else {
-          //   this.$router.push({ name: 'home' })
-          // }
+          this.login2(response.data)
         }).catch(error => {
           this.loading = false
           this.loginError = true

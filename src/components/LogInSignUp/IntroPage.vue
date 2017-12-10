@@ -22,29 +22,46 @@
             <span class="text-bold" style="z-index: 99;">Login</span>
           </q-btn>
       </q-toolbar>
+
       <div class="sm-width-1of1 md-width-1of1 bg-width-5of5 lg-width-3of5">
         <img src="../../assets/fulllogo.png" class="mobile-only" style="padding: 20px;height: 100px">
+        <q-toolbar color="primary" inverted class="mobile-only absolute-center full-width" style="width: 100vw !important;">
+          <!--<q-toolbar color="">-->
+          <vue-google-autocomplete
+            id="map"
+            ref="addressSearch"
+            placeholder="Enter Your Address To Find Stores Near You"
+            v-on:placechanged="getLocation"
+            country="usa"
+            :enableGeolocation="true"
+            class="locationSearch full-width"
+          >
+            <!--<q-input></q-input>-->
+          </vue-google-autocomplete>
+          <!--<q-search icon="location_on" :debounce="0" inverted color="primary light" v-model="searchValue" @enter="searchForStores"></q-search>-->
+          <!--</q-toolbar/>-->
+        </q-toolbar>
+        <!--<div class="row centered justify-center group" id="footer" style="padding: 20px;">-->
+          <!--<div class="col-lg-8">-->
+            <!--<div class="blur-container mobile-only">-->
+              <!--<q-carousel arrows dots class="bgimgico mobile-only text-white">-->
+                <!--<div slot="slide" class="" align="center">-->
+                  <!--<h5 class="text-blur text-bold">Search for stores around your corner!</h5>-->
+                  <!--<img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="135px">-->
+                <!--</div>-->
+                <!--<div slot="slide" class="" align="center">-->
+                  <!--<h5 class="text-blur text-bold">Add your favorite items to your cart!</h5>-->
+                  <!--<img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping" height="135px">-->
+                <!--</div>-->
+                <!--<div slot="slide" class="" align="center">-->
+                  <!--<h5 class="text-blur text-bold">Have it delivered straight to your home!</h5>-->
+                  <!--<img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" height="135px">-->
+                <!--</div>-->
+              <!--</q-carousel>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
 
-        <div class="row centered justify-center group" id="footer" style="padding: 20px;">
-          <div class="col-lg-8">
-            <div class="blur-container mobile-only">
-              <q-carousel arrows dots class="bgimgico mobile-only text-white">
-                <div slot="slide" class="" align="center">
-                  <h5 class="text-blur text-bold">Search for stores around your corner!</h5>
-                  <img src="../../assets/icons/storeSearch.svg" alt="Online Grocery Shopping" height="135px">
-                </div>
-                <div slot="slide" class="" align="center">
-                  <h5 class="text-blur text-bold">Add your favorite items to your cart!</h5>
-                  <img src="../../assets/icons/addProducts.svg" alt="Online Grocery Shopping" height="135px">
-                </div>
-                <div slot="slide" class="" align="center">
-                  <h5 class="text-blur text-bold">Have it delivered straight to your home!</h5>
-                  <img src="../../assets/icons/groceryDelivered.svg" alt="Online Grocery Shopping" height="135px">
-                </div>
-              </q-carousel>
-            </div>
-          </div>
-        </div>
         <q-modal ref="logInSignUp" transition="fade" :content-css="{maxWidth: '800px',maxHeight: '800px'}">
           <h4><q-icon name="close" class="text-primary absolute-top-right" @click="$refs.logInSignUp.close()"/></h4>
           <!--<h4><q-icon class="text-primary float-right" style="padding-right: 20px" @click="$refs.logInSignUp.close()" name="close"/></h4>-->
@@ -66,7 +83,25 @@
             </q-tabs>
           </div>
         </q-modal>
-        <div class="desktop-only row justify-center group" id="footer" style="padding-bottom: 20px;">
+        <div class="row desktop-only absolute-center group" style="width: 50vw">
+          <q-toolbar color="primary" class="full-width">
+            <!--<q-toolbar color="">-->
+              <vue-google-autocomplete
+                id="map"
+                ref="addressSearch"
+                placeholder="Enter Your Address To Find Stores Near You"
+                v-on:placechanged="getLocation"
+                country="usa"
+                :enableGeolocation="true"
+                class="locationSearch full-width"
+              >
+                <!--<q-input></q-input>-->
+              </vue-google-autocomplete>
+              <!--<q-search icon="location_on" :debounce="0" inverted color="primary light" v-model="searchValue" @enter="searchForStores"></q-search>-->
+            <!--</q-toolbar/>-->
+          </q-toolbar>
+        </div>
+            <div class="desktop-only row justify-center group" id="footer" style="padding-bottom: 20px;">
           <div class="col-lg-8">
             <div class="row justify-center group">
               <q-btn big color="primary" class="text-bold text-primary col-4" style="font-size: 25px;" @click="formTab='signup', $refs.logInSignUp.open()">
@@ -236,19 +271,39 @@
       </h2>
       <div class="text-tertiary center" style="padding: 40px; padding-left: 20%; padding-right: 20%;">
         <q-field class="text-tertiary" icon="email" type="email" label="Email" helper="Required">
-          <q-input placeholder="Enter your email address" v-model="contactUsEmail" color="tertiary" class="text-tertiary" inverted/>
+          <q-input placeholder="Enter your email address"
+                   v-model="contactUsEmail"
+                   color="tertiary"
+                   class="text-tertiary"
+                   inverted/>
         </q-field>
         <q-field class="text-tertiary" icon="phone" label="Phone" type="tel" helper="Optional">
-          <q-input placeholder="Enter your email phone number" class="text-tertiary" v-model="contactUsPhoneNumber" color="tertiary" inverted/>
+          <q-input placeholder="Enter your email phone number"
+                   class="text-tertiary"
+                   v-model="contactUsPhoneNumber"
+                   color="tertiary"
+                   inverted/>
         </q-field>
         <q-field class="text-tertiary" color="tertiary" icon="person" label="Name" helper="Optional">
-          <q-input placeholder="Enter your name" class="text-tertiary" v-model="contactUsName" color="tertiary" inverted />
+          <q-input placeholder="Enter your name"
+                   class="text-tertiary"
+                   v-model="contactUsName"
+                   color="tertiary"
+                   inverted />
         </q-field>
         <q-field icon="mail" label="Message" :count="500" helper="Required">
-          <q-input placeholder="Enter your email message" color="tertiary" inverted type="textarea" v-model="contactUsMessage" :max-height="100" :min-rows="4" />
+          <q-input placeholder="Enter your email message"
+                   color="tertiary"
+                   inverted
+                   type="textarea"
+                   v-model="contactUsMessage"
+                   :max-height="100"
+                   :min-rows="4" />
         </q-field>
       </div>
-      <q-btn big color="primary" class="text-bold text-primary col-4" style="font-size: 25px;">
+      <q-btn big color="primary"
+             class="text-bold text-primary col-4"
+             @click="sendEmail" style="font-size: 25px;">
         Send
       </q-btn>
     </section>
@@ -258,13 +313,17 @@
 
 <script>
   import Login from './Login.vue'
+  import VueGoogleAutocomplete from 'vue-google-autocomplete'
   import TrialPeriod from './TrialPeriodOffer.vue'
   import CommonQuestions from './CommonQuestions.vue'
+  // import axios from 'axios'
+  import shop from '../../api/shop'
+  // const ADDRESS_BOOK_ADD = shop.API_URL + 'user/address_book/add'
   import SignUp from './Signup.vue'
   import {
-    QTabs, QRouteTab, QBtn, QIcon
+    QTabs, QRouteTab, QBtn, QIcon, Toast
   } from 'quasar'
-  import { mapState } from 'vuex'
+  import { mapState, mapActions, mapMutations } from 'vuex'
   export default {
     data () {
       return {
@@ -273,7 +332,9 @@
         contactUsEmail: '',
         contactUsPhoneNumber: '',
         contactUsName: '',
-        contactUsMessage: ''
+        contactUsMessage: '',
+        address: '',
+        address2: ''
       }
     },
     components: {
@@ -284,14 +345,52 @@
       QRouteTab,
       QBtn,
       QIcon,
-      CommonQuestions
+      CommonQuestions,
+      VueGoogleAutocomplete
     },
     computed: mapState({
       userAuth: 'authenticated'
     }),
     methods: {
+      ...mapActions([
+        'logout',
+        'searchForStores',
+        'getAllStores',
+        'addUserAddress'
+      ]),
+      ...mapMutations([
+        'setDefaultAddress',
+        'formattedAddress'
+      ]),
+      sendEmail () {
+        shop.sendEmail({
+          to: 'daniel@mycorner.store',
+          body: this.contactUsMessage,
+          subject: 'MyCorner ContactUS - ' + this.contactUsEmail + ' - ' + this.contactUsPhoneNumber
+        }).then(response => {
+          Toast.create({
+            html: 'Message sent! Thank you for your feedback :)'
+          })
+          this.contactUsEmail = ''
+          this.contactUsPhoneNumber = ''
+          this.contactUsName = ''
+          this.contactUsMessage = ''
+          console.log(response)
+        })
+      },
       modalClosed () {
         console.log('modal closed')
+      },
+      getLocation (addressData, placeResultData) {
+        console.log(placeResultData)
+        this.address = addressData
+//        this.addUserAddress(JSON.stringify(addressData))
+        this.address2 = placeResultData
+        this.setDefaultAddress(addressData)
+//        this.getAllStores()
+        this.formattedAddress(placeResultData)
+        this.$refs.addressSearch.clear()
+        this.searchForStores()
       }
     }
   }
@@ -385,5 +484,36 @@
   }
   round-border {
     border-radius: 200px !important;
+  }
+  .locationSearch {
+    -webkit-appearance: none;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border: none;
+    border-radius: 4px;
+    box-shadow: none;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    font-size: 1rem;
+    height: 3em;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    line-height: 1.5;
+    padding-left: .75em;
+    padding-right: .75em;
+    position: relative;
+    vertical-align: top;
+    background-color: #fff;
+    border: 1px solid #40dba1;
+    color: #000000;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    width: 100%;
+  }
+  locationSearch:focus {
+    border: 1px solid #40dba1;
   }
 </style>

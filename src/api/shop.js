@@ -57,7 +57,7 @@ const STORE_CATEGORY_PRODUCTS_CREATE = API_URL + 'store/products/create?category
 const STORE_CATEGORY_PRODUCTS_RETRIEVE = API_URL + 'store/category/products/retrieve?p='
 const STORE_CATEGORIES_RETRIEVE_T1 = API_URL + 'store/categories/retrieve/t1?store_id='
 const PRODUCT_TEMPLATE_RETRIEVE = API_URL + 'template/product/retrieve?id='
-
+const SEND_EMAIL = API_URL + 'send_email'
 axios.defaults.headers.common['userID'] = Cookies.get('userID')
 
 export default {
@@ -388,6 +388,9 @@ export default {
   },
   templateCategoriesAdd (payload) {
     return axios.post(CATEGORIES_FROM_TEMPLATE_ADD, JSON.stringify(payload))
+  },
+  sendEmail (payload) {
+    return axios.post(SEND_EMAIL, JSON.stringify(payload))
   },
   productCreate (payload, categoryID) {
     return axios.post(STORE_CATEGORY_PRODUCTS_CREATE + categoryID, JSON.stringify(payload))

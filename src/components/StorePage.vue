@@ -96,7 +96,7 @@
                       <q-card-media>
                         <img :src="category.icon" alt="" style="padding: 20px; height: 200px; width: 200px">
                       </q-card-media>
-                      <!--<q-icon class="float-right" name="keyboard_arrow_right"></q-icon>-->
+ al                   <!--<q-icon class="float-right" name="keyboard_arrow_right"></q-icon>-->
                     </q-card>
                   </div>
                 </div>
@@ -105,7 +105,7 @@
             </q-tabs>
           </q-tab-pane>
           <q-tab-pane name="Information" class="" v-if="store">
-            <q-card class="row justify-center bg-light">
+            <div class="row justify-center bg-light">
               <div class="col-lg-8" align="center">
                 <!--<h3 class="" style="padding: 10px;">Information</h3>-->
                 <div class="group " style="padding: 10px;">
@@ -145,7 +145,7 @@
                   </table>
                 </div>
               </div>
-            </q-card>
+            </div>
           </q-tab-pane>
         </q-tabs>
         <br>
@@ -205,7 +205,12 @@
       <q-modal ref="productModal" class="" :content-css="{padding: '20px', maxWidth: '600px'}">
         <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.productModal.close()"/></h4>
         <!--<i class="text-negative" @click="$refs.productModal.close()">close</i>-->
-        <product-page :product="ProductObject" :quantityProp="cartQuantity" :productDetails="currentProductDetails" v-on:added="close"></product-page>
+        <product-page
+          :product="ProductObject"
+          :quantityProp="cartQuantity"
+          :productDetails="currentProductDetails"
+          v-on:added="close"
+          v-on:closeModal="close2"></product-page>
       </q-modal>
     </div>
 	</q-layout>
@@ -397,6 +402,10 @@
       close: function () {
         this.$refs.productModal.close()
       },
+      close2: function () {
+        this.$refs.productModal.close()
+        this.$refs.T2Products.close()
+      },
       productCartQuantity (productID) {
         let storeCart = this.getCartByStore(this.id)
         if (storeCart) {
@@ -428,6 +437,9 @@
     },
     watch: {
       '$route' (to, from) {
+        this.$refs.T2Products.close()
+        this.$refs.StoreReview.close()
+        this.$refs.productModal.close()
         Loading.show()
         this.getStore(this.id)
         this.getAllProducts(this.id)

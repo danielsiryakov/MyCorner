@@ -2,7 +2,7 @@
     <div class="" v-if="show">
       <div class ="layout-padding">
         <div class="row justify-center">
-          <div class="col-lg-8">
+          <div class="col-lg-8" v-if="isUser">
             <h4 class="text-bold">Profile Information</h4>
             <q-list separator	highlight class="bg-white">
               <q-list-header>{{ user.email }}</q-list-header>
@@ -27,9 +27,41 @@
               </div>
             </div>
           </div>
+          <div class="col-lg-8 group inline" v-if="!isUser">
+            <div class="row group no-wrap justify-center">
+              <q-btn big
+                     class="col-5 offset-1"
+                     color="primary"
+                     @click="formTab='login', $refs.logInSignUp.open()">Login</q-btn>
+              <q-btn big
+                     class="col-5"
+                     color="primary"
+                     @click="formTab='signup', $refs.logInSignUp.open()">Sign Up</q-btn>
+            </div>
+            </div>
         </div>
       </div>
+      <q-modal ref="logInSignUp" transition="fade" :content-css="{maxWidth: '800px',maxHeight: '800px'}">
+        <h4><q-icon name="close" class="text-primary absolute-top-right" @click="$refs.logInSignUp.close()"/></h4>
+        <!--<h4><q-icon class="text-primary float-right" style="padding-right: 20px" @click="$refs.logInSignUp.close()" name="close"/></h4>-->
+        <br><br>
+        <div class="">
+          <q-tabs :refs="$refs" v-model="formTab" no-pane-border color="tertiary">
+            <q-tab slot="title" name="login" label="log in"/>
+            <q-tab slot="title" name="signup" label="Sign Up" />
 
+            <q-tab-pane name="login"><login @closeModal="$refs.logInSignUp.close()"></login></q-tab-pane>
+            <q-tab-pane  name="signup"><sign-up :formTab="'user'" v-if="!signedup" v-on:submit="signedup = true"></sign-up>
+              <div v-if="signedup" style="padding: 20px;" class="layout-padding">
+                <h4>we sent you a confirmation email!</h4><br>
+                <big class="text-tertiary">
+                  Confirm your email address and start shopping for everything you love!
+                </big>
+              </div>
+            </q-tab-pane>
+          </q-tabs>
+        </div>
+      </q-modal>
       <q-modal ref="pages" class="maximized" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
         <q-modal-layout class="bg-light">
           <q-toolbar class="text-white" slot="header" color="tertiary">
@@ -67,6 +99,8 @@
   import PastOrders from './PastOrders.vue'
   import Review from '../Review.vue'
   import Wallet from './Wallet.vue'
+  import Login from '../LogInSignUp/Login'
+  import SignUp from '../LogInSignUp/Signup'
   import TrackYourOrder from './TrackYourOrder.vue'
   import shop from '../../api/shop'
   export default {
@@ -76,7 +110,9 @@
       AddressBook,
       PastOrders,
       Review,
-      TrackYourOrder
+      TrackYourOrder,
+      Login,
+      SignUp
     },
     computed: {
       ...mapGetters([
@@ -84,6 +120,9 @@
       ]),
       addressBook: {
         get () { return this.$store.state.userInfo.address_book }
+      },
+      isUser: {
+        get () { return this.$store.state.userInfo.info.confirmed }
       }
     },
     methods: {
@@ -119,13 +158,17 @@
       }
     },
     created () {
-      this.getUserInfo()
-      this.getWallet()
-      this.getCompletedCarts()
+      if (this.isUser) {
+        this.getUserInfo()
+        this.getWallet()
+        this.getCompletedCarts()
+      }
     },
     data () {
       return {
         currentOrders: [],
+        formTab: 'login',
+        signedup: false,
         currentPage: '',
         currentLabel: '',
         show: true,

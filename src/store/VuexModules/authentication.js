@@ -56,32 +56,13 @@ const actions = {
       console.log(error)
     })
   },
-  login2 ({ commit }, creds, errorCb) {
-    axios.get(LOGIN_URL, {
-      params: {
-        email: creds.email,
-        password: creds.password
-      }
-    }).then(function (response) {
-      console.log(response.data)
-      Cookies.set('userID', response.data.login.userID, {
-        path: '/',
-        expires: 10
-      })
-      Cookies.set('authtoken', response.data.login.authtoken, {
-        path: '/',
-        expires: 10
-      })
-      axios.defaults.headers.common['authtoken'] = response.data.login.authtoken
-      axios.defaults.headers.common['userID'] = response.data.login.userID
-      commit('authenticationTrue')
-      router.push('/')
-    }).catch(error => {
-      if (error) {
-        errorCb(error)
-        console.log(error)
-      }
-    })
+  login2 ({ commit }, data) {
+    if (data.is_store_owner) {
+      router.push({ name: 'admin' })
+    }
+    else {
+      router.push({ name: 'home' })
+    }
   },
   retrieve ({ commit }) {
     axios.get(USER_RETRIEVE).then(function (response) {
