@@ -28,8 +28,8 @@
         <q-toolbar color="primary" inverted class="mobile-only absolute-center full-width" style="width: 100vw !important;">
           <!--<q-toolbar color="">-->
           <vue-google-autocomplete
-            id="map"
-            ref="addressSearch"
+            id="map2"
+            ref="addressSearch2"
             placeholder="Enter Your Address To Find Stores Near You"
             v-on:placechanged="getLocation"
             country="usa"
