@@ -170,14 +170,16 @@
               <!--<img :src="p.image" style="width: 100px; height: 100px">-->
               </q-item-side>
 
-              <q-item-main v-if="p.label.length >= 30" class="">{{p.label.substring(0,30)}}...<br></q-item-main>
+              <q-item-main v-if="p.label.length >= 30" style="word-wrap: break-word;" class="">{{p.label.substring(0,30)}}...<br></q-item-main>
 
-              <q-item-main v-if="p.label.length < 30" class="">{{p.label}}<br></q-item-main>
-              <q-chip floating class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
+              <q-item-main v-if="p.label.length < 30" style="word-wrap: break-word;" class="">{{p.label}}<br></q-item-main>
 
               <q-item-side right>
                 <br>
                 <q-item-tile>${{p.price_cents / 100}}</q-item-tile>
+                <q-item-title>
+                  <q-chip v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
+                </q-item-title>
               </q-item-side>
 
             </q-item>
