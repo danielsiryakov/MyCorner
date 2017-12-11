@@ -84,20 +84,31 @@
                           :key="key"
                           :name="aisle.name">
                 <br>
-                <div class="row">
+                <div class="row group full-width">
                   <div v-for="(category, key) in aisle.children_categories"
                        :key="key"
                        @click="openT2Category(category)">
-                    <q-card inline class="cursor-pointer bg-white text-bold" style="padding: 15px;">
-                      <q-card-title>
-                        <h5 class="text-bold">{{category.name}}</h5>
-                      </q-card-title>
+                    <div class="desktop-only col-12">
+                      <q-card inline class="desktop-only cursor-pointer bg-white text-bold" style="padding: 10px;">
+                        <q-card-title>
+                          <h5 class="text-bold" style="word-wrap: break-word; width: 200px; height: 80px">{{category.name}}</h5>
+                        </q-card-title>
 
-                      <q-card-media>
-                        <img :src="category.icon" alt="" style="padding: 20px; height: 200px; width: 200px">
-                      </q-card-media>
+                        <q-card-media>
+                          <img :src="category.icon" alt="" style="padding: 20px; height: 200px; width: 200px">
+                        </q-card-media>
                       <!--<q-icon class="float-right" name="keyboard_arrow_right"></q-icon>-->
-                    </q-card>
+                      </q-card>
+                    </div>
+                    <div class="full-width modile-only">
+                      <q-card class="full-width mobile-only">
+                        <q-item class="full-width">
+                          <q-item-side :image="category.icon"></q-item-side>
+                          <q-item-main :label="category.name" class="text-bold">
+                          </q-item-main>
+                        </q-item>
+                      </q-card>
+                    </div>
                   </div>
                 </div>
 
@@ -105,7 +116,7 @@
             </q-tabs>
           </q-tab-pane>
           <q-tab-pane name="Information" class="" v-if="store">
-            <q-card class="row justify-center bg-light">
+            <div class="row justify-center bg-light">
               <div class="col-lg-8" align="center">
                 <!--<h3 class="" style="padding: 10px;">Information</h3>-->
                 <div class="group " style="padding: 10px;">
@@ -145,7 +156,7 @@
                   </table>
                 </div>
               </div>
-            </q-card>
+            </div>
           </q-tab-pane>
         </q-tabs>
         <br>
@@ -162,14 +173,16 @@
               <!--<img :src="p.image" style="width: 100px; height: 100px">-->
               </q-item-side>
 
-              <q-item-main v-if="p.label.length >= 30" class="">{{p.label.substring(0,30)}}...<br></q-item-main>
+              <q-item-main v-if="p.label.length >= 30" style="word-wrap: break-word;" class="">{{p.label.substring(0,30)}}...<br></q-item-main>
 
-              <q-item-main v-if="p.label.length < 30" class="">{{p.label}}<br></q-item-main>
-              <q-chip floating class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
+              <q-item-main v-if="p.label.length < 30" style="word-wrap: break-word;" class="">{{p.label}}<br></q-item-main>
 
               <q-item-side right>
                 <br>
                 <q-item-tile>${{p.price_cents / 100}}</q-item-tile>
+                <q-item-title>
+                  <q-chip v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
+                </q-item-title>
               </q-item-side>
 
             </q-item>
@@ -205,7 +218,12 @@
       <q-modal ref="productModal" class="" :content-css="{padding: '20px', maxWidth: '600px'}">
         <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.productModal.close()"/></h4>
         <!--<i class="text-negative" @click="$refs.productModal.close()">close</i>-->
-        <product-page :product="ProductObject" :quantityProp="cartQuantity" :productDetails="currentProductDetails" v-on:added="close"></product-page>
+        <product-page
+          :product="ProductObject"
+          :quantityProp="cartQuantity"
+          :productDetails="currentProductDetails"
+          v-on:added="close"
+          v-on:closeModal="close2"></product-page>
       </q-modal>
     </div>
 	</q-layout>
@@ -220,7 +238,7 @@
   import shop from '../api/shop'
 //  import shop from '../api/shop'
   import {
-    Loading, date, filter, Alert
+    Loading, date, filter, Alert, QItemTitle
   } from 'quasar'
   import { mapGetters, mapActions } from 'vuex'
   export default {
@@ -272,7 +290,8 @@
     components: {
       ProductPage,
       CartPage,
-      StoreReview
+      StoreReview,
+      QItemTitle
     },
     computed: {
       ...mapGetters([
@@ -397,6 +416,10 @@
       close: function () {
         this.$refs.productModal.close()
       },
+      close2: function () {
+        this.$refs.productModal.close()
+        this.$refs.T2Products.close()
+      },
       productCartQuantity (productID) {
         let storeCart = this.getCartByStore(this.id)
         if (storeCart) {
@@ -428,6 +451,9 @@
     },
     watch: {
       '$route' (to, from) {
+        this.$refs.T2Products.close()
+        this.$refs.StoreReview.close()
+        this.$refs.productModal.close()
         Loading.show()
         this.getStore(this.id)
         this.getAllProducts(this.id)

@@ -29,10 +29,9 @@
           <br>
           <h6 class="text-bold">How long does the trial last?</h6>
           <p style="padding: 10px;">
-            Your trial period does not begin until you accept your first order. The trial
-            expires when your store has received a total of $200 in orders in a single month.
-            If you reach the $200 limit early our fees will not kick in until the month is up
-            or you receive over $50,000 in orders before the months end.
+            Your trial period does not begin until you accept your first order. The trial expires
+            30 days after your initial accepted order or when your store receives a total of
+            $50,000 or more in orders.
           </p>
           <h6 class="text-bold">What is the purpose of the trial?</h6>
           <p style="padding: 10px;">

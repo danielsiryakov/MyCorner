@@ -117,14 +117,40 @@
           </div>
         </div>
       </div>
+      <q-modal ref="logInSignUp" transition="fade" :content-css="{maxWidth: '800px',maxHeight: '800px'}">
+        <h4><q-icon name="close" class="text-primary absolute-top-right" @click="$refs.logInSignUp.close()"/></h4>
+        <!--<h4><q-icon class="text-primary float-right" style="padding-right: 20px" @click="$refs.logInSignUp.close()" name="close"/></h4>-->
+        <br><br>
+        <div class="">
+          <q-tabs :refs="$refs" v-model="formTab" no-pane-border color="tertiary">
+            <q-tab slot="title" name="login" label="log in"/>
+            <q-tab slot="title" name="signup" label="Sign Up" />
 
+            <q-tab-pane name="login"><login @closeModal="closeModal"></login></q-tab-pane>
+            <q-tab-pane  name="signup"><sign-up :formTab="'user'" v-if="!signedup" v-on:submit="signedup = true"></sign-up>
+              <div v-if="signedup" style="padding: 20px;" class="layout-padding">
+                <h4>we sent you a confirmation email!</h4><br>
+                <big class="text-tertiary">
+                  Confirm your email address and start shopping for everything you love!
+                </big>
+              </div>
+            </q-tab-pane>
+          </q-tabs>
+        </div>
+      </q-modal>
     </div>
   </div>
 </template>
 
 <script>
+  import Login from '../components/LogInSignUp/Login'
+  import SignUp from '../components/LogInSignUp/Signup'
   import { mapActions, mapGetters, mapMutations } from 'vuex'
   export default {
+    components: {
+      Login,
+      SignUp
+    },
     mounted () {
 //      this.getAllProducts()
     },
@@ -151,6 +177,9 @@
           }
         }
         return this.mutation.quantity
+      },
+      isUser: {
+        get () { return this.$store.state.userInfo.info.confirmed }
       }
     },
     methods: {
@@ -167,26 +196,42 @@
         }
       },
       addItem () {
-        this.addToCart({
-          asset_id: this.product.asset_id,
-          label: this.product.label,
-          title: this.product.title,
-          image: this.product.image,
-          price_cents: this.product.price_cents,
-          quantity: this.mutation.quantity,
-          store_id: this.product.store_id,
-          product_id: this.product.product_id
-        })
-        this.$emit('added')
+        if (this.isUser) {
+          this.addToCart({
+            asset_id: this.product.asset_id,
+            label: this.product.label,
+            title: this.product.title,
+            image: this.product.image,
+            price_cents: this.product.price_cents,
+            quantity: this.mutation.quantity,
+            store_id: this.product.store_id,
+            product_id: this.product.product_id
+          })
+          this.$emit('added')
+        }
+        else {
+          this.$refs.logInSignUp.open()
+        }
+      },
+      closeModal () {
+        this.$refs.logInSignUp.close()
+        this.$emit('closeModal')
       }
     },
     data () {
       return {
+        signedup: false,
+        formTab: 'login',
         quantity: 1,
         mutation: {
           name: '',
           quantity: 1
         }
+      }
+    },
+    watch: {
+      '$route' (to, from) {
+        this.$refs.logInSignUp.close()
       }
     }
   }
