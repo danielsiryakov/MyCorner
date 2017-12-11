@@ -2,6 +2,9 @@
   <!-- if you want automatic padding use "layout-padding" class -->
   <div class="layout-padding">
     <!-- your content -->
+    <div v-if="orders.length == 0">
+      <h5>You don't have any orders yet :/ You should tell your customers about us!</h5>
+    </div>
     <q-list v-if="orders.length > 0">
       <q-item separator v-for="(order, key) in orders" :key="key" class="group" @click="getOrderDetails(order)">
         <q-item-side>

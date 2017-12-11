@@ -122,11 +122,7 @@
           </q-item>
         </draggable>
       </div>
-      <q-fixed-position corner="bottom-left" :offset="[18, 18]">
-        <q-btn color="primary" big @click="addProducts">
-          Save
-        </q-btn>
-      </q-fixed-position>
+
       <q-btn
         v-back-to-top.animate="{offset: 500, duration: 200}"
         round

@@ -87,7 +87,7 @@
                   you like and checkout from any store whenever you like.
                 </div>
               </q-collapsible>
-              <q-collapsible icon="add circle outline" label="I ordered from a store and really enjoyed the experience but can remember what store it was?">
+              <q-collapsible icon="add circle outline" label="I ordered from a store and really enjoyed the experience but can't remember what store it was?">
                 <div class="answer">
                   Not to worry, you may see your past orders in your profile tab and re-order
                   from and store you wish.
