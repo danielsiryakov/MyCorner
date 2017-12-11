@@ -14,10 +14,12 @@
       ...mapActions([
         'retriesActiveCarts',
         'getUserInfo',
+        'checkAuth',
         'getAddressBook',
         'getWallet'
       ]),
       atStartUp () {
+        this.checkAuth()
 //        isAuthenticated =
         if (this.$store.state.auth.authenticated === true) {
           this.getUserInfo()

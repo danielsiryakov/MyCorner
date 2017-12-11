@@ -84,18 +84,36 @@
                           :key="key"
                           :name="aisle.name">
                 <br>
-                  <div v-for="(category, key) in aisle.children_categories" :key="key" @click="openT2Category(category)">
-                    <q-card flat class="bg-white text-bold" style="padding: 15px">
-                      {{category.name}}
-                      <q-icon class="float-right" name="keyboard_arrow_right"></q-icon>
+                <div class="row group">
+                  <div v-for="(category, key) in aisle.children_categories"
+                       :key="key"
+                       @click="openT2Category(category)"
+                       class="full-width">
+                    <q-card inline class="desktop-only cursor-pointer bg-white text-bold" style="padding: 15px;">
+                      <q-card-title>
+                        <h5 class="text-bold" style="word-wrap: break-word; width: 200px; height: 80px">{{category.name}}</h5>
+                      </q-card-title>
+
+                      <q-card-media>
+                        <img :src="category.icon" alt="" style="padding: 20px; height: 200px; width: 200px">
+                      </q-card-media>
+                    <!--<q-icon class="float-right" name="keyboard_arrow_right"></q-icon>-->
                     </q-card>
-                    <br>
+                    <q-card class="full-width mobile-only">
+                      <q-item class="full-width">
+                        <q-item-side :image="category.icon"></q-item-side>
+                        <q-item-main :label="category.name" class="text-bold">
+                        </q-item-main>
+                      </q-item>
+                    </q-card>
                   </div>
+                </div>
+
               </q-tab-pane>
             </q-tabs>
           </q-tab-pane>
           <q-tab-pane name="Information" class="" v-if="store">
-            <q-card class="row justify-center bg-light">
+            <div class="row justify-center bg-light">
               <div class="col-lg-8" align="center">
                 <!--<h3 class="" style="padding: 10px;">Information</h3>-->
                 <div class="group " style="padding: 10px;">
@@ -135,7 +153,7 @@
                   </table>
                 </div>
               </div>
-            </q-card>
+            </div>
           </q-tab-pane>
         </q-tabs>
         <br>
@@ -145,37 +163,43 @@
         <h4 class="text-bold text-tertiary">{{currentCategory.name}}</h4>
         <div class="row" v-if="search == ''">
           <!--{{ filter(cat.products) }}-->
-            <q-item class="lt-md bg-white full-width" v-for="p in T2Products.results" :key="p.asset_id" @click="open(p)">
+            <q-item class="lt-md bg-white full-width" v-for="p in T2Products.results"
+                    :key="p.asset_id"
+                    @click="open(p)">
               <q-item-side :image="p.image" style="padding-right: 10px;">
               <!--<img :src="p.image" style="width: 100px; height: 100px">-->
               </q-item-side>
 
-              <q-item-main v-if="p.label.length >= 30" class="">{{p.label.substring(0,30)}}...</q-item-main><br>
+              <q-item-main v-if="p.label.length >= 30" style="word-wrap: break-word;" class="">{{p.label.substring(0,30)}}...<br></q-item-main>
 
-              <q-item-main v-if="p.label.length < 30" class="">{{p.label}}</q-item-main><br>
-              <q-chip floating class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
+              <q-item-main v-if="p.label.length < 30" style="word-wrap: break-word;" class="">{{p.label}}<br></q-item-main>
 
               <q-item-side right>
+                <br>
                 <q-item-tile>${{p.price_cents / 100}}</q-item-tile>
+                <q-item-title>
+                  <q-chip v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
+                </q-item-title>
               </q-item-side>
 
             </q-item>
 
             <q-card inline flat
-                    style="width: 30vh; height: 30vh"
+                    style="width: 40vh; height: 40vh"
                     class="gt-sm bg-white"
                     v-for="p in T2Products.results"
                     :key="p.asset_id"
                     @click="open(p)">
               <!--<q-card inline flat style="width: 30vh; height: 30vh" class="bg-white" v-for="p in cat.products" :key="p.asset_id" @click="open(p)">-->
               <q-card-media overlay-position="bottom">
-              <img :src="p.image" style="padding: 25px">
-              <q-card-title class="text-condensed" slot="overlay">
-              <small class="">{{p.label.substring(0,30)}}</small><br>
+                <img :src="p.image" style="padding: 25px">
+                <q-card-title class="text-condensed" slot="overlay">
+                <small class="">{{p.label.substring(0,30)}}</small>
+                  <br>
               <!--{{getProductCartQuantity(id, p.id).quantity}}-->
-              <span class="text-bold">${{p.price_cents / 100}}</span>
-              <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
-              </q-card-title>
+                <span class="text-bold">${{p.price_cents / 100}}</span>
+                <q-chip class="float-right" v-if="productCartQuantity(p.asset_id)" color="primary" small>{{productCartQuantity(p.asset_id)}}</q-chip>
+                </q-card-title>
               </q-card-media>
             </q-card>
         </div>
@@ -191,7 +215,12 @@
       <q-modal ref="productModal" class="" :content-css="{padding: '20px', maxWidth: '600px'}">
         <h4><q-icon name="close" class="text-negative absolute-top-right" @click="$refs.productModal.close()"/></h4>
         <!--<i class="text-negative" @click="$refs.productModal.close()">close</i>-->
-        <product-page :product="ProductObject" :quantityProp="cartQuantity" :productDetails="currentProductDetails" v-on:added="close"></product-page>
+        <product-page
+          :product="ProductObject"
+          :quantityProp="cartQuantity"
+          :productDetails="currentProductDetails"
+          v-on:added="close"
+          v-on:closeModal="close2"></product-page>
       </q-modal>
     </div>
 	</q-layout>
@@ -206,7 +235,7 @@
   import shop from '../api/shop'
 //  import shop from '../api/shop'
   import {
-    Loading, date, filter, Alert
+    Loading, date, filter, Alert, QItemTitle
   } from 'quasar'
   import { mapGetters, mapActions } from 'vuex'
   export default {
@@ -258,7 +287,8 @@
     components: {
       ProductPage,
       CartPage,
-      StoreReview
+      StoreReview,
+      QItemTitle
     },
     computed: {
       ...mapGetters([
@@ -383,6 +413,10 @@
       close: function () {
         this.$refs.productModal.close()
       },
+      close2: function () {
+        this.$refs.productModal.close()
+        this.$refs.T2Products.close()
+      },
       productCartQuantity (productID) {
         let storeCart = this.getCartByStore(this.id)
         if (storeCart) {
@@ -414,6 +448,9 @@
     },
     watch: {
       '$route' (to, from) {
+        this.$refs.T2Products.close()
+        this.$refs.StoreReview.close()
+        this.$refs.productModal.close()
         Loading.show()
         this.getStore(this.id)
         this.getAllProducts(this.id)
