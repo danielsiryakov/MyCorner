@@ -1,7 +1,7 @@
 <template>
   <q-layout>
     <q-toolbar color="tertiary" class="text-white">
-      <q-btn v-go-back="'/admin'" @click="reset_store" icon="arrow_back"/>
+      <q-btn v-go-back="'/admin'" @click="reset" icon="arrow_back"/>
       <q-toolbar-title>Sign Up</q-toolbar-title>
     </q-toolbar>
     <div class="layout-view">
@@ -16,11 +16,15 @@
                   <q-btn color="primary" @click="$refs.stepper.next()">Continue</q-btn>
                 </q-stepper-navigation>
               </q-step>
-              <q-step name="second" title="Create Categories and Add Products" subtitle="">
-                <h5 class="text-tertiary text-bold">Add Categories and Products</h5>
-                <step-three></step-three>
+              <q-step name="second" title="Terms of Service" subtitle="">
+                <h5 class="text-tertiary text-bold"></h5>
+                <q-scroll-area style="height: 300px;">
+                  <store-contract></store-contract>
+                </q-scroll-area>
+                <br>
+                <q-checkbox v-model="termsAccepted" label="I Accept."/>
                 <q-stepper-navigation>
-                  <q-btn color="primary" @click="createStore">Create Your Store!</q-btn>
+                  <q-btn color="primary" :disable="!termsAccepted" @click="createStore">Create Your Store!</q-btn>
                   <q-btn color="tertiary" flat @click="$refs.stepper.previous()">Back</q-btn>
                 </q-stepper-navigation>
               </q-step>
@@ -46,6 +50,7 @@
   import StepTwo from './StepTwo.vue'
   import StepThree from './StepThree.vue'
   import StepFour from './StepFour.vue'
+  import StoreContract from './StoreContract'
   import {
     QLayout,
     QToolbar,
@@ -62,6 +67,7 @@
     data () {
       return {
         ready: false,
+        termsAccepted: false,
         finished: false,
         form: {
           username: '',
@@ -82,6 +88,7 @@
       QBtn,
       QIcon,
       QInput,
+      StoreContract,
       QStepper
     },
     validations: {
@@ -90,6 +97,12 @@
         password: {required, minLength: minLength(6)},
         repeatPassword: {required, minLength: minLength(6), sameAsPassword: sameAs('password')},
         email: {required, email}
+      }
+    },
+    computed: {
+      selectedStore: {
+        get () { return this.$store.state.storeInfo.selectedStore },
+        set (value) { this.$store.commit('update_store_selection', value) }
       }
     },
     methods: {
@@ -102,11 +115,13 @@
         this.finished = true
       },
       reset () {
+        this.getFullStoreInfo(this.selectedStore)
         this.$refs.stepper.reset()
         this.finished = false
       },
       ...mapActions([
-        'createStore'
+        'createStore',
+        'getFullStoreInfo'
       ]),
       ...mapMutations([
         'reset_store'

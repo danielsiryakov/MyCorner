@@ -29,7 +29,7 @@
             v-on:placechanged="getAddressData"
             country="usa"
             :enableGeolocation="true"
-            class="search"
+            classname="autocomplete"
           >
           </vue-google-autocomplete>
         </q-field>
@@ -227,7 +227,7 @@
           return this.address.line1
         }
         else {
-          return 'Please type in your address'
+          return 'type in your store address'
         }
       },
       name: {
@@ -309,6 +309,40 @@
 </script>
 
 <style >
+  .autocomplete {
+    /* margin: 40px 25px; */
+    /* width: 200px; */
+    width: 100%;
+    display: block;
+    border: none;
+    /* padding: 10px 0; */
+    padding: 20px 0 10px 0;
+    border-bottom: solid 1.1px #e4e4e4;
+    background: linear-gradient(to bottom, rgba(26, 188, 156, 0) 95%, #05aa79 5%);
+    background-position: -6000px 0;
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    /* color: #0e6252; */
+    height: 100%;
+  }
+  .autocomplete:focus, autocomplete:valid {
+    box-shadow: none;
+    outline: none;
+    background-position: 0 0;
+  }
+  .autocomplete::-webkit-input-placeholder {
+    /*font-family: 'roboto', sans-serif;*/
+    /*-webkit-transition: all 0.3s ease-in-out;*/
+    /*transition: all 0.3s ease-in-out;*/
+  }
+
+  .autocomplete:focus::-webkit-input-placeholder, .autocomplete:valid::-webkit-input-placeholder {
+    /*color: #1abc9c;*/
+    /*font-size: 11px;*/
+    /*-webkit-transform: translateY(-20px);*/
+    /*transform: translateY(-20px);*/
+    /*visibility: visible !important;*/
+  }
   .q-datetime-range.row .q-datetime-range-right {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;

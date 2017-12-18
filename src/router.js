@@ -16,7 +16,7 @@ import StoreOnboarding from './components/Admin/Onboard/Store_Onboarding_Page'
 import IntroPage from './components/LogInSignUp/IntroPage'
 import PrivacyPage from './components/LogInSignUp/Privacy'
 import TermsOfService from './components/LogInSignUp/TermsOfService'
-
+import {Cookies} from 'quasar'
 function load (component) {
   return () => System.import(`components/${component}.vue`)
 }
@@ -76,18 +76,24 @@ const Router = new VueRouter({
 
 Router.beforeEach((to, from, next) => {
   // store.dispatch('checkAuth')
-  if (to.meta.Auth === true && store.state.auth.authenticated === false) {
-    console.log('authentication is: ' + store.state.auth.authenticated)
+  var hasCookies = Boolean(Cookies.has('authtoken'))
+  if (to.meta.Auth === true && hasCookies !== true) {
+    console.log('authentication is: ' + hasCookies)
     next({path: '/login'})
   }
   else {
     if (to.path === '/') {
-      next({path: '/home', replace: true})
+      if (store.state.userInfo.info.is_store_owner === true) {
+        next({path: '/admin/orders', replace: true})
+      }
+      else {
+        next({path: '/home', replace: true})
+      }
     }
     else if (to.path === '/admin') {
       next({path: '/admin/orders', replace: true})
     }
-    else if (to.path === '/login' && store.state.auth.authenticated === true) {
+    else if (to.path === '/login' && hasCookies === true) {
       console.log('is store owner: ' + store.state.userInfo.info.is_store_owner)
       if (store.state.userInfo.info.is_store_owner === true) {
         next({path: '/admin/orders', replace: true})

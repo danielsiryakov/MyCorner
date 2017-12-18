@@ -6,7 +6,11 @@
       <h5>You don't have any orders yet :/ You should tell your customers about us!</h5>
     </div>
     <q-list v-if="orders.length > 0">
-      <q-item separator v-for="(order, key) in orders" :key="key" class="group" @click="getOrderDetails(order)">
+      <q-item separator
+              v-for="(order, key) in orders"
+              :key="key"
+              class="group cursor-pointer"
+              @click="getOrderDetails(order)">
         <q-item-side>
           <span class="text-bold">Type: {{ order.order_type }}</span><br>
           <span class="text-bold">Payment:</span> {{order.payment_method}}<br>
@@ -31,7 +35,7 @@
           <!--<img :src="p.image" style="width: 100px; height: 100px">-->
         </q-item-side>
         <!--<q-item-main v-if="p.title.length >= 30" class="">{{p.title.substring(0,30)}}...</q-item-main><br>-->
-        <q-item-main class="">{{p.title}}</q-item-main><br>
+        <q-item-main class="">{{p.label}}</q-item-main><br>
       </q-item>
     </q-modal>
   </div>

@@ -306,6 +306,9 @@
              @click="sendEmail" style="font-size: 25px;">
         Send
       </q-btn>
+      <a href="https://www.facebook.com/MyCorner.Store1/" target="_blank">
+        <img src="../../assets/icons/facebook.png" alt="" class="fixed-bottom-right" style="height: 50px; padding: 5px">
+      </a>
     </section>
 
   </div>

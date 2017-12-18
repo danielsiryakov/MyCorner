@@ -14,7 +14,7 @@
       <span class="text-bold">{{ selectedAddress.line1 }}</span><br><br>
       <div class="group">
         <q-btn color="primary" @click="makeDefault">Make Default</q-btn>
-        <q-btn outline color="tertiary" @click="this.$refs.addressDisplay.close()">Cancel</q-btn>
+        <q-btn outline color="tertiary" @click="$refs.addressDisplay.close()">Cancel</q-btn>
       </div>
       <!--<address-edit :address="selectedAddress"></address-edit>-->
     </q-modal>
